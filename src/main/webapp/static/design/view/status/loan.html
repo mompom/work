@@ -1,0 +1,1024 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>비대면 대출 신청 서비스</title>
+	<!--[if IE]>
+        <script src="../include/js/html5shiv.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="../../include/css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../../include/css/common.css">
+	<script type="text/javascript" src="../../include/js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="../../include/js/jquery-fakeform-0.5.min.js"></script>
+	<script type="text/javascript" src="../../include/js/jquery.placeholder.min.js"></script>
+	<script type="text/javascript" src="../../include/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../../include/js/common.js"></script>
+</head>
+<body>
+<div id="wrap">
+	<!-- header -->
+	<div id="header">
+		<div class="top_cont">
+			<h1><a href="#">ABC캐피탈 <span>비대면 대출 신청 서비스 어드민</span></a></h1>
+			<div class="top_util">
+				<span class="user">consult1 님이 로그인했습니다.</span>
+				<button type="button" class="btn_st bt01"><span>LOGOUT</span></button>
+			</div>
+			<div class="gnb">
+				<ul>
+					<li class="on"><a href="#">진행 현황</a></li>
+					<li><a href="#">통계</a></li>
+					<li><a href="#">사용자 관리</a></li>
+					<li><a href="#">운영 관리</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //header -->
+
+	<!-- container -->
+	<div id="container">
+		<!-- sub menu -->
+		<div class="sub_menu">
+			<ul>
+				<li class="first on"><a href="#">대출 업무</a></li>
+				<li><a href="#">상담 신청</a></li>
+			</ul>
+		</div>
+
+		<!-- sub search -->
+		<div class="sub_topsearch">
+			<ul class="clearbox">
+				<li>
+					<select name="" id="" class="select01">
+						<option value="">최근 7일</option>
+						<option value="">최근 14일</option>
+						<option value="">최근 1개월</option>
+						<option value="">직접입력</option>
+					</select>
+				</li>
+				<li>
+					<span class="sch_data"><input type="text" class="datepicker"></span>
+					~
+					<span class="sch_data"><input type="text" class="datepicker"></span>
+				</li>
+				<li>
+					<select name="" id="" class="select01" style="width:153px;">
+						<option value="">진행 상태 전체</option>
+					</select>
+				</li>
+				<li>
+					<select name="" id="" class="select01" style="width:153px;">
+						<option value="">고객명</option>
+						<option value="">상담ID</option>
+					</select>
+				</li>
+				<li class="input_search"><input type="text" name="" placeholder="검색어를 입력하세요"></li>
+				<li><button type="button" class="btn_st bt01"><span>검색</span></button></li>
+			</ul>
+		</div>
+
+		<!-- top btn -->
+		<div class="top_area clearbox">
+			<div class="lf_box">
+				<strong class="txt">총 130건의 결과가 검색되었습니다.</strong>
+			</div>
+			<div class="rf_box">
+				<select name="" id="" class="select02" style="width:92px;">
+					<option value="">20개</option>
+					<option value="">50개</option>
+					<option value="">100개</option>
+				</select>
+				<button type="button" class="btn_st bt01"><span>대출신청 등록</span></button>
+			</div> 
+		</div>
+
+		<!-- contents -->
+		<div class="contents">
+			<!-- lst_table01 -->
+			<div class="lst_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>대출업무 리스트</caption>
+	                <colgroup>
+		                <col style="width:7%;">
+		                <col style="width:10%;">
+		                <col style="width:10%;">
+		                <col style="width:10%;">
+		                <col style="width:10%;">
+		                <col style="width:10%;">
+		                <col style="width:10%;">
+		                <col style="width:10%;">
+		                <col style="width:auto;">
+	                </colgroup>
+	                <thead>
+						<tr>
+							<th class="num">No</th>
+							<th>관리 코드</th>
+							<th>고객명</th>
+							<th>신청금액</th>
+							<th>진행 상태</th>
+							<th>상담ID</th>
+							<th>신청일</th>
+							<th>마지막 수정일</th>
+							<th>최근 메모</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>48</td>
+							<td><a href="#">A123456</a></td>
+							<td>홍○동</td>
+							<td>3,000만원</td>
+							<td>상담 신청</td>
+							<td>consult1</td>
+							<td>2016.11.20</td>
+							<td>-</td>
+							<td>빠른 심사 요청</td>
+						</tr>
+						<tr class="bg">
+							<td>47</td>
+							<td><a href="#">A123456</a></td>
+							<td>홍○동</td>
+							<td>3,000만원</td>
+							<td>상담 신청</td>
+							<td>consult1</td>
+							<td>2016.11.20</td>
+							<td>2016.11.20</td>
+							<td>신용 한도 초과</td>
+						</tr>
+						<tr>
+							<td>46</td>
+							<td><a href="#">A123456</a></td>
+							<td>홍○동</td>
+							<td>3,000만원</td>
+							<td>상담 신청</td>
+							<td>consult1</td>
+							<td>2016.11.20</td>
+							<td>2016.11.20</td>
+							<td>신분증 재촬영 필요</td>
+						</tr>
+						<tr class="bg">
+							<td>45</td>
+							<td><a href="#">A123456</a></td>
+							<td>홍○동</td>
+							<td>3,000만원</td>
+							<td>상담 신청</td>
+							<td>consult1</td>
+							<td>2016.11.20</td>
+							<td>2016.11.20</td>
+							<td>-</td>
+						</tr>
+						<tr>
+							<td>44</td>
+							<td><a href="#">A123456</a></td>
+							<td>홍○동</td>
+							<td>3,000만원</td>
+							<td>상담 신청</td>
+							<td>consult1</td>
+							<td>2016.11.20</td>
+							<td>2016.11.20</td>
+							<td>신분증 재촬영 필요</td>
+						</tr>
+						<tr class="bg">
+							<td>43</td>
+							<td><a href="#">A123456</a></td>
+							<td>홍○동</td>
+							<td>3,000만원</td>
+							<td>상담 신청</td>
+							<td>consult1</td>
+							<td>2016.11.20</td>
+							<td>2016.11.20</td>
+							<td>-</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //lst_table01 -->
+
+			<!-- paging -->
+			<div class="paging">
+				<a href="#" class="first"><img src="../../img/common/btn_paging_first.gif" alt="처음" /></a>
+				<a href="#" class="prev"><img src="../../img/common/btn_paging_prev.gif" alt="이전" /></a>
+				<a href="#" class="on">1</a>
+				<a href="#">2</a>
+				<a href="#">3</a>
+				<a href="#">4</a>
+				<a href="#">5</a>
+				<a href="#">6</a>
+				<a href="#" class="next"><img src="../../img/common/btn_paging_next.gif" alt="다음" /></a>
+				<a href="#" class="last"><img src="../../img/common/btn_paging_last.gif" alt="마지막" /></a>
+			</div>
+			<!-- //paging -->
+		</div>
+
+	</div>
+	<!-- //container -->
+
+</div>
+
+<!-- layerpopup 대출신청 상세정보 -->
+<div class="layerpop_wrap" style="display:block;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:600px; top:100px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">대출신청 상세정보</div>
+			
+			<div class="clearbox">
+				<div class="detail_code">
+					<!-- wrt_table01 -->
+					<div class="wrt_table01">
+						<table border="0" cellspacing="0" cellpadding="0">
+			                <caption>관리코드</caption>
+			                <colgroup>
+				                <col style="width:38%;">
+				                <col style="width:62%;">
+			                </colgroup>
+							<tbody>
+								<tr>
+									<th>관리코드</th>
+									<td>A123454</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<!-- //wrt_table01 -->
+				</div>
+				<div class="loan_state">
+					<button type="button" class="btn_st bt02_1"><span>대출 진행 중지</span></button>
+					<!-- <button type="button" class="btn_st bt02"><span>대출 진행 완료</span></button> -->
+				</div>
+			</div>
+
+			<div class="layer_stit">기본정보</div>
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>대출신청 기본정보</caption>
+	                <colgroup>
+		                <col style="width:19%;">
+		                <col style="width:29%;">
+		                <col style="width:18%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>고객명</th>
+							<td>홍길동</td>
+							<th>연락처</th>
+							<td>010-2345-6789</td>
+						</tr>
+						<tr>
+							<th>신청일</th>
+							<td>2016.11.20 15:20:15</td>
+							<th>마지막 수정일</th>
+							<td>2016.11.20 15:25:30</td>
+						</tr>
+						<tr>
+							<th>대출신청금액</th>
+							<td>
+								<div class="clearbox">
+									<div class="fl_box">500만원</div>
+									<div class="fr_box"><button type="button" class="btn_st bt02"><span>금액변경</span></button></div>
+								</div>
+							</td>
+							<th>상품정보</th>
+							<td>
+								<div class="clearbox">
+									<div class="fl_box">개인신용대출</div>
+									<div class="fr_box"><button type="button" class="btn_st bt02"><span>상품선택</span></button></div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<div class="layer_stit">진행상태 정보</div>
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>대출신청 진행상태 정보</caption>
+	                <colgroup>
+		                <col style="width:19%;">
+		                <col style="width:38%;">
+		                <col style="width:15%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>현재 상태</th>
+							<td colspan="3">상담 신청</td>
+						</tr>
+						<tr>
+							<th rowspan="4">세부절차 별<br>진행상태</th>
+							<td>
+								<div class="clearbox">
+									<div class="fl_box">전화 상담</div>
+									<div class="fr_box"><button type="button" class="btn_st bt02"><span>상태변경</span></button></div>
+								</div>
+							</td>
+							<td class="ac">진행완료</td>
+							<td>2016.11.20 15:15:30</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="clearbox">
+									<div class="fl_box">전자 서명</div>
+									<div class="fr_box">
+										<button type="button" class="btn_st bt02"><span>조회</span></button>
+										<button type="button" class="btn_st bt02"><span>정보등록</span></button>
+									</div>
+								</div>
+							</td>
+							<td class="ac">미진행</td>
+							<td>-</td>
+						</tr>
+						<tr>
+							<td>계좌 인증</td>
+							<td class="ac">미진행</td>
+							<td>-</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="clearbox">
+									<div class="fl_box">서류 제출</div>
+									<div class="fr_box"><button type="button" class="btn_st bt02"><span>상태변경</span></button></div>
+								</div>
+							</td>
+							<td class="ac">미진행</td>
+							<td>-</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //wrt_table01 -->
+			<p class="stxt01 ar"><span class="pnt_clr">※ 고객이 사진 촬영 후 등록한 대출 관련 서류는 본 어드민에서 제공되지 않습니다.</span></p>
+
+			<div class="layer_stit">상담이력 메모</div>
+			<!-- wrt_table01 -->
+			<div class="wrt_table01 memo_scroll">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>대출신청 상담이력 메모</caption>
+	                <colgroup>
+		                <col style="width:8%;">
+		                <col style="width:auto;">
+		                <col style="width:30%;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>15</th>
+							<td>200만원에서 500만원으로 신청금액 변경</td>
+							<td class="ac">2016.11.20 15:30:20</td>
+						</tr>
+						<tr>
+							<th>14</th>
+							<td>제출서류 확인 후 반려 처리</td>
+							<td class="ac">2016.11.20 15:30:20</td>
+						</tr>
+						<tr>
+							<th>13</th>
+							<td>유선 통화로 서류제출 안내</td>
+							<td class="ac">2016.11.20 15:30:20</td>
+						</tr>
+						<tr>
+							<th>12</th>
+							<td>200만원에서 500만원으로 신청금액 변경</td>
+							<td class="ac">2016.11.20 15:30:20</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<div class="clearbox memo_addbox">
+				<input type="text" name="" placeholder="상담 관리에 필요한 메모 이력을 등록할 수 있습니다.(최대 30자)">
+				<button type="button" class="btn_st bt02"><span>메모추가</span></button>
+			</div>
+
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>수정</span></button>
+				<button type="button" class="btn_st bt03"><span>취소</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 대출신청 상세정보 -->
+
+<!-- layerpopup 금융상품 설정 -->
+<div class="layerpop_wrap" style="display:none;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:360px; top:200px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">금융상품 설정</div>
+			
+			<p>고객과 진행 협의된 금융상품을 설정합니다.</p>
+			<p style="margin-top:15px;"><input type="checkbox" id="tel01" name="tel01"> 본건으로 고객과 상담 전화 통화 진행</p>
+   			<p style="margin-left:20px;">(비대면 거래 진행시 통화 진행 필수)</p>
+
+			<div class="layer_stit">상품 선택</div>
+			<!-- wrt_table01 -->
+			<div class="wrt_table01 prod_scroll">
+				<form>
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>금융상품 상품 선택</caption>
+	                <colgroup>
+		                <col style="width:19%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th><input type="radio" id="prod01_1" name="prod01"></th>
+							<td>개인신용대출 (loan1)</td>
+						</tr>
+						<tr>
+							<th><input type="radio" id="prod01_2" name="prod01"></th>
+							<td>가계신용대출 (loan2)</td>
+						</tr>
+						<tr>
+							<th><input type="radio" id="prod01_3" name="prod01"></th>
+							<td>담보신용대출 (loan3)</td>
+						</tr>
+						<tr>
+							<th><input type="radio" id="prod01_4" name="prod01"></th>
+							<td>무지개신용대출 (loan4)</td>
+						</tr>
+						<tr>
+							<th><input type="radio" id="prod01_5" name="prod01"></th>
+							<td>저금리신용대출 (loan5)</td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<p class="stxt01">※상품이 등록되어야, 고객이 모바일 웹에 접속한 후 서류 제출 등의 필요한 절차를 진행할 수 있습니다.</p>
+
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>확인</span></button>
+				<button type="button" class="btn_st bt03"><span>취소</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 금융상품 설정 -->
+
+<!-- layerpopup 대출신청 금액 관리 -->
+<div class="layerpop_wrap" style="display:none;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:360px; top:220px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">대출신청 금액 관리</div>
+			
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>대출신청 금액</caption>
+	                <colgroup>
+		                <col style="width:40%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>대출신청금액</th>
+							<td><input type="text" name="" value="300" style="width:120px;"> 만원</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<div class="layer_stit">상담이력 메모</div>
+			<div><textarea name="" id="" style="width:93%; height:50px;" placeholder="상담 관리에 필요한 메모 이력을 등록할 수 있습니다.(최대 30자)"></textarea></div>
+
+			<p class="stxt01">※대출신청금액 변경은 상담을 위한 관리 자료입니다.<br>
+			<span class="pnt_clr">대출시스템과 연계되거나, 실제 대출 금액에 영향을 미치지 않습니다.</span></p>
+
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>확인</span></button>
+				<button type="button" class="btn_st bt03"><span>취소</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 대출신청 금액 관리 -->
+
+
+<!-- layerpopup 전화상담 관리 -->
+<div class="layerpop_wrap" style="display:none;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:360px; top:220px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">전화상담 관리</div>
+			
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>대출상담통화 진행상태</caption>
+	                <colgroup>
+		                <col style="width:40%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>대출상담통화</th>
+							<td>
+								<select name="" id=""  style="width:153px;">
+									<option value="">미진행</option>
+									<option value="">진행 완료</option>
+								</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<div class="layer_stit">상담이력 메모</div>
+			<div><textarea name="" id="" style="width:93%; height:50px;" placeholder="상담 관리에 필요한 메모 이력을 등록할 수 있습니다.(최대 30자)"></textarea></div>
+
+			<p class="stxt01">※전화상담은 비대면 대출 필수 진행 항목이며, 상담직원이 상태를 업데이트 할 수 있습니다.</p>
+
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>확인</span></button>
+				<button type="button" class="btn_st bt03"><span>취소</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 전화상담 관리 -->
+
+
+<!-- layerpopup 서류 제출 상태 관리 -->
+<div class="layerpop_wrap" style="display:none;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:360px; top:220px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">서류 제출 상태 관리</div>
+			
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>서류 진행상태</caption>
+	                <colgroup>
+		                <col style="width:40%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>진행상태</th>
+							<td>
+								<select name="" id=""  style="width:153px;">
+									<option value="">서류심사</option>
+									<option value="">서류반려</option>
+									<option value="">진행완료</option>
+								</select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //wrt_table01 -->
+			
+			<div class="layer_stit">재등록 필요 서류</div>
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<form>
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>재등록 필요 서류</caption>
+	                <colgroup>
+		                <col style="width:19%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th><input type="checkbox" id="doc01_1" name="doc01"></th>
+							<td>신분증(앞)</td>
+						</tr>
+						<tr>
+							<th><input type="checkbox" id="doc01_2" name="doc01"></th>
+							<td>신분증(뒤)</td>
+						</tr>
+						<tr>
+							<th><input type="checkbox" id="doc01_3" name="doc01"></th>
+							<td>주민등록등본</td>
+						</tr>
+						<tr>
+							<th><input type="checkbox" id="doc01_4" name="doc01"></th>
+							<td>집문서</td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<div class="layer_stit">상담이력 메모</div>
+			<div><textarea name="" id="" style="width:93%; height:50px;" placeholder="상담 관리에 필요한 메모 이력을 등록할 수 있습니다.(최대 30자)"></textarea></div>
+
+			<p class="stxt01">※제출된 서류 문제로 다시 제출해야 할 경우, 상태 변경 및 문서 선택 후 등록하세요.</p>
+
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>확인</span></button>
+				<button type="button" class="btn_st bt03"><span>취소</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 서류 제출 상태 관리 -->
+
+
+<!-- layerpopup 대출신청 등록 -->
+<div class="layerpop_wrap" style="display:none;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:600px; top:270px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">대출신청 등록</div>
+			
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>대출신청 등록</caption>
+	                <colgroup>
+		                <col style="width:19%;">
+		                <col style="width:29%;">
+		                <col style="width:18%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>고객명</th>
+							<td><input type="text" name="" style="width:100%;"></td>
+							<th>연락처</th>
+							<td><input type="text" name="" style="width:100%;"></td>
+						</tr>
+						<tr>
+							<th>대출신청금액</th>
+							<td><input type="text" name="" style="width:100%;"></td>
+							<th>상품정보</th>
+							<td>
+								<div class="clearbox">
+									<div class="fl_box"></div>
+									<div class="fr_box"><button type="button" class="btn_st bt02"><span>상품선택</span></button></div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th>전화상담</th>
+							<td colspan="3">
+								<input type="checkbox" id="phone_check" name="phone_check01">
+								<label for="phone_check">본 상품과 관련해 고객과 전화상담을 진행했습니다.</label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<div class="layer_stit">상담이력 메모</div>
+			<div><textarea name="" id="" style="width:96%; height:50px;" placeholder="상담 관리에 필요한 메모 이력을 등록할 수 있습니다.(최대 30자)"></textarea></div>
+
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>확인</span></button>
+				<button type="button" class="btn_st bt03"><span>취소</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 대출신청 등록 -->
+
+<!-- layerpopup 전자서명 정보 수정 -->
+<div class="layerpop_wrap" style="display:block;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:600px; top:50px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">전자서명 정보 수정</div>
+			
+			<div class="layer_stit">고객정보</div>
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>고객정보</caption>
+	                <colgroup>
+		                <col style="width:20%;">
+		                <col style="width:30%;">
+		                <col style="width:20%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>고객명</th>
+							<td><input type="text" name="" style="width:120px;" value="홍길동"></td>
+							<th>연락처</th>
+							<td><input type="text" name="" style="width:145px;" value="010-2345-6789"></td>
+						</tr>
+						<tr>
+							<th>주민등록번호</th>
+							<td colspan="3"><input type="text" name="" style="width:120px;"> - *******</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<p class="stxt02">※ 고객이 모바일에서 확인하는 전자서명 계약 정보입니다. 정확한 정보를 입력하세요.</p>
+
+			<div class="layer_stit" style="padding-top:0;">대출거래정보</div>
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>대출거래정보</caption>
+	                <colgroup>
+		                <col style="width:20%;">
+		                <col style="width:30%;">
+		                <col style="width:20%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>상품명</th>
+							<td colspan="3">
+								<div class="clearbox">
+									<div class="fl_box">모바일대출상품 1</div>
+									<div class="fr_box"><button type="button" class="btn_st bt02"><span>상품선택</span></button></div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th>대출금액</th>
+							<td colspan="3"><input type="text" name="" style="width:145px;" value="5,000,000"> 원</td>
+						</tr>
+						<tr>
+							<th>거래 은행명</th>
+							<td><input type="text" name="" style="width:145px;"></td>
+							<th>계좌번호</th>
+							<td><input type="text" name="" style="width:145px;"></td>
+						</tr>
+						<tr>
+							<th>여신개시일</th>
+							<td colspan="3">
+								<input type="text" name="" class="datepicker" style="width:145px;" placeholder="날짜를 선택하세요.">
+								<input type="text" name="" style="width:265px;" placeholder="간단히 날짜 메모를 입력할 수 있습니다.">
+							</td>
+						</tr>
+						<tr>
+							<th>여신기간만료일</th>
+							<td colspan="3">
+								<input type="text" name="" class="datepicker" style="width:145px;" placeholder="날짜를 선택하세요.">
+								<input type="text" name="" style="width:265px;" placeholder="간단히 날짜 메모를 입력할 수 있습니다.">
+							</td>
+						</tr>
+						<tr>
+							<th>이자율</th>
+							<td colspan="3">
+								<input type="text" name="" style="width:145px;" placeholder="ex)고정금리, 변동금리 등">
+								<input type="text" name="" style="width:265px;" placeholder="이자율을 입력하세요. ex)연 10%">
+							</td>
+						</tr>
+						<tr>
+							<th>이자지급시기</th>
+							<td colspan="3">
+								<input type="text" name="" style="width:145px;" placeholder="ex) 매월 5일 등">
+							</td>
+						</tr>
+						<tr>
+							<th>상환방법</th>
+							<td><input type="text" name="" style="width:145px;"></td>
+							<th>중도상환/<br>취급수수료</th>
+							<td><input type="text" name="" style="width:145px;"></td>
+						</tr>
+						<tr>
+							<th>여신실행방법</th>
+							<td colspan="3">
+								<input type="text" name="" style="width:99%;" placeholder="ex) 매월 5일 등">
+							</td>
+						</tr>
+						<tr>
+							<th>메모</th>
+							<td colspan="3">
+								<textarea name="" id="" style="width:94%; height:50px;" placeholder="상담 관리에 필요한 메모 이력을 등록할 수 있습니다.(최대 30자)"></textarea>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //wrt_table01 -->
+			
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>수정</span></button>
+				<button type="button" class="btn_st bt03"><span>취소</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 전자서명 정보 수정 -->
+
+<!-- layerpopup 고객 신규등록 -->
+<div class="layerpop_wrap" style="display:none;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:600px; top:50px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">고객 신규등록</div>
+			
+			<div class="layer_stit">고객정보</div>
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>고객정보 </caption>
+	                <colgroup>
+		                <col style="width:20%;">
+		                <col style="width:30%;">
+		                <col style="width:20%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>고객명</th>
+							<td><input type="text" name="" style="width:120px;" value="홍길동"></td>
+							<th>연락처</th>
+							<td><input type="text" name="" style="width:145px;" value="010-2345-6789"></td>
+						</tr>
+						<tr>
+							<th>주민등록번호</th>
+							<td colspan="3"><input type="text" name="" style="width:120px;" value="711111"> - *******</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<p class="stxt02">※ 고객이 모바일에서 확인하는 전자서명 계약 정보입니다. 정확한 정보를 입력하세요.</p>
+
+			<div class="layer_stit" style="padding-top:0;">대출거래정보</div>
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>대출거래정보</caption>
+	                <colgroup>
+		                <col style="width:20%;">
+		                <col style="width:30%;">
+		                <col style="width:20%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>상품명</th>
+							<td colspan="3">
+								<div class="clearbox">
+									<div class="fl_box">모바일대출상품 1</div>
+									<div class="fr_box"><button type="button" class="btn_st bt02"><span>상품선택</span></button></div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th>대출금액</th>
+							<td colspan="3"><input type="text" name="" style="width:145px;" value="5,000,000"> 원</td>
+						</tr>
+						<tr>
+							<th>거래 은행명</th>
+							<td><input type="text" name="" style="width:145px;"></td>
+							<th>계좌번호</th>
+							<td><input type="text" name="" style="width:145px;"></td>
+						</tr>
+						<tr>
+							<th>여신개시일</th>
+							<td colspan="3">
+								<input type="text" name="" class="datepicker" style="width:145px;" placeholder="날짜를 선택하세요.">
+								<input type="text" name="" style="width:265px;" placeholder="간단히 날짜 메모를 입력할 수 있습니다.">
+							</td>
+						</tr>
+						<tr>
+							<th>여신기간만료일</th>
+							<td colspan="3">
+								<input type="text" name="" class="datepicker" style="width:145px;" placeholder="날짜를 선택하세요.">
+								<input type="text" name="" style="width:265px;" placeholder="간단히 날짜 메모를 입력할 수 있습니다.">
+							</td>
+						</tr>
+						<tr>
+							<th>이자율</th>
+							<td colspan="3">
+								<input type="text" name="" style="width:145px;" placeholder="ex)고정금리, 변동금리 등">
+								<input type="text" name="" style="width:265px;" placeholder="이자율을 입력하세요. ex)연 10%">
+							</td>
+						</tr>
+						<tr>
+							<th>이자지급시기</th>
+							<td colspan="3">
+								<input type="text" name="" style="width:145px;" placeholder="ex) 매월 5일 등">
+							</td>
+						</tr>
+						<tr>
+							<th>상환방법</th>
+							<td><input type="text" name="" style="width:145px;"></td>
+							<th>중도상환/<br>취급수수료</th>
+							<td><input type="text" name="" style="width:145px;"></td>
+						</tr>
+						<tr>
+							<th>여신실행방법</th>
+							<td colspan="3">
+								<input type="text" name="" style="width:99%;" placeholder="ex) 매월 5일 등">
+							</td>
+						</tr>
+						<tr>
+							<th>전화상담</th>
+							<td colspan="3">
+								<input type="checkbox" id="phone_check02" name="phone_check02">
+								<label for="phone_check02">본 상품과 관련해 고객과 전화상담을 진행했습니다.</label>
+							</td>
+						</tr>
+						<tr>
+							<th>메모</th>
+							<td colspan="3">
+								<textarea name="" id="" style="width:94%; height:50px;" placeholder="상담 관리에 필요한 메모 이력을 등록할 수 있습니다.(최대 30자)"></textarea>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //wrt_table01 -->
+			
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>등록</span></button>
+				<button type="button" class="btn_st bt03"><span>취소</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 고객 신규등록 -->
+
+</body>
+</html>

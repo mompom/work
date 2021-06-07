@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="statusMapper">
+    <select id="counselSelectList" resultType="net.ib.paperless.spring.domain.Status" parameterType="map">
+        SELECT 
+        	(
+        	SELECT COUNT(*) FROM tb_progress WHERE 
+	        	<choose>
+	        		<when test="submenu == 'counsel'">
+	        		admin_id is null
+	        		</when>
+	        		<when test="submenu == 'loan'">
+	        		admin_id is not null
+	        		</when>
+	        	</choose>
+        		<if test="sdate != null and sdate != '' and edate != null and edate != '' ">
+	        		AND modify_date <![CDATA[>=]]> #{sdate} 
+	        		AND modify_date <![CDATA[<=]]> #{edate}
+        		</if>
+        		<if test="progress_status != null and progress_status != ''">
+        		AND progress_status = #{progress_status}
+        		</if>
+	       		<if test="inquiry_credit_rate != null and inquiry_credit_rate != ''">
+	       		AND inquiry_credit_rate = #{inquiry_credit_rate}
+	       		</if>
+	       		<choose>
+	        		<when test="searchType == 'user_name'">
+	       			AND user_name like concat('%',#{searchText},'%')
+	        		</when>
+	        		<when test="searchType == 'admin_id'">
+	       			AND admin_id like concat('%',#{searchText},'%')
+	        		</when>
+	        	</choose>
+        	) AS totalCnt , tp.* , 
+        	(SELECT body FROM tb_progress_note WHERE progress_id=tp.id ORDER BY reg_date DESC LIMIT 1) AS body,
+        	(SELECT status_name FROM tb_status_code WHERE status=tp.progress_status) AS status_name
+        FROM tb_progress AS tp
+        WHERE
+        	<choose>
+        		<when test="submenu == 'counsel'">
+        		admin_id is null
+        		</when>
+        		<when test="submenu == 'loan'">
+        		admin_id is not null
+        		</when>
+        	</choose>
+        	<if test="sdate != null and sdate != '' and edate != null and edate != '' ">
+        	AND modify_date <![CDATA[>=]]> #{sdate} 
+        	AND modify_date <![CDATA[<=]]> #{edate}
+        	</if>
+       		<if test="progress_status != null and progress_status != ''">
+       		AND progress_status = #{progress_status}
+       		</if>
+       		<if test="inquiry_credit_rate != null and inquiry_credit_rate != ''">
+       		AND inquiry_credit_rate = #{inquiry_credit_rate}
+       		</if>
+       		<choose>
+        		<when test="searchType == 'user_name'">
+       			AND user_name like concat('%',#{searchText},'%')
+        		</when>
+        		<when test="searchType == 'admin_id'">
+       			AND admin_id like concat('%',#{searchText},'%')
+        		</when>
+        	</choose>
+        ORDER BY modify_date DESC
+        limit #{pagePoint} , #{pageSize}
+    </select>
+ 
+     <select id="counselSelectOne" resultType="net.ib.paperless.spring.domain.Status" parameterType="string">
+        SELECT 
+        	tp.*, tps.*,(SELECT name FROM tb_eform_info WHERE tp.eform_id=seq) AS name,
+        	(SELECT status_name FROM tb_status_code WHERE status=tp.progress_status) AS status_name
+        FROM tb_progress AS tp LEFT JOIN tb_progress_status tps ON tp.id=tps.progress_id
+        WHERE
+        	id=#{progressId}
+        LIMIT 1
+    </select>
+    
+    <update id="progressUpdate" parameterType="hashmap">
+    	update tb_progress
+    	<set>
+    		<if test="admin_id != null and admin_id !=''">admin_id=#{admin_id},</if>
+    		<if test="require_amount != null and require_amount > 0">require_amount=#{require_amount},</if>
+    		<if test="eform_id != null and eform_id !=''">eform_id=#{eform_id},</if>
+    		<if test="progress_status != null and progress_status !=''">progress_status=#{progress_status},</if>
+    		modify_date = now()
+    	</set>
+    	WHERE id=#{progressId}
+    </update> 
+    
+    
+    <update id="progressStatusUpdate" parameterType="hashmap">
+    	update tb_progress_status
+    	<set>
+    		<if test="call_yn != null">call_yn=#{call_yn},call_chk_date=now()</if>
+    		<if test="eform_yn != null">eform_yn=#{eform_yn},eform_complete_date=now()</if>
+    		<if test="attach_yn != null">attach_yn=#{attach_yn},attach_complete_date=now()</if>
+    		<if test="account_transfer_yn != null">account_transfer_yn=#{account_transfer_yn},account_transfer_date=now()</if>
+    		<if test="account_verify_yn != null">account_verify_yn=#{account_verify_yn},account_vefiry_date=now()</if>
+    		<if test="identity_chk_yn != null">identity_chk_yn=#{identity_chk_yn},identity_chk_date=now()</if>
+    	</set>
+    	WHERE progress_id=#{progressId}
+    </update> 
+    
+     <select id="statusCodeSelectList" resultType="net.ib.paperless.spring.domain.Status">
+        SELECT 
+        	status AS progress_status,
+        	status_name
+        FROM tb_status_code
+        ORDER BY status ASC
+    </select>
+    
+     <select id="progressNoteSelectList" resultType="net.ib.paperless.spring.domain.Status" parameterType="string">
+        SELECT 
+        	(SELECT COUNT(*) FROM tb_progress_note WHERE progress_id=#{progressId}) AS totalCnt,
+        	tpn.*
+        FROM 
+        	tb_progress_note AS tpn
+        WHERE
+        	tpn.progress_id=#{progressId}
+        ORDER BY tpn.reg_date DESC
+    </select>
+    
+    <insert id="progressNoteInsert" parameterType="hashmap">
+    	INSERT INTO tb_progress_note(progress_id , admin_id , body , reg_date) 
+    	VALUES(#{progressId} , #{admin_id} , #{body} , now())
+    </insert>
+    
+    <select id="eformInfoSelectList" resultType="net.ib.paperless.spring.domain.EformInfo" parameterType="string">
+    	SELECT * FROM tb_eform_info WHERE loan_id=#{loan_id}
+    </select>
+    
+    <select id="eformAttachSelectList" resultType="net.ib.paperless.spring.domain.EformAttach" parameterType="string">
+    
+		SELECT 
+			tea.* , tp.progress_status 
+		FROM 
+			tb_eform_attach AS tea LEFT JOIN tb_progress AS tp on tea.eform_id=tp.eform_id 
+		WHERE 
+			tp.id=#{progressId}
+    	<!-- SELECT 
+			tea.*,
+			tap.seq AS tap_seq,
+			tp.progress_status
+		FROM 
+			tb_progress AS tp 
+			LEFT JOIN tb_eform_info AS tei 
+			ON tp.eform_id = tei.seq 
+			LEFT JOIN tb_eform_attach AS tea 
+			ON tei.seq=tea.eform_id 
+			LEFT JOIN tb_attach_progress AS tap
+			ON tea.seq = tap.eform_attach_id
+		WHERE tp.id=#{progressId} AND tap.progress_id=#{progressId} -->
+    </select>
+    
+    <select id="progressSelectOne" resultType="net.ib.paperless.spring.domain.Progress" parameterType="string">
+		SELECT * FROM tb_progress WHERE id=#{progressId}
+    </select>
+    
+    
+        <!-- /* attachProgressUpdate */ -->
+    <insert id="attachProgressInsert" parameterType="hashmap" useGeneratedKeys="true" keyProperty="seq">		
+	
+		INSERT INTO tb_attach_progress (
+       		progress_id,
+       		eform_attach_id,
+       		admin_confirm_yn
+		) VALUES (
+       		#{progress_id},
+       		#{eform_attach_id},
+       		#{admin_confirm_yn}
+		)
+		ON DUPLICATE KEY UPDATE 
+			progress_id=#{progress_id},
+			eform_attach_id=#{eform_attach_id},
+			admin_confirm_yn=#{admin_confirm_yn}
+    </insert>
+    
+    <!-- <update id="attachProgressUpdate" parameterType="hashmap">
+    	UPDATE tb_attach_progress
+    	<set>
+    		<if test="progress_id != null and progress_id > 0">progress_id=#{progressId},</if>
+    		<if test="eform_attach_id != null and eform_attach_id > 0">eform_attach_id=#{eform_attach_id},</if>
+    	</set>
+    	WHERE seq=#{seq}
+    </update>  -->
+    
+     
+    <!-- /* select dual */ -->
+    <select id="loanInfoSelectOne" resultType="net.ib.paperless.spring.domain.LoanInfo" parameterType="string">
+        SELECT 
+        	id ,
+        	name ,
+        	tel_number ,
+        	call_center ,
+        	min_amount ,
+        	max_amount ,
+        	reg_date ,
+        	ftp_type ,
+        	ftp_ip ,
+        	ftp_pwd ,
+        	ftp_base_pass ,
+        	ftp_id,
+        	ftp_port
+        FROM 
+        	tb_loan_info
+        WHERE
+        	id=#{loanId} 
+        ORDER BY reg_date DESC
+    </select>
+    
+    <insert id="insertProgressStatus" parameterType="net.ib.paperless.spring.domain.ProgressStatus">
+    	INSERT INTO tb_progress_status(
+    		seq,
+			progress_id,
+			call_yn,
+			call_chk_date,
+			eform_yn,
+			eform_complete_date,
+			attach_yn,
+			attach_complete_date,
+			account_transfer_yn,
+			account_transfer_date,
+			account_verify_yn,
+			account_vefiry_date,
+			identity_chk_yn,
+			identity_chk_date	
+		) VALUES (
+			#{seq},
+			#{progress_id},
+			#{call_yn},
+			#{call_chk_date},
+			#{eform_yn},
+			#{eform_complete_date},
+			#{attach_yn},
+			#{attach_complete_date},
+			#{account_transfer_yn},
+			#{account_transfer_date},
+			#{account_verify_yn},
+			#{account_vefiry_date},
+			#{identity_chk_yn},
+			#{identity_chk_date}
+		)
+    </insert>
+    
+    
+    <!-- /* select dual */ -->
+    <insert id="progressInsert" parameterType="net.ib.paperless.spring.domain.Progress" useGeneratedKeys="true" keyProperty="seq">
+   
+	INSERT INTO tb_progress (
+       		id,
+       		loan_id,
+       		eform_id,
+       		user_name,
+       		tel_number,
+       		require_amount,
+       		admin_id,
+       		request_time,
+       		call_start_time,
+       		call_end_time,
+       		reg_date,
+       		modify_date,
+       		progress_status,
+       		user_key
+	) VALUES (
+        	CONCAT(#{loan_id} , (select * from (select case count(*) when 0 then 1 else max(seq)+1 end from tb_progress) AS A)), 
+       		#{loan_id},
+       		#{eform_id},
+       		#{user_name},
+       		#{tel_number},
+       		#{require_amount},
+       		#{admin_id},
+       		#{request_time},
+       		#{call_start_time},
+       		#{call_end_time},
+       		now(),
+       		now(),
+       		#{progress_status},
+       		#{user_key}
+	)
+	ON DUPLICATE KEY UPDATE 
+			id=#{id},
+			loan_id=#{loan_id},
+			eform_id=#{eform_id},
+			user_name=#{user_name},
+			tel_number=#{tel_number},
+			require_amount=#{require_amount},
+			admin_id=#{admin_id},
+			request_time=#{request_time},
+			call_start_time=#{call_start_time},
+			call_end_time=#{call_end_time},
+			reg_date=now(),
+			modify_date=now(),
+			progress_status=#{progress_status},
+			user_key=#{user_key}
+    </insert>
+    
+    <insert id="insertEformUserData" parameterType="map">
+    	INSERT INTO tb_eform_userdata(
+			progress_id,
+			admin_id,
+			eform_id,
+			start_date,
+			start_date_memo,
+			expire_date,
+			expire_date_memo,
+			interest_per,
+			interest_per_memo,
+			interest_day,
+			repayment_method,
+			repayment_commission,
+			loan_method,
+			note	
+		) VALUES (
+			#{progress_id},
+			#{admin_id},
+			#{eform_id},
+			#{start_date},
+			#{start_date_memo},
+			#{expire_date},
+			#{expire_date_memo},
+			#{interest_per},
+			#{interest_per_memo},
+			#{interest_day},
+			#{repayment_method},
+			#{repayment_commission},
+			#{loan_method},
+			#{note}
+		)
+    </insert>
+    
+    
+    <update id="editEformUserData" parameterType="hashmap">
+    	INSERT INTO tb_eform_userdata(
+			progress_id,
+			admin_id,
+			eform_id,
+			start_date,
+			start_date_memo,
+			expire_date,
+			expire_date_memo,
+			interest_per,
+			interest_per_memo,
+			interest_day,
+			repayment_method,
+			repayment_commission,
+			loan_method,
+			note	
+		) VALUES (
+			#{progress_id},
+			#{admin_id},
+			#{eform_id},
+			#{start_date},
+			#{start_date_memo},
+			#{expire_date},
+			#{expire_date_memo},
+			#{interest_per},
+			#{interest_per_memo},
+			#{interest_day},
+			#{repayment_method},
+			#{repayment_commission},
+			#{loan_method},
+			#{note}
+		)
+		ON DUPLICATE KEY UPDATE     
+			admin_id=#{admin_id},
+			eform_id=#{eform_id},
+			start_date=#{start_date},
+			start_date_memo=#{start_date_memo},
+			expire_date=#{expire_date},
+			expire_date_memo=#{expire_date_memo},
+			interest_per=#{interest_per},
+			interest_day=#{interest_day},
+			repayment_method=#{repayment_method},
+			repayment_commission=#{repayment_commission},
+			note=#{note}
+    </update> 
+        
+     <select id="eformUserDataSelectOne" resultType="net.ib.paperless.spring.domain.EformUserData">
+        SELECT 
+        	*,
+        	(SELECT progress_status FROM tb_progress WHERE id=#{progressId}) AS progress_status
+        FROM 
+        	tb_eform_userdata
+        WHERE 
+        	progress_id=#{progressId}
+    </select>
+    
+            
+     <select id="adminInfoSelectList" resultType="net.ib.paperless.spring.domain.AdminInfo" parameterType="map">
+        SELECT 
+        	(SELECT COUNT(*) FROM tb_admin_info) AS totalCnt,
+			tai.* ,
+			(SELECT level_name FROM tb_admin_level WHERE level = tai.level) AS level_name
+		FROM tb_admin_info AS tai
+		WHERE <!-- tai.use_yn=1  -->
+				<choose>
+					<when test="searchOption2 == 'id'">
+	       			 	id like concat('%',#{searchWord},'%')
+	        		</when>
+	        		<when test="searchOption2 == 'loan_id'">
+	       			 	loan_id like concat('%',#{searchWord},'%')
+	        		</when>
+	        		<when test="searchOption2 == 'name'">
+	       				name like concat('%',#{searchWord},'%')
+	        		</when>
+	        	</choose>
+        ORDER BY tai.use_yn desc, tai.reg_date DESC
+        limit #{pagePoint} , #{pageSize}
+    </select>
+    
+    <update id="adminInfoUpdate" parameterType="hashmap">
+    	update tb_admin_info
+    	<set>
+    		<if test="loan_id != null and loan_id !=''">loan_id=#{loan_id},</if>
+    		<if test="level != null and level !=''">level=#{level},</if>
+    		<if test="note != null and note !=''">note=#{note},</if>
+    		<if test="passwd != null and passwd !=''">passwd=#{passwd},</if>
+    		<if test="team != null and team !=''">team=#{team},</if>
+    		<if test="tel_number != null and tel_number !=''">tel_number=#{tel_number},</if>
+    		<if test="name != null and tel_number !=''">name=#{name},</if>
+    		<if test="use_yn != null">use_yn=#{use_yn},</if>
+    		modify_date = now()
+    	</set>
+    	WHERE seq=#{seq}
+    </update> 
+    
+    
+    <insert id="adminInfoInsert" parameterType="map">
+    	INSERT INTO tb_admin_info(
+			loan_id,
+			id,
+			level,
+			use_yn,
+			reg_date,
+			modify_date,
+			note,
+			passwd,
+			team,
+			tel_number,
+			name
+		) VALUES (
+			#{loan_id},
+			#{id},
+			#{level},
+			1,
+			now(),
+			now(),
+			#{note},
+			#{passwd},
+			#{team},
+			#{tel_number},
+			#{name}
+		)
+    </insert>
+    
+     <select id="adminInfoSelectCnt" parameterType="string" resultType="int">
+        SELECT 
+        	COUNT(*) AS cnt
+		FROM tb_admin_info
+        WHERE id=#{id}        
+    </select>
+</mapper>

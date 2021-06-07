@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="adminMngMapper">
+
+	<update id="newPasswordUpdate" parameterType="hashmap" useGeneratedKeys="true" keyProperty="seq">
+    	UPDATE 
+        	tb_admin_info 
+        SET 
+        	passwd = #{new_pw}
+        WHERE
+        	id = #{id}
+    </update>
+    
+	<select id="prodMngSelectList" resultType="net.ib.paperless.spring.domain.ProdMng" parameterType="map">
+		SELECT 
+		(
+        	SELECT COUNT(*) FROM tb_admin_info
+        ) AS totalCnt , 
+			tei.* ,
+			(SELECT id FROM tb_admin_info WHERE seq=tei.admin_id) AS admin_id,
+			tbi.name AS loan_name
+		FROM 
+			tb_eform_info AS tei LEFT JOIN tb_loan_info AS tbi ON tei.loan_id=tbi.id
+		WHERE
+		1=1
+      	<choose>
+       		<when test="searchType == 'loan'">
+      			AND tbi.name like concat('%',#{searchText},'%')
+       		</when>
+       		<when test="searchType == 'name'">
+      			AND tei.name like concat('%',#{searchText},'%')
+       		</when>
+       	</choose>
+		ORDER BY tei.reg_date DESC
+        limit #{pagePoint} , #{pageSize}
+	</select>
+	
+	<select id="prodMngSelectOne" resultType="net.ib.paperless.spring.domain.ProdMng" parameterType="int">
+		SELECT
+			tei.* ,
+			(SELECT name FROM tb_loan_info WHERE id=tei.loan_id) AS loan_name
+		FROM 
+			tb_eform_info AS tei 
+		WHERE
+			tei.seq = #{seq}
+	</select>
+	
+	<select id="eformAttachSelectList" resultType="net.ib.paperless.spring.domain.EformAttach" parameterType="int">
+		SELECT * FROM tb_eform_attach WHERE eform_id=#{seq}
+	</select>
+	
+    <insert id="eformAttachInsert" parameterType="hashmap">
+    	INSERT INTO tb_eform_attach(eform_id , id , name , eform_path , required_yn , reg_date ) 
+    	VALUES(
+    		#{eform_id} , 
+    		(select * from (select case count(*) when 0 then 1 else max(tea.id)+1 end from tb_eform_attach AS tea WHERE tea.eform_id=#{eform_id}) AS A) , 
+    		#{name} , #{eform_path} , 1 , now())
+    </insert>
+    
+    	
+    <update id="eformAttachUpdate" parameterType="hashmap">
+    	update tb_eform_attach
+    	<set>
+    		<if test="admin_id != null and admin_id !=''">admin_id=(SELECT tai.seq FROM tb_admin_info AS tai WHERE tai.id=#{admin_id}),</if>
+    		<if test="id != null and id !=''">(select * from (select case count(*) when 0 then 1 else max(tea.id)+1 end from tb_eform_attach AS tea WHERE tea.eform_id=#{eform_id}) AS A) ,</if>
+    		<if test="name != null and name !=''">name=#{name},</if>
+    	</set>
+    	WHERE seq=#{seq}
+    </update>
+    
+	<select id="loanInfoSelectList" resultType="net.ib.paperless.spring.domain.LoanInfo" parameterType="int">
+		SELECT seq, NAME, id, employee_name, employee_tel, employee_phone, employee_email, reg_date FROM tba_company_info
+	</select>
+	
+    <insert id="eformInfoInsert" parameterType="hashmap" useGeneratedKeys="true" keyProperty="seq">
+    	INSERT INTO tb_eform_info(loan_id,admin_id,id,name,eform_path,attach_use_yn,attach_type_count,reg_date,modify_date) 
+    	VALUES(#{loan_id},(SELECT tai.seq FROM tb_admin_info AS tai WHERE tai.id=#{admin_id}),'',#{name},#{eform_path},1,#{attach_type_count},now(),now())
+    </insert>
+        
+    <update id="eformInfoUpdate" parameterType="hashmap">
+    	update tb_eform_info
+    	<set>
+    		<if test="admin_id != null and admin_id !=''">admin_id=(SELECT tai.seq FROM tb_admin_info AS tai WHERE tai.id=#{admin_id}),</if>
+    		<if test="name != null and name !=''">name=#{name},</if>
+    		<if test="eform_path != null and eform_path !=''">eform_path=#{eform_path},</if>
+    		<if test="attach_type_count != null and attach_type_count > 0">attach_type_count=#{attach_type_count},</if>
+    		modify_date = now()
+    	</set>
+    	WHERE seq=#{seq}
+    </update> 
+    
+    <delete id="eformInfoDelete" parameterType="int">
+    	DELETE FROM tb_eform_info WHERE seq=#{seq}
+    </delete>
+    <delete id="eformAttachDelete" parameterType="int">
+    	DELETE FROM tb_eform_attach WHERE eform_id=#{seq}
+    </delete>
+    
+    
+    <update id="companyUpdate" parameterType="hashmap" useGeneratedKeys="true" keyProperty="seq">
+    	UPDATE 
+        	tba_company_info 
+        SET 
+        	name = #{name},
+        	employee_name = #{employee_name},
+        	employee_tel = #{employee_tel},
+        	employee_phone = #{employee_phone},
+        	employee_email = #{employee_email}
+        WHERE 
+        	seq =  #{seq}
+    </update>
+    
+    <insert id="companyInsert" parameterType="hashmap">
+    	INSERT INTO tba_company_info(name, id, employee_name, employee_tel, employee_phone, employee_email, reg_date) 
+    	VALUES(#{name}, #{id}, #{employee_name}, #{employee_tel}, #{employee_phone}, #{employee_email}, NOW())
+    </insert>
+    
+    <delete id="companyDelete" parameterType="hashmap" >
+    	<!-- DELETE FROM tba_company_info WHERE seq IN (${check_list}) -->
+    </delete>
+    
+    <select id="userInfoSelectList" resultType="net.ib.paperless.spring.domain.AdminInfo" parameterType="int">
+		SELECT 
+		  seq,
+		  loan_id,
+		  id,
+		  LEVEL,
+		  use_yn,
+		  reg_date,
+		  modify_date,
+		  note,
+		  team,
+		  tel_number,
+		  name
+		FROM
+		  tb_admin_info 
+		WHERE 1=1 
+   			AND name like concat('%',#{searchWord},'%')
+		limit #{pagePoint} , #{pageSize}
+	</select>
+	
+	<insert id="userInsert" parameterType="hashmap">
+		INSERT INTO tb_admin_info (loan_id, id, LEVEL, use_yn, reg_date, modify_date, note, team, tel_number, name, passwd) 
+		VALUES(#{loan_id}, #{id}, #{level}, 1, NOW(), NOW(), #{note}, #{team}, #{tel_number}, #{name}, #{passwd})
+    </insert>
+    
+    <update id="userUpdate" parameterType="hashmap" useGeneratedKeys="true" keyProperty="seq">
+    	UPDATE 
+        	tb_admin_info 
+        SET 
+        	name = #{name},
+        	LEVEL = #{level},
+        	note = #{note},
+        	team = #{team},
+        	tel_number = #{tel_number},
+        	modify_date = NOW(),
+        	passwd = #{passwd}
+        WHERE 
+        	seq =  #{seq}
+        	id = #{id}
+    </update>
+    
+    <update id="userDelete" parameterType="hashmap" useGeneratedKeys="true" keyProperty="seq">
+    	UPDATE
+        	tb_admin_info
+        SET 
+        	use_yn = 0
+        WHERE 
+        	seq in (${check_list})
+    </update>
+</mapper>

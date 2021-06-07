@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>비대면 대출 신청 서비스</title>
+	<!--[if IE]>
+        <script src="../include/js/html5shiv.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="../../include/css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../../include/css/common.css">
+	<script type="text/javascript" src="../../include/js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="../../include/js/jquery-fakeform-0.5.min.js"></script>
+	<script type="text/javascript" src="../../include/js/jquery.placeholder.min.js"></script>
+	<script type="text/javascript" src="../../include/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../../include/js/common.js"></script>
+</head>
+<body>
+<div id="wrap">
+	<!-- header -->
+	<div id="header">
+		<div class="top_cont">
+			<h1><a href="#">ABC캐피탈 <span>비대면 대출 신청 서비스 어드민</span></a></h1>
+			<div class="top_util">
+				<span class="user">consult1 님이 로그인했습니다.</span>
+				<button type="button" class="btn_st bt01"><span>LOGOUT</span></button>
+			</div>
+			<div class="gnb">
+				<ul>
+					<li><a href="#">진행 현황</a></li>
+					<li class="on"><a href="#">통계</a></li>
+					<li><a href="#">사용자 관리</a></li>
+					<li><a href="#">운영 관리</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //header -->
+
+	<!-- container -->
+	<div id="container">
+
+		<!-- sub search -->
+		<div class="sub_topsearch">
+			<ul class="clearbox">
+				<li>
+					<select name="" id="" class="select01"  style="width:100px;">
+						<option value="">상담ID</option>
+						<option value="">기간 별</option>
+					</select>
+				</li>
+				<li>
+					<select name="" id="" class="select01" style="width:100px;">
+						<option value="">월 별</option>
+					</select>
+				</li>
+				<li>
+					<select name="" id="" class="select01" style="width:100px;">
+						<option value="">2016년</option>
+						<option value="">2015년</option>
+						<option value="">2014년</option>
+					</select>
+				</li>
+				<li>
+					<select name="" id="" class="select01" style="width:100px;">
+						<option value="">12월</option>
+						<option value="">11월</option>
+						<option value="">10월</option>
+					</select>
+				</li>
+				<li><button type="button" class="btn_st bt01"><span>검색</span></button></li>
+			</ul>
+		</div>
+
+		<!-- top btn -->
+		<div class="top_area clearbox">
+			<div class="rf_box">
+				<button type="button" class="btn_st bt01"><span>엑셀 파일 다운로드</span></button>
+			</div>
+		</div>
+
+		<!-- contents -->
+		<div class="contents">
+			<!-- lst_table01 -->
+			<div class="lst_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>통계 리스트</caption>
+	                <colgroup>
+		                <col style="width:auto;">
+		                <col style="width:12%;">
+		                <col style="width:12%;">
+		                <col style="width:12%;">
+		                <col style="width:12%;">
+		                <col style="width:12%;">
+		                <col style="width:12%;">
+		                <col style="width:12%;">
+	                </colgroup>
+	                <thead>
+						<tr>
+							<th rowspan="2" class="num">상담ID</th>
+							<th rowspan="2">합계</th>
+							<th colspan="2">담당 고객</th>
+							<th colspan="3">대출 처리</th>
+							<th rowspan="2">대출 불가</th>
+						</tr>
+						<tr>
+							<th>고객 신청</th>
+							<th>직접 등록</th>
+							<th>진행 시작</th>
+							<th>진행 완료</th>
+							<th>중지</th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<th>합계</th>
+							<td>31,307</td>
+							<td>19,049</td>
+							<td>11,046</td>
+							<td>1,212</td>
+							<td>13,503</td>
+							<td>64</td>
+							<td>464</td>
+						</tr>
+					</tfoot>
+					<tbody>
+						<tr>
+							<td>council</td>
+							<td>1,504</td>
+							<td>1,450</td>
+							<td>54</td>
+							<td>154</td>
+							<td>50</td>
+							<td>25</td>
+							<td>50</td>
+						</tr>
+						<tr class="bg">
+							<td>Voc111</td>
+							<td>1,845</td>
+							<td>1,200</td>
+							<td>645</td>
+							<td>541</td>
+							<td>254</td>
+							<td>50</td>
+							<td>34</td>
+						</tr>
+						<tr>
+							<td>best11</td>
+							<td>587</td>
+							<td>421</td>
+							<td>166</td>
+							<td>562</td>
+							<td>481</td>
+							<td>5</td>
+							<td>11</td>
+						</tr>
+						<tr class="bg">
+							<td>Voc111</td>
+							<td>1,845</td>
+							<td>1,200</td>
+							<td>645</td>
+							<td>541</td>
+							<td>254</td>
+							<td>50</td>
+							<td>34</td>
+						</tr>
+						<tr>
+							<td>best11</td>
+							<td>587</td>
+							<td>421</td>
+							<td>166</td>
+							<td>562</td>
+							<td>481</td>
+							<td>5</td>
+							<td>11</td>
+						</tr>
+						<tr class="bg">
+							<td>council</td>
+							<td>1,504</td>
+							<td>1,450</td>
+							<td>54</td>
+							<td>154</td>
+							<td>50</td>
+							<td>25</td>
+							<td>50</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //lst_table01 -->
+
+		</div>
+
+	</div>
+	<!-- //container -->
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>비대면 대출 신청 서비스</title>
+	<!--[if IE]>
+        <script src="../include/js/html5shiv.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="../include/css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../include/css/common.css">
+	<script type="text/javascript" src="../include/js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="../include/js/jquery-fakeform-0.5.min.js"></script>
+	<script type="text/javascript" src="../include/js/jquery.placeholder.min.js"></script>
+	<script type="text/javascript" src="../include/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../include/js/common.js"></script>
+</head>
+<body>
+<div id="login_wrap">
+	<!-- header -->
+	<div id="header">
+		<div class="top_cont">
+			<h1><a href="#">ABC캐피탈 <span>비대면 대출 신청 서비스 어드민</span></a></h1>
+			<div class="top_util">
+				<button type="button" class="btn_st bt01"><span>LOGIN</span></button>
+			</div>
+		</div>
+	</div>
+	<!-- //header -->
+
+	<!-- container -->
+	<div id="container">
+		<div class="login_box">
+			<h2>ABC캐피탈 어드민 서비스</h2>
+			<p>비대면 대출 신청 서비스 관리 어드민입니다.<br>
+			아이디/비밀번호를 입력 후 로그인 하세요.</p>
+			<ul>
+				<li class="id"><input type="text" name="" placeholder="아이디"></li>
+				<li class="pw"><input type="password" name="" placeholder="비밀번호"></li>
+			</ul>
+			<div class="login_btn">
+				<button type="button" class="btn_st bt03"><span>로그인</span></button>
+			</div>
+		</div>
+	</div>
+	<!-- //container -->
+
+</div>
+
+
+<!-- layerpopup 비밀번호 변경 -->
+<div class="layerpop_wrap" style="display:none;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:590px; top:180px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">비밀번호 변경</div>
+			
+			<p class="stxt02" style="margin:0 0 15px;">개인정보 보호를 위해 3개월 마다 비밀번호 변경이 필요합니다.<br>
+			지금 변경하지 않을 경우, ‘다음 로그인시 변경’을 선택하세요.</p>
+
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<form>
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>비밀번호 등록</caption>
+	                <colgroup>
+		                <col style="width:25%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>새 비밀번호 입력</th>
+							<td><input type="text" name="" style="width:100%;" ></td>
+						</tr>
+						<tr>
+							<th>새 비밀번호 확인</th>
+							<td><input type="text" name="" style="width:100%;" ></td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<p class="stxt02">※영문, 숫자, 특수문자를 조합해, 최소 8자 이상 18자리 이하로 등록하세요. </p>
+
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>비밀번호 변경</span></button>
+				<button type="button" class="btn_st bt03"><span>다음 로그인 시 변경</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 비밀번호 변경 -->
+
+<!-- layerpopup 비밀번호 등록 -->
+<div class="layerpop_wrap" style="display:none;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:590px; top:180px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">비밀번호 등록</div>
+			
+			<p class="stxt02" style="margin:0 0 15px;">초기화 된 비밀번호로 로그인 하셨습니다.<br>
+			새로운 비밀번호를 등록해야 서비스를 이용할 수 있습니다.</p>
+
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<form>
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>비밀번호 등록</caption>
+	                <colgroup>
+		                <col style="width:25%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>새 비밀번호 입력</th>
+							<td><input type="text" name="" style="width:100%;" ></td>
+						</tr>
+						<tr>
+							<th>새 비밀번호 확인</th>
+							<td><input type="text" name="" style="width:100%;" ></td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<p class="stxt02">※영문, 숫자, 특수문자를 조합해, 최소 8자 이상 18자리 이하로 등록하세요. </p>
+
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>비밀번호 변경</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 비밀번호 등록 -->
+
+</body>
+</html>

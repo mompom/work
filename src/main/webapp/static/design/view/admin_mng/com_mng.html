@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>비대면 대출 신청 서비스</title>
+	<!--[if IE]>
+        <script src="../include/js/html5shiv.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="../../include/css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../../include/css/common.css">
+	<script type="text/javascript" src="../../include/js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="../../include/js/jquery-fakeform-0.5.min.js"></script>
+	<script type="text/javascript" src="../../include/js/jquery.placeholder.min.js"></script>
+	<script type="text/javascript" src="../../include/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../../include/js/common.js"></script> 
+</head>
+<body>
+<div id="wrap">
+	<!-- header -->
+	<div id="header">
+		<div class="top_cont">
+			<h1><a href="#">ABC캐피탈 <span>비대면 대출 신청 서비스 어드민</span></a></h1>
+			<div class="top_util">
+				<span class="user">consult1 님이 로그인했습니다.</span>
+				<button type="button" class="btn_st bt01"><span>LOGOUT</span></button>
+			</div>
+			<div class="gnb">
+				<ul>
+					<li><a href="#">진행 현황</a></li>
+					<li><a href="#">통계</a></li>
+					<li><a href="#">사용자 관리</a></li>
+					<li class="on"><a href="#">운영 관리</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //header -->
+
+	<!-- container -->
+	<div id="container">
+		<!-- sub menu -->
+		<div class="sub_menu">
+			<ul>
+				<li class="first"><a href="#">공지사항</a></li>
+				<li class="on"><a href="#">회사 관리</a></li>
+				<li><a href="#">상품(문서) 관리</a></li>
+			</ul>
+		</div>
+		
+		<!-- sub search -->
+		<div class="sub_topsearch">
+			<ul class="clearbox">
+				<li class="input_search"><input type="text" name="" placeholder="회사명 또는 회사코드를 입력하세요"></li>
+				<li><button type="button" class="btn_st bt01"><span>검색</span></button></li>
+			</ul>
+		</div>
+
+		<!-- top btn -->
+		<div class="top_area clearbox">
+			<div class="lf_box">
+				<button type="button" class="btn_st bt01"><span>삭제</span></button>
+			</div>
+			<div class="rf_box">
+				<button type="button" class="btn_st bt01"><span>회사 등록</span></button>
+			</div> 
+		</div>
+
+		<!-- contents -->
+		<div class="contents">
+			<!-- lst_table01 -->
+			<div class="lst_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>회사관리 리스트</caption>
+	                <colgroup>
+		                <col style="width:6%;">
+		                <col style="width:35%;">
+		                <col style="width:auto;">
+		                <col style="width:12%;">
+		                <col style="width:12%;">
+	                </colgroup>
+	                <thead>
+						<tr>
+							<th class="num"><input type="checkbox" name="com_all"></th>
+							<th>회사명</th>
+							<th>회사코드</th>
+							<th>아이디</th>
+							<th>등록일</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="checkbox" name="com_01"></td>
+							<td class="al"><a href="#">ABC캐피탈</a></td>
+							<td class="al">ABCCAP</td>
+							<td>관리자</td>
+							<td>2016.11.20</td>
+						</tr>
+						<tr class="bg">
+							<td><input type="checkbox" name="com_02"></td>
+							<td class="al"><a href="#">DEF금융</a></td>
+							<td class="al">DEFFIN</td>
+							<td>고객남</td>
+							<td>2016.11.20</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" name="com_03"></td>
+							<td class="al"><a href="#">GHI캐피탈</a></td>
+							<td class="al">GHICAP</td>
+							<td>김관리</td>
+							<td>2016.11.20</td>
+						</tr>
+						<tr class="bg">
+							<td><input type="checkbox" name="com_04"></td>
+							<td class="al"><a href="#">ABC캐피탈</a></td>
+							<td class="al">ABCCAP</td>
+							<td>ADMIN</td>
+							<td>2016.11.20</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" name="com_05"></td>
+							<td class="al"><a href="#">DEF금융</a></td>
+							<td class="al">ABCCAP</td>
+							<td>고객남</td>
+							<td>2016.11.20</td>
+						</tr>
+						<tr class="bg">
+							<td><input type="checkbox" name="com_06"></td>
+							<td class="al"><a href="#">GHI캐피탈</a></td>
+							<td class="al">GHICAP</td>
+							<td>김관리</td>
+							<td>2016.11.20</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //lst_table01 -->
+
+			<!-- paging -->
+			<div class="paging">
+				<a href="#" class="first"><img src="../../img/common/btn_paging_first.gif" alt="처음" /></a>
+				<a href="#" class="prev"><img src="../../img/common/btn_paging_prev.gif" alt="이전" /></a>
+				<a href="#" class="on">1</a>
+				<a href="#">2</a>
+				<a href="#">3</a>
+				<a href="#">4</a>
+				<a href="#">5</a>
+				<a href="#">6</a>
+				<a href="#" class="next"><img src="../../img/common/btn_paging_next.gif" alt="다음" /></a>
+				<a href="#" class="last"><img src="../../img/common/btn_paging_last.gif" alt="마지막" /></a>
+			</div>
+			<!-- //paging -->
+		</div>
+
+	</div>
+	<!-- //container -->
+
+</div>
+
+
+<!-- layerpopup 회사 등록 -->
+<div class="layerpop_wrap" style="display:none;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:400px; top:200px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">회사 등록</div>
+			
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<form>
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>회사 등록</caption>
+	                <colgroup>
+		                <col style="width:25%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>회사코드</th>
+							<td>
+								<input type="text" name="" style="width:150px;" placeholder="회사코드를 입력하세요.">
+								<button type="button" class="btn_st bt01"><span>중복확인</span></button>
+							</td>
+						</tr>
+						<tr>
+							<th>회사명</th>
+							<td><input type="text" name="" style="width:100%;" placeholder="회사명을 입력하세요."></td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>등록</span></button>
+				<button type="button" class="btn_st bt03"><span>취소</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 회사 등록 -->
+
+<!-- layerpopup 회사 수정 -->
+<div class="layerpop_wrap" style="display:none;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:400px; top:200px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">회사 수정</div>
+			
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<form>
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>회사 등록</caption>
+	                <colgroup>
+		                <col style="width:25%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>회사코드</th>
+							<td>DEFCAP</td>
+						</tr>
+						<tr>
+							<th>회사명</th>
+							<td><input type="text" name="" style="width:100%;" value="DEF금융"></td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>수정</span></button>
+				<button type="button" class="btn_st bt03"><span>취소</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 회사 수정 -->
+
+</body>
+</html>

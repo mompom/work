@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="adminNoticeMapper">
+	
+	<select id="noticeSelectList" resultType="net.ib.paperless.spring.domain.NoticeInfo" parameterType="map">
+		SELECT 
+		(
+			SELECT COUNT(*) FROM tb_notice
+			<if test="(searchOption2 != null and searchOption2 != '' and searchWord != null and searchWord != '') or (searchOption1 != null and searchOption1 != '')">
+	       		WHERE 
+	       		<choose>
+	       			<when test="searchOption1 != null and searchOption1 != ''">
+			       		loan_id = #{searchOption1}
+				    </when>
+			 	</choose>
+			    <choose>
+	        		<when test="searchOption2 == 'title' and searchWord != null and searchWord != ''">
+		        		<if test="searchOption1 != null and searchOption1 != ''">
+		        		AND
+		        		</if>
+	       			 	title like concat('%',#{searchWord},'%')
+	        		</when>
+	        		<when test="searchOption2 == 'body' and searchWord != null and searchWord != ''">
+	        			<if test="searchOption1 != null and searchOption1 != ''">
+		        		AND
+		        		</if>
+	       				body like concat('%',#{searchWord},'%')
+	        		</when>
+	        	</choose>
+	      	</if>
+        ) AS totalCnt , 
+			A.seq, A.loan_id, A.admin_id, A.title, A.body, A.reg_date, A.modify_date, A.view_yn, B.name as name
+		FROM 
+			tb_notice A, tba_company_info B
+		WHERE
+			view_yn = 1
+			AND A.loan_id = B.id
+		<if test="(searchOption2 != null and searchOption2 != '' and searchWord != null and searchWord != '') or (searchOption1 != null and searchOption1 != '')">
+			AND
+       		<choose>
+       			<when test="searchOption1 != null and searchOption1 != ''">
+		       		loan_id = #{searchOption1}
+		      	</when>
+		     </choose>
+		     <choose>
+        		<when test="searchOption2 == 'title' and searchWord != null and searchWord != ''">
+	        		<if test="searchOption1 != null and searchOption1 != ''">
+	        		AND
+	        		</if>
+       			 	title like concat('%',#{searchWord},'%')
+        		</when>
+        		<when test="searchOption2 == 'body' and searchWord != null and searchWord != ''">
+        			<if test="searchOption1 != null and searchOption1 != ''">
+	        		AND
+	        		</if>
+       				body like concat('%',#{searchWord},'%')
+        		</when>
+        	</choose>
+      	</if>
+		ORDER BY reg_date DESC
+        limit #{pagePoint} , #{pageSize}
+	</select>
+	
+	<select id="noticeSelectOne" resultType="net.ib.paperless.spring.domain.NoticeInfo" parameterType="int">
+		SELECT 
+			seq, loan_id, admin_id, title, body, reg_date, modify_date, view_yn
+		FROM 
+			tb_notice
+		WHERE
+			seq = #{seq}
+	</select>
+	
+    <update id="noticeUpdate" parameterType="hashmap" useGeneratedKeys="true" keyProperty="seq">
+        UPDATE 
+        	tb_notice 
+        SET 
+        	title = #{title},
+        	body = #{body},
+        	modify_date = now() 
+        WHERE 
+        	seq =  #{seq}
+    </update>
+    
+    <insert id="noticeInsert" parameterType="hashmap">
+    	INSERT INTO tb_notice(loan_id , admin_id , title , body, reg_date, modify_date, view_yn) 
+    	VALUES(#{loan_id} , #{admin_id} , #{title} ,#{body}, now(), now(), '1')
+    </insert>
+    
+    <delete id="noticeDelete" parameterType="hashmap" >
+    	UPDATE
+        	tb_notice
+        SET 
+        	view_yn = 0
+        WHERE 
+        	seq in (${check_list})
+    </delete>
+    
+	
+	
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="userMapper">
+ 
+    <!-- /* select dual */ -->
+    <select id="findByIdIgnoreCase" resultType="net.ib.paperless.spring.domain.User" parameterType="string">
+		SELECT 
+			tai.* ,
+			(SELECT level_name FROM tb_admin_level WHERE level = tai.level) AS level_name
+		FROM 
+			tb_admin_info AS tai
+		WHERE
+        	id=#{id}
+        	AND use_yn = '1'
+    </select>
+ 	
+ 	<delete id="adminInfoDelete" parameterType="int">
+		DELETE FROM tb_admin_info WHERE seq=#{seq}
+ 	</delete>
+ 	
+ 	<!-- /* select dual */ -->
+    <select id="userLevelSelectOne" resultType="hashmap" parameterType="string">
+		SELECT 
+			*
+		FROM 
+			tb_admin_info
+		WHERE
+        	id=#{id}
+    </select>
+</mapper>

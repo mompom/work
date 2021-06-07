@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="authHistoryMngMapper">
+<select id="historySelect" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
+SELECT
+      *
+FROM tba_history
+WHERE
+   company_id = #{company_id}
+   AND DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+</select>
+
+<select id="historyPublicSelect" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
+SELECT
+	*
+FROM
+(
+SELECT 
+	seq,
+	(SELECT NAME FROM tba_company_info WHERE id = A.company_id) AS company_name,
+	company_id,
+	service_code,
+	account_holder_name,
+	account_holder_number,
+	account_bank_code,
+	account_bank_name,
+	account_ssn_number,
+	account_sex,
+	IFNULL(UPPER(jumin_realname_yn), '-') AS jumin_realname_yn,
+	IFNULL(UPPER(jumin_realname_date), '-') AS jumin_realname_date,
+	IFNULL(UPPER(inquiry_realname_yn), '-') AS inquiry_realname_yn,
+	IFNULL(UPPER(inquiry_realname_date), '-') AS inquiry_realname_date,
+	IFNULL(UPPER(inquiry_transfer_deposit_yn), '-') AS inquiry_transfer_deposit_yn,
+	IFNULL(UPPER(inquiry_transfer_deposit_date), '-') AS inquiry_transfer_deposit_date,
+	IFNULL(UPPER(authcode_confirm_yn), '-') AS authcode_confirm_yn,
+	IFNULL(UPPER(authcode_confirm_date), '-') AS authcode_confirm_date,
+	req_code,
+	replace_yn,
+	using_platform,
+	IF(using_platform = 'op',(
+		IFNULL(UPPER((SELECT rsp_message FROM tba_fail_info_public WHERE history_seq = A.seq)), '-')
+		
+		),(
+		IFNULL(UPPER((SELECT Rsms FROM tba_fail_info_nh WHERE history_seq = A.seq)), '-')
+		)
+	)  AS rsp_message,
+	IFNULL(UPPER((SELECT bank_rsp_message FROM tba_fail_info_public WHERE history_seq = A.seq)), '-') AS bank_rsp_message,
+	IFNULL(UPPER((SELECT bank_name FROM tba_fail_info_public WHERE history_seq = A.seq)), '-') AS bank_rsp_name
+FROM
+  tba_history_public A 
+WHERE
+	account_holder_name like concat('%', #{searchWord}, '%') and
+	<if test="company_id != '' and company_id != null">
+		company_id = #{company_id} and
+	</if>
+	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+UNION ALL 
+SELECT 
+	seq,
+	(SELECT NAME FROM tba_company_info WHERE id = A.company_id) AS company_name,
+	company_id,
+	service_code,
+	account_holder_name,
+	account_holder_number,
+	account_bank_code,
+	account_bank_name,
+	account_ssn_number,
+	account_sex,
+	NULL,
+	NULL,
+	IFNULL(UPPER(inquiry_realname_yn), '-') AS inquiry_realname_yn,
+	IFNULL(UPPER(inquiry_realname_date), '-') AS inquiry_realname_date,
+	IFNULL(UPPER(inquiry_transfer_deposit_yn), '-') AS inquiry_transfer_deposit_yn,
+	IFNULL(UPPER(inquiry_transfer_deposit_date), '-') AS inquiry_transfer_deposit_date,
+	IFNULL(UPPER(authcode_confirm_yn), '-') AS authcode_confirm_yn,
+	IFNULL(UPPER(authcode_confirm_date), '-') AS authcode_confirm_date,
+	req_code,
+	replace_yn,
+	'bs',
+	IFNULL(UPPER((SELECT rsp_message FROM tba_fail_info WHERE history_seq = A.seq)), '-') AS rsp_message,
+	IFNULL(UPPER((SELECT bank_rsp_message FROM tba_fail_info WHERE history_seq = A.seq)), '-') AS bank_rsp_message,
+	IFNULL(UPPER((SELECT bank_name FROM tba_fail_info WHERE history_seq = A.seq)), '-') AS bank_rsp_name
+FROM
+	tba_history A
+WHERE
+	account_holder_name like concat('%', #{searchWord}, '%') and
+	<if test="company_id != '' and company_id != null">
+		company_id = #{company_id} and
+	</if>
+	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+) AS History
+ORDER BY inquiry_realname_date DESC
+limit #{pagePoint} , #{pageSize}
+</select>
+
+<select id="historyPublicCountSelect" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
+SELECT 
+	(SELECT COUNT(*) FROM tba_history 
+	WHERE 
+	<if test="company_id != '' and company_id != null">
+	company_id = #{company_id} AND 
+	</if>
+	account_holder_name like concat('%', #{searchWord}, '%') and
+	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')) + (SELECT COUNT(*) FROM tba_history_public 
+	WHERE 
+	<if test="company_id != '' and company_id != null">
+	company_id = #{company_id} AND 
+	</if>
+	account_holder_name like concat('%', #{searchWord}, '%') and
+	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m'))AS totalCnt,
+	(SELECT COUNT(*) FROM tba_history 
+	WHERE 
+	<if test="company_id != '' and company_id != null">
+	company_id = #{company_id} AND 
+	</if> 
+	account_holder_name like concat('%', #{searchWord}, '%') and
+	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')) AS bsCnt,
+	(SELECT COUNT(*) FROM tba_history_public 
+	WHERE 
+	<if test="company_id != '' and company_id != null">
+	company_id = #{company_id} AND 
+	</if>
+	account_holder_name like concat('%', #{searchWord}, '%') and
+	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m') AND using_platform = 'op') AS opCnt,
+	(SELECT COUNT(*) FROM tba_history_public 
+	WHERE 
+	<if test="company_id != '' and company_id != null">
+	company_id = #{company_id} AND 
+	</if>
+	account_holder_name like concat('%', #{searchWord}, '%') and
+	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m') AND using_platform = 'nh') AS nhCnt
+FROM
+	DUAL
+</select>
+
+<select id="historyPublicTotalCountSelect" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
+SELECT
+	A.company_id,
+	(SELECT NAME FROM tba_company_info WHERE id = A.company_id) AS company_name,
+	A.service_type,
+	(SELECT service_name FROM tb_service_type_code WHERE service_type = A.service_type) AS service_name,
+	using_platform,
+	inquiry_realname_count,
+	inquiry_realname_count_y,
+	inquiry_realname_count_n,
+	inquiry_transfer_count,
+	inquiry_transfer_count_y,
+	inquiry_transfer_count_n
+FROM 
+	(SELECT company_id, service_code, service_type
+	FROM tba_domain_info
+	<if test="company_id != '' and company_id != null">
+	WHERE
+		company_id = #{company_id}
+	</if> 
+	GROUP BY company_id, service_code, service_type) A,
+	(
+	SELECT 
+		company_id,
+		service_code,
+		using_platform,
+		COUNT(inquiry_realname_yn) inquiry_realname_count,
+		IFNULL(SUM(inquiry_realname_yn = 'y'),0) AS inquiry_realname_count_y,
+		IFNULL(SUM(inquiry_realname_yn = 'n'),0) AS inquiry_realname_count_n,
+		COUNT(inquiry_transfer_deposit_yn) inquiry_transfer_count,
+		IFNULL(SUM(inquiry_transfer_deposit_yn = 'y'),0) AS inquiry_transfer_count_y,
+		IFNULL(SUM(inquiry_transfer_deposit_yn = 'n'),0) AS inquiry_transfer_count_n
+	FROM
+		tba_history_public
+	WHERE
+		<if test="company_id != '' and company_id != null">
+			company_id = #{company_id} and
+		</if>
+		DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	GROUP BY 
+		company_id, using_platform
+
+	UNION ALL
+	
+	SELECT 
+		company_id,
+		service_code,
+		'bs' AS using_platform,
+		COUNT(inquiry_realname_yn) inquiry_realname_count,
+		IFNULL(SUM(inquiry_realname_yn = 'y'),0) AS inquiry_realname_count_y,
+		IFNULL(SUM(inquiry_realname_yn = 'n'),0) AS inquiry_realname_count_n,
+		COUNT(inquiry_transfer_deposit_yn) inquiry_transfer_count,
+		IFNULL(SUM(inquiry_transfer_deposit_yn = 'y'),0) AS inquiry_transfer_count_y,
+		IFNULL(SUM(inquiry_transfer_deposit_yn = 'n'),0) AS inquiry_transfer_count_n
+	FROM
+		tba_history
+	WHERE
+		<if test="company_id != '' and company_id != null">
+			company_id = #{company_id} and
+		</if>
+		DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	GROUP BY 
+		company_id
+	) B
+	
+	WHERE 
+		A.company_id = B.company_id
+		AND A.service_code = B.service_code
+		
+</select>
+
+<select id="fileUploadSelect" resultType="net.ib.paperless.spring.domain.FileUploadInfo" parameterType="map">
+SELECT 
+   * 
+FROM 
+   tb_fileupload_domain_info A,
+   tb_fileupload_progress_log B
+WHERE 
+   A.comp_code = B.comp_code
+   AND company_id = #{company_id}
+   AND DATE_FORMAT(upload_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+</select>
+
+<select id="historyCountSelectList" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
+SELECT * FROM(
+		   
+	SELECT 
+	  1 AS customer_service_seq,
+	  COUNT(*) AS inquiry_total_count,
+	  SUM(inquiry_realname_yn = 'y') AS inquiry_count,
+	  'basic' AS using_platform 
+	FROM
+	  tba_history 
+	WHERE company_id = #{company_id}
+	  AND DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+
+	UNION ALL
+	SELECT 
+	   2,
+	   COUNT(*),
+	   SUM(inquiry_transfer_deposit_yn = 'y'),
+	   'basic'
+	   FROM tba_history
+	WHERE company_id = #{company_id}
+	   AND DATE_FORMAT(inquiry_transfer_deposit_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	UNION ALL
+	SELECT 
+	   3,
+	   COUNT(*), 
+	   SUM(inquiry_realname_yn = 'y'),
+	   'op'
+	   FROM tba_history_public
+	   WHERE using_platform = 'op'
+	   AND company_id = #{company_id}
+	   AND DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	UNION ALL
+	SELECT 
+	   4,
+	   COUNT(*),
+	   SUM(inquiry_transfer_deposit_yn = 'y'),
+	   'op'
+	   FROM tba_history_public
+	   WHERE using_platform = 'op'
+	   AND company_id = #{company_id}
+	   AND DATE_FORMAT(inquiry_transfer_deposit_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	UNION ALL
+	SELECT 
+	   5,
+	   COUNT(*),
+	   SUM(inquiry_realname_yn = 'y'),
+	   'nh'
+	   FROM tba_history_public
+	   WHERE using_platform = 'nh'
+	   AND company_id = #{company_id}
+	   AND DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	UNION ALL
+	SELECT 
+	   6,
+	   COUNT(*),
+	   SUM(inquiry_transfer_deposit_yn = 'y'),
+	   'nh'
+	   FROM tba_history_public
+	   WHERE using_platform = 'nh'
+	   AND company_id = #{company_id}
+	   
+	   AND DATE_FORMAT(inquiry_transfer_deposit_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	UNION ALL
+	SELECT 
+	   7,
+	   COUNT(*),
+	   SUM(upload_yn = 'y'),
+	   'file' 
+	FROM
+	   (SELECT 
+	      req_number_date, upload_yn
+	   FROM
+	      tb_fileupload_progress_log A,
+	      tb_fileupload_domain_info B 
+	   WHERE A.comp_code = B.comp_code 
+	      AND company_id = #{company_id}
+	      AND DATE_FORMAT(upload_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	   GROUP BY req_number_date) A 
+) A
+	
+	<!-- SELECT * FROM(
+	   
+	   SELECT
+	      1 AS customer_service_seq,COUNT(*) AS inquiry_count, 'basic' AS using_platform
+	      FROM tba_history
+	      WHERE company_id = #{company_id}
+	      AND DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	   UNION ALL
+	   SELECT 
+	      2,COUNT(*), 'basic'
+	      FROM tba_history
+	      WHERE company_id = #{company_id}
+	      AND DATE_FORMAT(inquiry_transfer_deposit_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	   UNION ALL
+	   SELECT 
+	      3,COUNT(*), 'op'
+	      FROM tba_history_public
+	      WHERE using_platform = 'op'
+	      AND company_id = #{company_id}
+	      AND DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	   UNION ALL
+	   SELECT 
+	      4,COUNT(*), 'op'
+	      FROM tba_history_public
+	      WHERE using_platform = 'op'
+	      AND company_id = #{company_id}
+	      AND DATE_FORMAT(inquiry_transfer_deposit_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	   UNION ALL
+	   SELECT 
+	      5,COUNT(*), 'nh'
+	      FROM tba_history_public
+	      WHERE using_platform = 'nh'
+	      AND company_id = #{company_id}
+	      AND DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	   UNION ALL
+	   SELECT 
+	      6,COUNT(*), 'nh'
+	      FROM tba_history_public
+	      WHERE using_platform = 'nh'
+	      AND company_id = #{company_id}
+	      AND DATE_FORMAT(inquiry_transfer_deposit_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	   UNION ALL
+	   SELECT 
+	      7,COUNT(*), 'file'
+	      FROM tb_fileupload_progress_log A, tb_fileupload_domain_info B
+	      WHERE company_id = #{company_id}
+	      AND A.comp_code = B.comp_code
+	      AND DATE_FORMAT(upload_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	) A -->
+	
+</select>
+
+	<select id="historySelectList" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
+	SELECT * FROM(
+	   SELECT
+	      1 AS customer_service_seq,
+	      (SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS service_name,
+	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS customer_service_name,
+	      A.seq, A.company_id, inquiry_realname_yn AS inquiry_yn, inquiry_realname_date AS inquiry_date, 'basic' AS using_platform
+	      FROM tba_history A  
+	      WHERE company_id = #{company_id}  
+	   UNION ALL
+	   SELECT 
+	      2,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS service_name,
+	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 2 AND D.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS customer_service_name,
+	      A.seq, A.company_id, inquiry_transfer_deposit_yn, inquiry_transfer_deposit_date AS inquiry_date, 'basic'
+	      FROM tba_history A 
+	      WHERE company_id = #{company_id}
+	   UNION ALL
+	   SELECT 
+	      3,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS service_name,
+	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS customer_service_name,
+	      A.seq, A.company_id, inquiry_realname_yn, inquiry_realname_date AS inquiry_date, 'op'
+	      FROM tba_history_public A
+	      WHERE using_platform = 'op'
+	      AND A.company_id = #{company_id}
+	   UNION ALL
+	   SELECT 
+	      4,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS service_name,
+	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 2 AND D.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS customer_service_name,
+	      A.seq, A.company_id, inquiry_transfer_deposit_yn, inquiry_transfer_deposit_date AS inquiry_date, 'op'
+	      FROM tba_history_public A
+	      WHERE using_platform = 'op'
+	   AND A.company_id = #{company_id}
+	   UNION ALL
+	   SELECT 
+	      5,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS service_name,
+	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS customer_service_name,
+	      A.seq, A.company_id, inquiry_realname_yn, inquiry_realname_date AS inquiry_date, 'nh'
+	      FROM tba_history_public A
+	      WHERE using_platform = 'nh'
+	      AND A.company_id = #{company_id}
+	   UNION ALL
+	   SELECT 
+	      6,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS service_name,
+	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 2 AND D.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id} )) AS customer_service_name,
+	      A.seq, A.company_id, inquiry_transfer_deposit_yn, inquiry_transfer_deposit_date AS inquiry_date, 'nh'
+	      FROM tba_history_public A
+	      WHERE using_platform = 'nh'
+	   	  AND A.company_id = #{company_id}
+	   UNION ALL
+	   SELECT 
+	      7, (SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = A.service_type  AND A.company_id = #{company_id}) AS service_name, 
+	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type = A.service_type  AND A.company_id = #{company_id}) AS customer_service_name,
+	      B.seq, company_id, upload_yn, upload_date AS inquiry_date, 'file'
+	      FROM tb_fileupload_domain_info A, tb_fileupload_progress_log B
+	      WHERE A.comp_code = B.comp_code
+	      AND company_id = #{company_id}
+	      GROUP BY req_number_date
+	) E
+	WHERE E.company_id = #{company_id}
+	      AND DATE_FORMAT(inquiry_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	ORDER BY inquiry_date DESC
+	LIMIT #{pagePoint} , #{pageSize}
+	<!-- SELECT * FROM(
+	   SELECT
+	      1 AS customer_service_seq,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS service_name,
+	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS customer_service_name,
+	      A.seq, A.company_id, inquiry_realname_yn AS inquiry_yn, inquiry_realname_date AS inquiry_date, 'basic' AS using_platform
+	      FROM tba_history A    
+	   UNION ALL
+	   SELECT 
+	      2,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS service_name,
+	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 2 AND D.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS customer_service_name,
+	      A.seq, A.company_id, inquiry_transfer_deposit_yn, inquiry_transfer_deposit_date, 'basic'
+	      FROM tba_history A
+	   
+	   UNION ALL
+	   SELECT 
+	      3,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS service_name,
+	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS customer_service_name,
+	      A.seq, A.company_id, inquiry_realname_yn, inquiry_realname_date, 'op'
+	      FROM tba_history_public A
+	      WHERE using_platform = 'op'
+	   UNION ALL
+	   SELECT 
+	      4,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS service_name,
+	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 2 AND D.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS customer_service_name,
+	      A.seq, A.company_id, inquiry_transfer_deposit_yn, inquiry_transfer_deposit_date, 'op'
+	      FROM tba_history_public A
+	      WHERE using_platform = 'op'
+	   
+	   UNION ALL
+	   SELECT 
+	      5,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS service_name,
+	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS customer_service_name,
+	      A.seq, A.company_id, inquiry_realname_yn, inquiry_realname_date, 'nh'
+	      FROM tba_history_public A
+	      WHERE using_platform = 'nh'
+	   UNION ALL
+	   SELECT 
+	      6,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS service_name,
+	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 2 AND D.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS customer_service_name,
+	      A.seq, A.company_id, inquiry_transfer_deposit_yn, inquiry_transfer_deposit_date, 'nh'
+	      FROM tba_history_public A
+	      WHERE using_platform = 'nh'
+	   
+	   UNION ALL
+	   SELECT 
+	      7, (SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = A.service_type) AS service_name, 
+	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type = A.service_type) AS customer_service_name,
+	      B.seq, company_id, upload_yn, upload_date, 'file'
+	      FROM tb_fileupload_domain_info A, tb_fileupload_progress_log B
+	      WHERE A.comp_code = B.comp_code
+	) E
+	WHERE company_id = #{company_id}
+	      AND DATE_FORMAT(inquiry_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+	ORDER BY inquiry_date desc
+	limit #{pagePoint} , #{pageSize} -->
+	</select>
+	
+
+
+	<select id="accountAuthHistorySelectList" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
+		SELECT 
+		   A.req_code, 
+		   A.account_holder_name, 
+		   A.account_bank_code,
+		   A.account_bank_name,
+		   A.account_holder_number,
+		   IFNULL(UPPER(A.inquiry_realname_yn), '-') AS inquiry_realname_yn,
+		   IFNULL(A.inquiry_realname_date, '-') AS inquiry_realname_date,
+		   (SELECT COUNT(inquiry_realname_date) FROM tba_history WHERE
+    				<if test="company_id != '' and company_id != null">
+		   				company_id = #{company_id} and
+   					</if>
+				        inquiry_realname_date <![CDATA[>=]]> DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m%d'),'%Y%m%d')
+				        AND inquiry_realname_date <![CDATA[<=]]> DATE_FORMAT(STR_TO_DATE(#{edate}+1, '%Y%m%d'),'%Y%m%d')
+				        and inquiry_realname_yn = 'y') AS inquiry_realname_count,
+		   IFNULL(UPPER(A.inquiry_transfer_deposit_yn), '-') AS inquiry_transfer_deposit_yn,
+		   IFNULL(A.inquiry_transfer_deposit_date, '-')AS inquiry_transfer_deposit_date,
+		   (SELECT COUNT(inquiry_transfer_deposit_date) FROM tba_history WHERE
+    				<if test="company_id != '' and company_id != null">
+		   				company_id = #{company_id} and
+   					</if>
+				        inquiry_transfer_deposit_date <![CDATA[>=]]> DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m%d'),'%Y%m%d')
+				        AND inquiry_transfer_deposit_date <![CDATA[<=]]> DATE_FORMAT(STR_TO_DATE(#{edate}+1, '%Y%m%d'),'%Y%m%d')
+				        and inquiry_transfer_deposit_yn = 'y') AS inquiry_transfer_count,
+		   IFNULL(UPPER(A.authcode_confirm_yn), '-') AS authcode_confirm_yn,
+		   IFNULL(A.authcode_confirm_date, '-')AS authcode_confirm_date,
+			(SELECT rsp_message FROM tba_fail_info WHERE history_seq  = A.seq) rsp_message,
+			(SELECT bank_rsp_message FROM tba_fail_info WHERE history_seq  = A.seq) bank_rsp_message,
+				(SELECT bank_name FROM tba_fail_info WHERE history_seq  = A.seq) bank_rsp_name,
+				(SELECT COUNT(seq) FROM tba_history
+				    WHERE
+    				<if test="company_id != '' and company_id != null">
+		   				company_id = #{company_id} and
+   					</if>
+				        inquiry_realname_date <![CDATA[>=]]> DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m%d'),'%Y%m%d')
+				        AND inquiry_realname_date <![CDATA[<=]]> DATE_FORMAT(STR_TO_DATE(#{edate}+1, '%Y%m%d'),'%Y%m%d')
+		       	) totalCnt
+		FROM 
+			tba_history A
+	    WHERE
+			<if test="company_id != '' and company_id != null">
+				company_id = #{company_id} and
+			</if>
+	        inquiry_realname_date <![CDATA[>=]]> DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m%d'),'%Y%m%d') 
+	        AND inquiry_realname_date <![CDATA[<=]]> DATE_FORMAT(STR_TO_DATE(#{edate}+1, '%Y%m%d'),'%Y%m%d')
+		ORDER BY A.inquiry_realname_date DESC
+		limit #{pagePoint} , #{pageSize}
+	</select>
+	
+	<select id="accountAuthHistorySelectListExcel" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
+		SELECT 
+		   A.req_code, 
+		   A.account_holder_name, 
+		   A.account_bank_code,
+		   A.account_bank_name,
+		   A.account_holder_number,
+		   IFNULL(UPPER(A.inquiry_realname_yn), '-') AS inquiry_realname_yn,
+		   IFNULL(A.inquiry_realname_date, '-') AS inquiry_realname_date,
+		   IFNULL(UPPER(A.inquiry_transfer_deposit_yn), '-') AS inquiry_transfer_deposit_yn,
+		   IFNULL(A.inquiry_transfer_deposit_date, '-')AS inquiry_transfer_deposit_date,
+		   IFNULL(UPPER(A.authcode_confirm_yn), '-') AS authcode_confirm_yn,
+		   IFNULL(A.authcode_confirm_date, '-')AS authcode_confirm_date,
+			(SELECT rsp_message FROM tba_fail_info WHERE history_seq  = A.seq) rsp_message,
+			(SELECT bank_rsp_message FROM tba_fail_info WHERE history_seq  = A.seq) bank_rsp_message,
+				(SELECT bank_name FROM tba_fail_info WHERE history_seq  = A.seq) bank_rsp_name,
+				(SELECT COUNT(req_code) FROM tba_history
+				    WHERE
+				        inquiry_realname_date <![CDATA[>=]]> #{sdate} 
+				        and inquiry_realname_date <![CDATA[<=]]> #{edate}
+		       	) totalCnt
+		FROM 
+			tba_history A
+	    WHERE
+	        inquiry_realname_date <![CDATA[>=]]> #{sdate} 
+	        and inquiry_realname_date <![CDATA[<=]]> #{edate}
+		ORDER BY A.inquiry_realname_date DESC
+	</select>
+	
+	<select id="accountAuthHistorySelectList2" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
+		SELECT 
+		   A.req_code, 
+		   A.account_holder_name, 
+		   A.account_bank_code,
+		   A.account_bank_name,
+		   A.account_holder_number,
+		   IFNULL(UPPER(A.inquiry_realname_yn), '-') AS inquiry_realname_yn,
+		   IFNULL(A.inquiry_realname_date, '-') AS inquiry_realname_date,
+		   IFNULL(UPPER(A.inquiry_transfer_deposit_yn), '-') AS inquiry_transfer_deposit_yn,
+		   IFNULL(A.inquiry_transfer_deposit_date, '-')AS inquiry_transfer_deposit_date,
+		   IFNULL(UPPER(A.authcode_confirm_yn), '-') AS authcode_confirm_yn,
+		   IFNULL(A.authcode_confirm_date, '-')AS authcode_confirm_date,
+			(SELECT rsp_message FROM tba_fail_info_public WHERE history_seq  = A.seq) rsp_message,
+			(SELECT bank_rsp_message FROM tba_fail_info_public WHERE history_seq  = A.seq) bank_rsp_message,
+				(SELECT bank_name FROM tba_fail_info_public WHERE history_seq  = A.seq) bank_rsp_name,
+				(SELECT COUNT(req_code) FROM tba_history_public
+				    WHERE
+				        inquiry_realname_date <![CDATA[>=]]> #{sdate} 
+				        and inquiry_realname_date <![CDATA[<=]]> #{edate}
+		       	) totalCnt
+		FROM 
+			tba_history_public A
+	    WHERE
+	        inquiry_realname_date <![CDATA[>=]]> #{sdate} 
+	        and inquiry_realname_date <![CDATA[<=]]> #{edate}
+		ORDER BY A.inquiry_realname_date DESC
+		limit #{pagePoint} , #{pageSize}
+	</select>
+	
+	<select id="accountAuthHistorySelectListExcel2" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
+		SELECT 
+		   A.req_code, 
+		   A.account_holder_name, 
+		   A.account_bank_code,
+		   A.account_bank_name,
+		   A.account_holder_number,
+		   IFNULL(UPPER(A.inquiry_realname_yn), '-') AS inquiry_realname_yn,
+		   IFNULL(A.inquiry_realname_date, '-') AS inquiry_realname_date,
+		   IFNULL(UPPER(A.inquiry_transfer_deposit_yn), '-') AS inquiry_transfer_deposit_yn,
+		   IFNULL(A.inquiry_transfer_deposit_date, '-')AS inquiry_transfer_deposit_date,
+		   IFNULL(UPPER(A.authcode_confirm_yn), '-') AS authcode_confirm_yn,
+		   IFNULL(A.authcode_confirm_date, '-')AS authcode_confirm_date,
+			(SELECT rsp_message FROM tba_fail_info_public WHERE history_seq  = A.seq) rsp_message,
+			(SELECT bank_rsp_message FROM tba_fail_info_public WHERE history_seq  = A.seq) bank_rsp_message,
+				(SELECT bank_name FROM tba_fail_info_public WHERE history_seq  = A.seq) bank_rsp_name,
+				(SELECT COUNT(req_code) FROM tba_history_public
+				    WHERE
+				        inquiry_realname_date <![CDATA[>=]]> #{sdate} 
+				        and inquiry_realname_date <![CDATA[<=]]> #{edate}
+		       	) totalCnt
+		FROM 
+			tba_history_public A
+	    WHERE
+	        inquiry_realname_date <![CDATA[>=]]> #{sdate} 
+	        and inquiry_realname_date <![CDATA[<=]]> #{edate}
+		ORDER BY A.inquiry_realname_date DESC
+	</select>
+	
+	<select id="accountBankNameSelectList" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
+		SELECT 
+		   DISTINCT A.account_bank_name
+		FROM 
+		   tba_history A
+		ORDER BY A.account_bank_name
+	</select>
+	
+	<select id="customerChargeSelectList" resultType="net.ib.paperless.spring.domain.CustomerChargeInfo" parameterType="map">
+	SELECT
+		B.seq AS customer_service_seq,
+		service_seq,
+		company_id,
+		(SELECT customer_service_name FROM tb_admin_customer_service_type_code WHERE customer_service_type = A.customer_service_type AND service_type = A.service_type) customer_service_name,
+		(SELECT service_comment FROM tb_service_type_code WHERE service_type =	A.service_type) service_name,
+		A.service_type,
+		A.customer_service_type,
+		monthly_use,
+		charge,
+		discount,
+		start_year_date,
+		start_month_date,
+		end_year_date,
+		end_month_date,
+		reg_date,
+		A.use_yn,
+		endless_yn,
+		view_yn
+	FROM
+		tb_admin_customer_charge_info A, tb_admin_customer_service_type_code B
+	WHERE 
+		<!-- <if test="company_id != '' and company_id != null"> -->
+		company_id = #{company_id} and
+		<!-- </if> -->
+		view_yn = 'y'
+		
+		AND A.service_type = B.service_type
+		AND A.customer_service_type = B.customer_service_type
+		<if test="history != '' and history != null">
+		AND DATE_FORMAT(STR_TO_DATE(CONCAT(start_year_date, start_month_date), '%Y%m'),'%Y%m') <![CDATA[<=]]> DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+        AND DATE_FORMAT(STR_TO_DATE(CONCAT(end_year_date, end_month_date), '%Y%m'),'%Y%m') <![CDATA[>=]]> DATE_FORMAT(STR_TO_DATE(#{edate}, '%Y%m'),'%Y%m')
+        </if>
+        <!-- 
+        and start_year_date <![CDATA[<=]]> #{sYear}
+        and start_month_date <![CDATA[<=]]> #{sMonth}
+        and end_year_date <![CDATA[>=]]> #{eYear}
+        and end_month_date <![CDATA[>=]]> #{eMonth}
+        -->
+        
+	ORDER BY 
+		 service_type, customer_service_type, monthly_use
+	</select>
+	
+	<select id="customerServiceSelectList" resultType="net.ib.paperless.spring.domain.CustomerServiceInfo" parameterType="map">
+	SELECT 
+	  seq,
+	  service_type,
+	  (SELECT service_comment FROM tb_service_type_code WHERE A.service_type = service_type)service_name,
+	  customer_service_type,
+	  customer_service_name,
+	  customer_service_comment,
+	  use_yn
+	FROM
+	  tb_admin_customer_service_type_code A
+	</select>
+	
+	<update id="customerServiceUpdate" parameterType="hashmap">
+	UPDATE 
+	  tb_admin_customer_service_type_code 
+	SET
+	  use_yn = #{use_yn},
+	  customer_service_name = #{customer_service_name},
+	  customer_service_comment = #{customer_service_comment} 
+	WHERE seq = #{seq}
+    </update>
+    
+    <insert id="customerServiceBasicInsert" parameterType="hashmap">
+	INSERT INTO tb_admin_customer_charge_basic_info (
+	  company_id,
+	  service_type,
+	  customer_service_type,
+	  charge
+	) 
+	VALUES
+	<foreach collection="list" item="item" separator=",">
+	  (#{item.company_id}, #{item.service_type}, #{item.customer_service_type}, #{item.charge})
+    </foreach> 
+	  ON DUPLICATE KEY 
+	  UPDATE 
+	    charge = values(charge)
+  	</insert>
+  	
+    <select id="companyInfoSelectList" resultType="net.ib.paperless.spring.domain.CompanyInfo" parameterType="map">
+	SELECT 
+	  (
+	  SELECT COUNT(*) FROM tba_company_info
+	  <if test="searchWord != null and searchWord != ''">
+	  WHERE NAME LIKE CONCAT('%',#{searchWord},'%')
+	  </if>
+	  ) AS totalCnt,
+	  seq,
+	  NAME,
+	  id,
+	  employee_name,
+	  employee_tel,
+	  employee_phone,
+	  employee_email,
+	  reg_date
+	FROM
+	  tba_company_info A
+    <if test="searchWord != null and searchWord != ''">
+	WHERE NAME LIKE CONCAT('%',#{searchWord},'%')
+	</if>
+	ORDER BY NAME
+	<if test="paging != null and paging != ''">
+    limit #{pagePoint} , #{pageSize}
+    </if>
+	</select>
+	
+	<select id="companyInfoOne" resultType="net.ib.paperless.spring.domain.CompanyInfo" parameterType="map">
+	SELECT 
+	  seq,
+	  NAME,
+	  id,
+	  employee_name,
+	  employee_tel,
+	  employee_phone,
+	  employee_email,
+	  reg_date
+	FROM
+	  tba_company_info A
+	WHERE
+	  seq = #{seq}
+	</select>
+	
+	<!-- 이용서비스 및 요금관리의 이용기간 생성을 위한 쿼리 -->
+	<select id="companyInfoTitleSelect" resultType="net.ib.paperless.spring.domain.CustomerChargeInfo" parameterType="map">
+	SELECT company_id, start_year_date, start_month_date, end_year_date, end_month_date FROM tb_admin_customer_charge_info WHERE company_id = #{company_id} AND view_yn = 'y' GROUP BY start_year_date, start_month_date, end_year_date, end_month_date
+	order by start_year_date, start_month_date
+	</select>
+	
+	<!-- 기본요금 관리 : 이용서비스 및 기본요금 관리 -->
+	<select id="customerChargeBasicSelectList" resultType="net.ib.paperless.spring.domain.CustomerChargeInfo" parameterType="map">
+	SELECT 
+	  seq,
+	  company_id,
+	  customer_service_type,
+	  (SELECT 
+	    customer_service_name 
+	  FROM
+	    tb_admin_customer_service_type_code 
+	  WHERE service_type = A.service_type 
+	    AND customer_service_type = A.customer_service_type) AS customer_service_name,
+	  service_type,
+	  (SELECT 
+	    service_comment
+	  FROM
+	    tb_service_type_code 
+	  WHERE service_type = A.service_type) AS service_name,
+	  charge,
+	  reg_date,
+	  use_yn,
+	  view_yn 
+	FROM
+	  tb_admin_customer_charge_basic_info A 
+	WHERE company_id = #{company_id}
+	</select>
+	
+	<!-- service/domainManage -->
+		<select id="domainInfoSelect" resultType="net.ib.paperless.spring.domain.DomainInfo" parameterType="map">
+		SELECT seq, company_id, domain, uri, service_code, confirm_yn, use_yn, DATE_FORMAT(reg_date,'%Y.%m.%d') AS reg_date, service_type, (SELECT service_name FROM tb_service_type_code WHERE A.service_type = service_type) AS service_name FROM tba_domain_info A WHERE company_id = #{company_id} GROUP BY seq, domain, service_type, uri ORDER BY domain, service_type, uri;
+		</select>
+		
+		<select id="domainListSelect" resultType="net.ib.paperless.spring.domain.DomainInfo" parameterType="map">
+		SELECT seq, company_id, domain, uri, service_code, confirm_yn, use_yn, DATE_FORMAT(reg_date,'%Y.%m.%d') AS reg_date, service_type, (SELECT service_name FROM tb_service_type_code WHERE A.service_type = service_type) AS service_name FROM tba_domain_info A WHERE company_id = #{company_id} GROUP BY domain, service_type ORDER BY domain, service_code;
+		</select>
+		
+		<!-- 서비스관리 -> 서비스 등록 -> 도메인 등록 -->
+		<insert id="domainInsert" parameterType="hashmap">
+		INSERT INTO tba_domain_info (company_id, domain, uri, service_code, service_type) 
+		VALUES (#{company_id}, #{domain}, #{uri}, #{service_code}, #{service_type})
+	  	</insert>
+	  	
+	  	<select id="domainCheck" resultType="net.ib.paperless.spring.domain.DomainInfo" parameterType="map">
+	  	SELECT COUNT(*) as domain_cnt FROM tba_domain_info WHERE company_id = #{company_id} AND service_type=#{service_type} AND domain=#{domain} AND uri = #{uri}
+	  	</select>
+		
+		<update id="domainDelete" parameterType="hashmap">
+		UPDATE 
+		  tba_domain_info 
+		SET
+		  use_yn = 'n', confirm_yn = 'n'
+		WHERE 
+		  domain = #{domain}
+		  and company_id = #{company_id}
+	    </update>
+	    
+	  	<!-- 중복 Uri 체크 -->
+	  	<select id="domainUriCheck" resultType="net.ib.paperless.spring.domain.DomainInfo" parameterType="map">
+	  	SELECT COUNT(*) as domain_cnt FROM tba_domain_info WHERE company_id = #{company_id} AND domain = #{domain} AND service_type = #{service_type} AND uri = #{uri};
+	  	</select>
+	  	
+	  	<insert id="domainUriInsert" parameterType="hashmap">
+		INSERT INTO tba_domain_info (company_id, domain, service_code, service_type, uri) 
+		VALUES (#{company_id}, #{domain}, #{service_code}, #{service_type}, #{uri})
+	  	</insert>
+	  	
+		<update id="domainUriUpdate" parameterType="hashmap">
+		UPDATE 
+		  tba_domain_info 
+		SET
+		  uri = #{uri}, service_code = #{service_code}
+		WHERE 
+		  seq = #{seq}
+		  and company_id = #{company_id}
+	    </update>
+	    
+	    <update id="domainUriUse" parameterType="hashmap">
+		UPDATE 
+		  tba_domain_info 
+		SET
+		  use_yn = 'y', confirm_yn = 'y' 
+		WHERE 
+		  seq = #{seq}
+		  and company_id = #{company_id}
+	    </update>
+	    
+	    <update id="domainUriDelete" parameterType="hashmap">
+		UPDATE 
+		  tba_domain_info 
+		SET
+		  use_yn = 'n', confirm_yn = 'n' 
+		WHERE 
+		  seq = #{seq}
+		  and company_id = #{company_id}
+	    </update>
+	    
+    <!-- service/domainManage End -->
+    
+    
+    <update id="companyInfoUpdate" parameterType="hashmap">
+    UPDATE tba_company_info
+	SET employee_name = #{employee_name}, employee_tel = #{employee_tel}, employee_phone = #{employee_phone}, employee_email = #{employee_email}
+	WHERE id = #{company_id};
+    </update>
+    
+    <delete id="customerServiceSlideDelete" parameterType="hashmap">
+    DELETE FROM tb_admin_customer_charge_info
+    WHERE company_id = #{company_id}
+    </delete>
+    
+    <insert id="customerServiceSlideInsert" parameterType="hashmap">
+	INSERT INTO tb_admin_customer_charge_info (
+	  company_id,
+	  service_type,
+	  customer_service_type,
+	  monthly_use,
+	  charge,
+	  discount,
+	  start_year_date,
+	  end_year_date,
+	  start_month_date,
+	  end_month_date,
+	  endless_yn
+	) 
+	VALUES
+	<foreach collection="list" item="item" separator=",">
+	  (#{item.company_id},
+	  #{item.service_type}, 
+	  #{item.customer_service_type}, 
+	  #{item.monthly_use}, 
+	  #{item.charge}, 
+	  #{item.discount}, 
+	  #{item.start_year_date}, 
+	  #{item.end_year_date}, 
+	  #{item.start_month_date}, 
+	  #{item.end_month_date}, 
+	  #{item.endless_yn})
+    </foreach> 
+    </insert>
+</mapper>

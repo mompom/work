@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>비대면 대출 신청 서비스</title>
+	<!--[if IE]>
+        <script src="../include/js/html5shiv.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="../../include/css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../../include/css/common.css">
+	<script type="text/javascript" src="../../include/js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="../../include/js/jquery-fakeform-0.5.min.js"></script>
+	<script type="text/javascript" src="../../include/js/jquery.placeholder.min.js"></script>
+	<script type="text/javascript" src="../../include/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../../include/js/common.js"></script>
+</head>
+<body>
+<div id="wrap">
+	<!-- header -->
+	<div id="header">
+		<div class="top_cont">
+			<h1><a href="#">ABC캐피탈 <span>비대면 대출 신청 서비스 어드민</span></a></h1>
+			<div class="top_util">
+				<span class="user">consult1 님이 로그인했습니다.</span>
+				<button type="button" class="btn_st bt01"><span>LOGOUT</span></button>
+			</div>
+			<div class="gnb">
+				<ul>
+					<li><a href="#">진행 현황</a></li>
+					<li><a href="#">통계</a></li>
+					<li><a href="#">사용자 관리</a></li>
+					<li class="on"><a href="#">운영 관리</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //header -->
+
+	<!-- container -->
+	<div id="container">
+		<!-- sub menu -->
+		<div class="sub_menu">
+			<ul>
+				<li class="first"><a href="#">공지사항</a></li>
+				<li><a href="#">회사 관리</a></li>
+				<li class="on"><a href="#">상품(문서) 관리</a></li>
+			</ul>
+		</div>
+		
+		<!-- sub search -->
+		<div class="sub_topsearch">
+			<ul class="clearbox">
+				<li>
+					<select name="" id="" class="select01" style="width:153px;">
+						<option value="">회사명</option>
+						<option value="">상품명</option>
+					</select>
+				</li>
+				<li class="input_search"><input type="text" name="" placeholder="검색어를 입력하세요"></li>
+				<li><button type="button" class="btn_st bt01"><span>검색</span></button></li>
+			</ul>
+		</div>
+
+		<!-- top btn -->
+		<div class="top_area clearbox">
+			<div class="lf_box">
+				<button type="button" class="btn_st bt01"><span>삭제</span></button>
+			</div>
+			<div class="rf_box">
+				<button type="button" class="btn_st bt01"><span>상품 등록</span></button>
+			</div> 
+		</div>
+
+		<!-- contents -->
+		<div class="contents">
+			<!-- lst_table01 -->
+			<div class="lst_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>상품(문서)관리 리스트</caption>
+	                <colgroup>
+		                <col style="width:6%;">
+		                <col style="width:13%;">
+		                <col style="width:auto;">
+		                <col style="width:9%;">
+		                <col style="width:9%;">
+		                <col style="width:8%;">
+		                <col style="width:10%;">
+		                <col style="width:10%;">
+		                <col style="width:10%;">
+		                <col style="width:7%;">
+	                </colgroup>
+	                <thead>
+						<tr>
+							<th class="num"><input type="checkbox" name="prod_all"></th>
+							<th>회사명</th>
+							<th>상품명</th>
+							<th>상품코드</th>
+							<th>전자문서</th>
+							<th>추가서류</th>
+							<th>아이디</th>
+							<th>등록일</th>
+							<th>수정일</th>
+							<th>수정</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="checkbox" name="prod_01"></td>
+							<td class="al">ABC캐피탈</td>
+							<td class="al"><a href="#">개인 대출</a></td>
+							<td>D0001</td>
+							<td>Loan1</td>
+							<td>5개</td>
+							<td>관리자</td>
+							<td>2016.11.20</td>
+							<td>-</td>
+							<td><a href="#">수정</a></td>
+						</tr>
+						<tr class="bg">
+							<td><input type="checkbox" name="prod_02"></td>
+							<td class="al">DEF금융</td>
+							<td class="al"><a href="#">담보 대출</a></td>
+							<td>D0002</td>
+							<td>Loan2</td>
+							<td>6개</td>
+							<td>고객남</td>
+							<td>2016.11.20</td>
+							<td>2016.11.20</td>
+							<td><a href="#">수정</a></td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" name="prod_03"></td>
+							<td class="al">GHI캐피탈</td>
+							<td class="al"><a href="#">개인 신용 담보 대출</a></td>
+							<td>A0007</td>
+							<td>Loan3</td>
+							<td>4개</td>
+							<td>김관리</td>
+							<td>2016.11.20</td>
+							<td>2016.11.20</td>
+							<td><a href="#">수정</a></td>
+						</tr>
+						<tr class="bg">
+							<td><input type="checkbox" name="prod_04"></td>
+							<td class="al">ABC캐피탈</td>
+							<td class="al"><a href="#">개인 대출</a></td>
+							<td>D0001</td>
+							<td>Loan1</td>
+							<td>5개</td>
+							<td>관리자</td>
+							<td>2016.11.20</td>
+							<td>-</td>
+							<td><a href="#">수정</a></td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" name="prod_05"></td>
+							<td class="al">DEF금융</td>
+							<td class="al"><a href="#">담보 대출</a></td>
+							<td>D0002</td>
+							<td>Loan2</td>
+							<td>6개</td>
+							<td>고객남</td>
+							<td>2016.11.20</td>
+							<td>2016.11.20</td>
+							<td><a href="#">수정</a></td>
+						</tr>
+						<tr class="bg">
+							<td><input type="checkbox" name="prod_06"></td>
+							<td class="al">GHI캐피탈</td>
+							<td class="al"><a href="#">개인 신용 담보 대출</a></td>
+							<td>A0007</td>
+							<td>Loan3</td>
+							<td>4개</td>
+							<td>김관리</td>
+							<td>2016.11.20</td>
+							<td>2016.11.20</td>
+							<td><a href="#">수정</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //lst_table01 -->
+
+			<!-- paging -->
+			<div class="paging">
+				<a href="#" class="first"><img src="../../img/common/btn_paging_first.gif" alt="처음" /></a>
+				<a href="#" class="prev"><img src="../../img/common/btn_paging_prev.gif" alt="이전" /></a>
+				<a href="#" class="on">1</a>
+				<a href="#">2</a>
+				<a href="#">3</a>
+				<a href="#">4</a>
+				<a href="#">5</a>
+				<a href="#">6</a>
+				<a href="#" class="next"><img src="../../img/common/btn_paging_next.gif" alt="다음" /></a>
+				<a href="#" class="last"><img src="../../img/common/btn_paging_last.gif" alt="마지막" /></a>
+			</div>
+			<!-- //paging -->
+		</div>
+
+	</div>
+	<!-- //container -->
+
+</div>
+
+
+<!-- layerpopup 상품정보 등록 -->
+<div class="layerpop_wrap" style="display:none;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:590px; top:150px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">상품정보 등록</div>
+			
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<form>
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>상품정보 등록</caption>
+	                <colgroup>
+		                <col style="width:25%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>회사</th>
+							<td>
+								<select name="" id="" style="width:150px;">
+									<option value="">회사선택</option>
+									<option value="">ABC캐피탈</option>
+									<option value="">DEF금융</option>
+									<option value="">GHI캐피탈</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<th>상품명</th>
+							<td><input type="text" name="" style="width:100%;" placeholder="상품명을 입력하세요."></td>
+						</tr>
+						<tr>
+							<th>전자문서<br>서식파일</th>
+							<td>
+								<div>
+									<input type="text" name="" style="width:300px;" >
+									<button type="button" class="btn_st bt01"><span>파일찾기</span></button>
+								</div>
+								<p class="stxt01">※모바일 웹에서 고객의 계약 진행에 필요한 서류를 등록합니다.<br>
+								 파일 선택 시 해당 금융상품 서류가 맞는지 반드시 확인하세요.</p>
+							</td>
+						</tr>
+						<tr>
+							<th>추가 서류<br>(APP 촬영)</th>
+							<td class="np">
+								<ul class="add_doc_lst">
+									<li><input type="text" name="" style="width:100%;" placeholder="전용 APP 촬영 후 제출할 서류명을 입력하세요. Ex)신분증 앞면" ></li>
+									<li><input type="text" name="" style="width:100%;" placeholder="전용 APP 촬영 후 제출할 서류명을 입력하세요. Ex)신분증 뒷면" ></li>
+									<li><input type="text" name="" style="width:100%;" placeholder="전용 APP 촬영 후 제출할 서류명을 입력하세요. Ex)등기부등본" ></li>
+									<li><input type="text" name="" style="width:100%;" placeholder="전용 APP 촬영 후 제출할 서류명을 입력하세요. Ex)계약서" ></li>
+									<li><input type="text" name="" style="width:100%;" placeholder="전용 APP 촬영 후 제출할 서류명을 입력하세요. Ex)기타 서류" ></li>
+								</ul>
+								<button type="button" class="add_doc_btn">+ 서류입력 추가하기</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>등록</span></button>
+				<button type="button" class="btn_st bt03"><span>취소</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 상품정보 등록 -->
+
+<!-- layerpopup 상품정보 상세조회 -->
+<div class="layerpop_wrap" style="display:none;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:590px; top:200px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">상품정보 상세조회</div>
+			
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<form>
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>상품정보 상세조회</caption>
+	                <colgroup>
+		                <col style="width:25%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>회사</th>
+							<td>ABC캐피탈</td>
+						</tr>
+						<tr>
+							<th>상품명</th>
+							<td>개인신용대출</td>
+						</tr>
+						<tr>
+							<th>상품코드</th>
+							<td>A0001</td>
+						</tr>
+						<tr>
+							<th>전자문서<br>서식파일</th>
+							<td>Loan1.xxx</td>
+						</tr>
+						<tr>
+							<th>추가서류</th>
+							<td>
+								<ol class="dt_doc_lst">
+									<li>신분증 앞면</li>
+									<li>신분증 뒷면</li>
+									<li>등기부 등본</li>
+									<li>계약서</li>
+								</ol>
+							</td>
+						</tr>
+						<tr>
+							<th>등록일</th>
+							<td>2016.11.13</td>
+						</tr>
+						<tr>
+							<th>수정일</th>
+							<td>2016.11.24</td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>확인</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 상품정보 상세조회 -->
+
+
+<!-- layerpopup 상품정보 수정 -->
+<div class="layerpop_wrap" style="display:none;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:590px; top:150px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">상품정보 수정</div>
+			
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<form>
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>상품정보 수정</caption>
+	                <colgroup>
+		                <col style="width:25%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>회사</th>
+							<td>ABC캐피탈</td>
+						</tr>
+						<tr>
+							<th>상품명</th>
+							<td><input type="text" name="" style="width:100%;" value="개인신용대출"></td>
+						</tr>
+						<tr>
+							<th>전자문서<br>서식파일</th>
+							<td>
+								<div style="margin:0 0 10px;">현재 파일 : Loan1.xxx</div>
+								<div>
+									<input type="text" name="" style="width:300px;" >
+									<button type="button" class="btn_st bt01"><span>파일찾기</span></button>
+								</div>
+								<p class="stxt01">※모바일 웹에서 고객의 계약 진행에 필요한 서류를 등록합니다.<br>
+								 파일 선택 시 해당 금융상품 서류가 맞는지 반드시 확인하세요.</p>
+							</td>
+						</tr>
+						<tr>
+							<th>추가 서류<br>(APP 촬영)</th>
+							<td class="np">
+								<ul class="add_doc_lst">
+									<li><input type="text" name="" style="width:100%;" value="신분증 앞면" ></li>
+									<li><input type="text" name="" style="width:100%;" value="신분증 뒷면" ></li>
+									<li><input type="text" name="" style="width:100%;" value="등기부등본" ></li>
+									<li><input type="text" name="" style="width:100%;" value="계약서" ></li>
+									<li><input type="text" name="" style="width:100%;" placeholder="전용 APP 촬영 후 제출할 서류명을 입력하세요. Ex)기타 서류" ></li>
+								</ul>
+								<button type="button" class="add_doc_btn">+ 서류입력 추가하기</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>수정</span></button>
+				<button type="button" class="btn_st bt03"><span>취소</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 상품정보 수정 -->
+
+</body>
+</html>

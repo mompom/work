@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="blockUserMapper">
+ 
+    <!-- /* select dual */ -->
+    <select id="blockUserSelect" resultType="net.ib.paperless.spring.domain.BlockUserInfo" parameterType="map">
+		SELECT (SELECT COUNT(*) FROM tb_blacklist) AS totalCnt,
+        tai.*
+        FROM tb_blacklist AS tai
+        WHERE
+		<choose>
+			<when test="searchOption2 == 'holder_number'">
+				account_holder_number LIKE CONCAT('%',#{searchWord},'%')
+			</when>
+			<when test="searchOption2 == 'holder_name'">
+				account_holder_name LIKE CONCAT('%',#{searchWord},'%')
+			</when>
+			<when test="searchOption2 == 'bank_name'">
+				account_bank_name LIKE CONCAT('%',#{searchWord},'%')
+			</when>
+		</choose>
+        ORDER BY tai.reg_date DESC
+	    limit #{pagePoint} , #{pageSize}
+    </select>
+ 	
+ 	<delete id="blockUserDelete" parameterType="hashmap">
+		DELETE FROM tb_blacklist WHERE seq IN (${check_list})
+ 	</delete>
+ 	
+    <select id="blockUserSelectOne" resultType="net.ib.paperless.spring.domain.BlockUserInfo" parameterType="string">
+		SELECT 
+			*
+		FROM 
+			tb_blacklist
+		WHERE
+        	name=#{name}
+    </select>
+    
+    <insert id="blockUserInsert" parameterType="hashmap">
+    	INSERT INTO tb_blacklist(user_key, account_holder_name, account_holder_number, account_holder_code, account_bank_name, reg_date, note) 
+    	VALUES(#{user_key}, #{account_holder_name}, #{account_holder_number}, #{account_holder_code}, #{account_bank_name}, now() ,#{note})
+    </insert>
+    
+    <update id="blockUserUpdate" parameterType="hashmap" useGeneratedKeys="true" keyProperty="seq">
+        UPDATE 
+        	tb_blacklist 
+        SET 
+        	user_key = #{user_key},
+        	account_holder_name = #{account_holder_name},
+        	account_holder_number = #{account_holder_number},
+        	account_bank_name = #{account_bank_name},
+        	reg_date = now() 
+        WHERE 
+        	seq =  #{seq}
+    </update>
+</mapper>

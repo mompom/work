@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<!-- Log message format -->
+		<encoder>
+			<pattern>
+				<!-- %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n -->
+				<!-- %d{ss} %logger{36} - %msg%n -->
+				[%-5level] %d{HH:mm:ss.SSS} [%thread] %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="org.springframework.web" level="INFO" />
+	
+	<logger name="java.sql">
+		<level value="DEBUG" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="java.sql" level="debug" additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
+	<logger name="java.sql.connection" level="info"
+		additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+	<logger name="jdbc" level="DEBUG" />
+
+	<logger name="jdbc.sqlonly" level="TRACE" />
+	<logger name="jdbc.sqltiming" level="DEBUG" />
+	<logger name="jdbc.audit" level="OFF" />
+	<logger name="jdbc.resultset" level="OFF" />
+	<logger name="jdbc.resultsettable" level="DEBUG" />
+	<logger name="jdbc.connection" level="OFF" />
+
+
+
+	<root level="info">
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="membersMapper">
+	<select id="selectTotalUsedList" resultType="net.ib.paperless.spring.domain.MembersMeritzTotalCntInfo" parameterType="string">
+		SELECT A.type AS typeNumber, B.type_name AS type, count(*) AS totalCnt
+		FROM tb_billing A, tb_billing_type B
+		WHERE A.type = B.type 
+		AND A.success_yn = 'y'
+		AND DATE_FORMAT(A.reg_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+		GROUP BY A.type
+		
+		UNION ALL
+		SELECT '0' as typeNumber, '최종성공건수' as type, COUNT(*) AS totalCnt  FROM tb_progress WHERE progress_status = '5' AND DATE_FORMAT(reg_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m');
+	</select>
+	
+	<select id="selectUsedList" resultType="net.ib.paperless.spring.domain.MembersMeritzInfo" parameterType="map">
+		<choose>
+       		<when test="typeNumber == 0">
+       			SELECT '최종성공건수' AS type_name,
+				tb_progress.seq,
+				tb_progress.progress_type,
+				tb_progress.service_type,
+				tb_progress.contract_code,
+				tb_progress.customer_code,
+				tb_progress.progress_status,
+				tb_progress.uuids,
+				tb_progress.eform_id ,
+				tb_progress.param1,
+				tb_progress.param2,
+				tb_progress.param3,
+				tb_progress.param4,
+				tb_progress.file_cnt,
+				tb_progress.reg_date
+				FROM tb_progress 
+				WHERE progress_status = '5' AND DATE_FORMAT(reg_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+				limit #{pagePoint} , #{pageSize}
+       		</when>
+       		<when test="typeNumber != '0'">
+	       		SELECT tb_billing_type.type_name,
+				tb_progress.seq,
+				tb_progress.progress_type,
+				tb_progress.service_type,
+				tb_progress.contract_code,
+				tb_progress.customer_code,
+				tb_progress.progress_status,
+				tb_progress.uuids,
+				tb_progress.eform_id ,
+				tb_progress.param1,
+				tb_progress.param2,
+				tb_progress.param3,
+				tb_progress.param4,
+				tb_progress.file_cnt,
+				tb_billing.reg_date
+				FROM tb_billing LEFT JOIN tb_progress ON tb_billing.progress_id = tb_progress.seq, tb_billing_type 
+				WHERE tb_billing.success_yn = 'y'
+				AND tb_billing_type.type = tb_billing.type
+				AND DATE_FORMAT(tb_billing.reg_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+				AND tb_billing.type = #{typeNumber}
+				limit #{pagePoint} , #{pageSize}
+       		</when>
+       	</choose>
+	</select>
+	
+	<select id="countUsedList" resultType="int" parameterType="map">
+		<choose>
+       		<when test="typeNumber == 0">
+       			SELECT COUNT(*) FROM tb_progress WHERE progress_status = '5' AND DATE_FORMAT(reg_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m');
+       		</when>
+       		<when test="typeNumber != '0'">
+	       		SELECT count(*)
+				FROM tb_billing LEFT JOIN tb_progress ON tb_billing.progress_id = tb_progress.seq, tb_billing_type 
+				WHERE tb_billing.success_yn = 'y'
+				AND tb_billing_type.type = tb_billing.type
+				AND DATE_FORMAT(tb_billing.reg_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
+				AND tb_billing.type = #{typeNumber}
+       		</when>
+       	</choose>
+	</select>
+	
+</mapper>

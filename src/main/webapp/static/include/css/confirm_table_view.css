@@ -1,0 +1,65 @@
+@charset "UTF-8";
+/* tableType01 */
+.tableType01 {
+	border-top: 2px solid #8ca6cb;
+	border-bottom: 1px solid #d0d0d0;
+	border-collapse: separate;
+	border-spacing: 0;
+	*border-collapse: collapse;
+	text-align: center;
+}
+
+.tableType01 thead tr th {
+	padding: 8px 10px 6px;
+	color: #54708c;
+	border-left: 1px solid #e6e5e5;
+	border-bottom: 1px solid #cbd7dd;
+	background: #f9fafc;
+}
+
+.tableType01 tbody tr th {
+	padding: 8px 20px 6px;
+	color: #54708c;
+	text-align: left;
+	border-top: 1px solid #e6e5e5;
+	border-left: 1px solid #e6e5e5;
+	background: #f9fafc;
+}
+
+.tableType01 tbody tr td {
+	padding: 9px 10px 6px;
+	word-break: break-all;
+	border-left: 1px solid #e6e5e5;
+	border-top: 1px solid #e6e5e5;
+	line-height: 16px;
+}
+.tableType01 tfoot tr td {
+	padding: 9px 10px 6px;
+	word-break: break-all;
+	border-left: 1px solid #e6e5e5;
+	border-top: 1px solid #e6e5e5;
+	line-height: 16px;
+}
+
+.tableType01 a {
+	color: #0766e8;
+	text-decoration: underline;
+}
+
+.tableType01 .bdL {
+	border-left: 1px solid #e6e5e5 !important;
+}
+
+.tableType01 .bdR {
+	border-right: 1px solid #e6e5e5 !important;
+}
+
+.domainMtableTitle {
+	font-size: 20px;
+	margin: 0;
+	padding: 5px 0 0 0;
+}
+.domainMtableInput {
+	width: 100%;
+	padding 0px;
+}

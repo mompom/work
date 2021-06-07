@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>비대면 대출 신청 서비스</title>
+	<!--[if IE]>
+        <script src="../include/js/html5shiv.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="../../include/css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../../include/css/common.css">
+	<script type="text/javascript" src="../../include/js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="../../include/js/jquery-fakeform-0.5.min.js"></script>
+	<script type="text/javascript" src="../../include/js/jquery.placeholder.min.js"></script>
+	<script type="text/javascript" src="../../include/js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../../include/js/common.js"></script> 
+</head>
+<body>
+<div id="wrap">
+	<!-- header -->
+	<div id="header">
+		<div class="top_cont">
+			<h1><a href="#">ABC캐피탈 <span>비대면 대출 신청 서비스 어드민</span></a></h1>
+			<div class="top_util">
+				<span class="user">consult1 님이 로그인했습니다.</span>
+				<button type="button" class="btn_st bt01"><span>LOGOUT</span></button>
+			</div>
+			<div class="gnb">
+				<ul>
+					<li class="on"><a href="#">진행 현황</a></li>
+					<li><a href="#">통계</a></li>
+					<li><a href="#">사용자 관리</a></li>
+					<li><a href="#">운영 관리</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- //header -->
+
+	<!-- container -->
+	<div id="container">
+		<!-- sub menu -->
+		<div class="sub_menu">
+			<ul>
+				<li class="first"><a href="#">대출 업무</a></li>
+				<li class="on"><a href="#">상담 신청</a></li>
+			</ul>
+		</div>
+
+		<!-- sub search -->
+		<div class="sub_topsearch">
+			<ul class="clearbox">
+				<li>
+					<select name="" id="" class="select01">
+						<option value="">최근 7일</option>
+						<option value="">최근 14일</option>
+						<option value="">최근 1개월</option>
+						<option value="">직접입력</option>
+					</select>
+				</li>
+				<li>
+					<span class="sch_data"><input type="text" class="datepicker"></span>
+					~
+					<span class="sch_data"><input type="text" class="datepicker"></span>
+				</li>
+				<li>
+					<select name="" id="" class="select01" style="width:153px;">
+						<option value="">진행 상태 전체</option>
+					</select>
+				</li>
+				<li>
+					<select name="" id="" class="select01" style="width:153px;">
+						<option value="">신용 조회 전체</option>
+						<option value="">미진행</option>
+						<option value="">진행</option>
+					</select>
+				</li>
+				<li><button type="button" class="btn_st bt01"><span>검색</span></button></li>
+			</ul>
+		</div>
+
+		<!-- top btn -->
+		<div class="top_area clearbox">
+			<div class="lf_box">
+				<strong class="txt">총 28건의 결과가 검색되었습니다.</strong>
+			</div>
+			<div class="rf_box">
+				<select name="" id="" class="select02" style="width:92px;">
+					<option value="">20개</option>
+					<option value="">50개</option>
+					<option value="">100개</option>
+				</select>
+			</div>
+		</div>
+
+		<!-- contents -->
+		<div class="contents">
+			<!-- lst_table01 -->
+			<div class="lst_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>상담신청 리스트</caption>
+	                <colgroup>
+		                <col style="width:7%;">
+		                <col style="width:12%;">
+		                <col style="width:10%;">
+		                <col style="width:10%;">
+		                <col style="width:12%;">
+		                <col style="width:10%;">
+		                <col style="width:15%;">
+		                <col style="width:auto;">
+	                </colgroup>
+	                <thead>
+						<tr>
+							<th class="num">No</th>
+							<th>관리 코드</th>
+							<th>진행 상태</th>
+							<th>고객명</th>
+							<th>신청금액</th>
+							<th>신용 조회</th>
+							<th>희망 상담 시간</th>
+							<th>상담신청일시</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>48</td>
+							<td><a href="#">B123456</a></td>
+							<td>대기</td>
+							<td>홍○동</td>
+							<td>3,000만원</td>
+							<td>미진행</td>
+							<td>13시~15시</td>
+							<td>2016.11.20 15:20:30</td>
+						</tr>
+						<tr class="bg">
+							<td>47</td>
+							<td><a href="#">B123456</a></td>
+							<td>확인 중</td>
+							<td>홍○동</td>
+							<td>500만원</td>
+							<td>미진행</td>
+							<td>00시~24시</td>
+							<td>2016.11.20 15:20:30</td>
+						</tr>
+						<tr>
+							<td>46</td>
+							<td><a href="#">B123456</a></td>
+							<td>대기</td>
+							<td>홍○동</td>
+							<td>3,000만원</td>
+							<td>진행</td>
+							<td>14시~15시</td>
+							<td>2016.11.20 15:20:30</td>
+						</tr>
+						<tr class="bg">
+							<td>45</td>
+							<td><a href="#">B123456</a></td>
+							<td>대기</td>
+							<td>홍○동</td>
+							<td>3,000만원</td>
+							<td>미진행</td>
+							<td>13시~15시</td>
+							<td>2016.11.20 15:20:30</td>
+						</tr>
+						<tr>
+							<td>44</td>
+							<td><a href="#">B123456</a></td>
+							<td>대기</td>
+							<td>홍○동</td>
+							<td>3,000만원</td>
+							<td>미진행</td>
+							<td>13시~15시</td>
+							<td>2016.11.20 15:20:30</td>
+						</tr>
+						<tr class="bg">
+							<td>43</td>
+							<td><a href="#">B123456</a></td>
+							<td>대기</td>
+							<td>홍○동</td>
+							<td>3,000만원</td>
+							<td>미진행</td>
+							<td>13시~15시</td>
+							<td>2016.11.20 15:20:30</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //lst_table01 -->
+
+			<!-- paging -->
+			<div class="paging">
+				<a href="#" class="first"><img src="../../img/common/btn_paging_first.gif" alt="처음" /></a>
+				<a href="#" class="prev"><img src="../../img/common/btn_paging_prev.gif" alt="이전" /></a>
+				<a href="#" class="on">1</a>
+				<a href="#">2</a>
+				<a href="#">3</a>
+				<a href="#">4</a>
+				<a href="#">5</a>
+				<a href="#">6</a>
+				<a href="#" class="next"><img src="../../img/common/btn_paging_next.gif" alt="다음" /></a>
+				<a href="#" class="last"><img src="../../img/common/btn_paging_last.gif" alt="마지막" /></a>
+			</div>
+			<!-- //paging -->
+		</div>
+
+	</div>
+	<!-- //container -->
+
+</div>
+
+<!-- layerpopup 대출신청 상세정보 -->
+<div class="layerpop_wrap" style="display:none;">
+	<div class="layerpop_mask"></div>
+	<div class="layerpop" style="width:360px; top:150px;">
+		<div class="layer_rdbox">
+			<div class="layer_lt"></div>
+			<div class="layer_rt"></div>
+		</div>
+		<div class="layer_content">
+			<div class="layer_tit">대출신청 상세정보</div>
+
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+			        <caption>관리코드</caption>
+			        <colgroup>
+				        <col style="width:38%;">
+				        <col style="width:62%;">
+			        </colgroup>
+					<tbody>
+						<tr>
+							<th>관리코드</th>
+							<td>A123454</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<div class="layer_stit">상담 신청 정보</div>
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>상담 신청 정보</caption>
+	                <colgroup>
+		                <col style="width:38%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th>고객명</th>
+							<td>홍길동</td>
+						</tr>
+						<tr>
+							<th>대출신청금액</th>
+							<td>500만원</td>
+						</tr>
+						<tr>
+							<th>신청일</th>
+							<td>2016.11.20 15:20:15</td>
+						</tr>
+						<tr>
+							<th>연락처</th>
+							<td>010-○○○○-4567</td>
+						</tr>
+						<tr>
+							<th>연락희망시간</th>
+							<td>13시~14시</td>
+						</tr>
+						<tr>
+							<th>신용조회여부</th>
+							<td>진행(1등급, 최대 6.8%)</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //wrt_table01 -->
+
+			<p class="stxt02">위 고객의 신청 정보를 확인했으며, <br>
+			상담 진행 및 대출 신청 관련 업무를 진행합니다.</p>
+			
+			<!-- wrt_table01 -->
+			<div class="wrt_table01">
+				<table border="0" cellspacing="0" cellpadding="0">
+	                <caption>상담 신청 정보</caption>
+	                <colgroup>
+		                <col style="width:10%;">
+		                <col style="width:auto;">
+	                </colgroup>
+					<tbody>
+						<tr>
+							<th><input type="checkbox" id="progress" name="progress"></th>
+							<td><label for="progress">본 건을 담당해 진행합니다.</label></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- //wrt_table01 -->
+			
+			<p class="stxt01">※선택하지 않을 경우, 다른 담당자가 확인 후 진행할 수 있습니다.</p>
+
+			<div class="layer_btnbox">
+				<button type="button" class="btn_st bt03"><span>확인</span></button>
+			</div>
+		</div>
+
+		<div class="layer_rdbox">
+			<div class="layer_lb"></div>
+			<div class="layer_rb"></div>
+		</div>
+	</div>
+</div>
+<!-- //layerpopup 대출신청 상세정보 -->
+
+
+</body>
+</html>

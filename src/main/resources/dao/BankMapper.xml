@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bankMapper">
+ 
+    <!-- /* select dual */ -->
+    <select id="bankSelect" resultType="net.ib.paperless.spring.domain.BankInfo" parameterType="map">
+    SELECT (SELECT COUNT(*) FROM tb_bank_info) AS totalCnt,
+        tai.*
+    FROM tb_bank_info AS tai
+    WHERE available_yn = 'y'
+    ORDER BY tai.type ASC, major_yn DESC, bank_name
+	    <!-- limit #{pagePoint} , #{pageSize} -->
+    </select>
+ 	
+ 	<delete id="bankDelete" parameterType="hashmap">
+ 	</delete>
+ 	
+    <select id="bankSelectOne" resultType="net.ib.paperless.spring.domain.BankInfo" parameterType="string">
+    </select>
+    
+    <insert id="bankInsert" parameterType="hashmap">
+    </insert>
+    
+    <update id="bankUpdate" parameterType="hashmap" useGeneratedKeys="true" keyProperty="seq">
+    </update>
+</mapper>
