@@ -5,12 +5,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>net.ib</groupId>
-	<artifactId>paperless-admin</artifactId>
+	<artifactId>goodpaper-admin</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>paperless-admin</name>
-	<description>paperless-admin</description>
+	<name>goodpaper-admin</name>
+	<description>goodpaper-admin</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
