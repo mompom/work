@@ -5,8 +5,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-//@EnableAutoConfiguration(exclude = { DataSourceTransactionManagerAutoConfiguration.class, DataSourceAutoConfiguration.class })
-@EnableAutoConfiguration
 public class PaperlessApplication {
 
 	public static void main(String[] args) {
