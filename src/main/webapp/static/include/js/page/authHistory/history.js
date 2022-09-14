@@ -16,8 +16,8 @@ AccountAuthHistory.prototype = (function(){
 		getNameSpace  : function(){
 			return namespace;
 		},
-		view : function(){
-			root.topArea.init();
+		view : function(data){
+			root.topArea.init(data);
 		}
 	}
 }());
@@ -25,7 +25,7 @@ AccountAuthHistory.prototype.topArea = (function(){
 	var root;
 	
 	return {
-		init : function(){
+		init : function(level){
 			root = this.root;
 			var pageNo = $("#pageNo").val();
 			var pageSize = 10;
@@ -35,13 +35,23 @@ AccountAuthHistory.prototype.topArea = (function(){
 				"pageNo": pageNo, 
 				"pageSize": pageSize,
 			};
-			
 			ajaxGet("/${map.loanId}/api/companyInfoSelectList", params, function(response){
 				if (response.result) {
+
+					var urlArr = location.pathname.split("/")
+					var companyId = urlArr[1];
 					$(response.list).each(function(k,v){
-						$("#defaultSearchCompany").append(
+						if (level != undefined && level == 3) {
+							if ( v.id == companyId) {
+								$("#defaultSearchCompany").append(
+									"<option id='"+v.id+"'>" + v.name + "</option>"
+								);
+							}
+						} else {
+							$("#defaultSearchCompany").append(
 								"<option id='"+v.id+"'>" + v.name + "</option>"
-						);
+							);	
+						}						
 					});
 					
 					var today = new Date();
@@ -52,9 +62,6 @@ AccountAuthHistory.prototype.topArea = (function(){
 					root.topArea.month('#month_select', month);
 					
 				}
-				
-				root.history.view();
-				root.charge.init();
 			}, params);
 			
 			//root.topArea.service();

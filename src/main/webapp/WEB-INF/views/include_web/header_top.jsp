@@ -36,6 +36,12 @@
 					<%-- <li id="result_mng" <c:if test="${map.topmenu == 'result_mng'}">class="on"</c:if>><a href="/${map.loanId}/admin/accountAuthHistoryManage_date">내역조회</a></li> --%>
 					<li id="members_mng" <c:if test="${map.topmenu == 'members_mng'}">class="on"</c:if>><a href="/${map.loanId}/members/meritz">회원사전용</a></li>
 				</c:if>
+				<c:if test="${map.admin_level == 3}">
+<%-- 					<li id="admin_mng" <c:if test="${map.topmenu == 'admin_mng'}">class="on"</c:if>><a href="/${map.loanId}/admin/notice">운영관리</a></li> --%>
+					<li id="authHistory_mng" <c:if test="${map.topmenu == 'authHistory_mng'}">class="on"</c:if>><a href="/${map.loanId}/authHistory/calculate">정산관리</a></li>
+					<%-- <li id="result_mng" <c:if test="${map.topmenu == 'result_mng'}">class="on"</c:if>><a href="/${map.loanId}/admin/accountAuthHistoryManage_date">내역조회</a></li> --%>
+<%-- 					<li id="members_mng" <c:if test="${map.topmenu == 'members_mng'}">class="on"</c:if>><a href="/${map.loanId}/members/meritz">회원사전용</a></li> --%>
+				</c:if>
 			</ul>
 		</div>
 		<div class="navigation_warp">
