@@ -256,6 +256,7 @@ AccountAuthHistory.prototype.history = (function(){
 			
 			var searchOption1 = $("#search_option1").val();
 			var searchOption2 = $(".search_option2").val();
+			var searchOption3 = $(".search_option3").val();
 			var searchWord = $(".search_word").val();
 			
 			var params = {
@@ -266,6 +267,7 @@ AccountAuthHistory.prototype.history = (function(){
 				"company_id":company_id,
 				"searchOption1" : searchOption1,
 				"searchOption2" : searchOption2,
+				"searchOption3" : searchOption3,
 				"searchWord" : searchWord
 			};
 			ajaxGet("/${map.loanId}/api/historyPublicSelect", params, func, params);

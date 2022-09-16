@@ -49,9 +49,18 @@ SELECT
 FROM
   tba_history_public A 
 WHERE
-	account_holder_name like concat('%', #{searchWord}, '%') and
+	<if test="searchWord != '' and searchWord != null">
+		account_holder_name like concat('%', #{searchWord}, '%') and
+	</if>
 	<if test="company_id != '' and company_id != null">
 		company_id = #{company_id} and
+	</if>
+	<if test="searchOption3 != '' and searchOption3 != null">
+		(
+		lower(inquiry_realname_yn) = lower(#{searchOption3}) or
+  		lower(inquiry_transfer_deposit_yn) = lower(#{searchOption3}) or
+ 		lower(authcode_confirm_yn) = lower(#{searchOption3}) 
+ 		) and
 	</if>
 	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
 UNION ALL 
@@ -83,9 +92,18 @@ SELECT
 FROM
 	tba_history A
 WHERE
-	account_holder_name like concat('%', #{searchWord}, '%') and
+	<if test="searchWord != '' and searchWord != null">
+		account_holder_name like concat('%', #{searchWord}, '%') and
+	</if>
 	<if test="company_id != '' and company_id != null">
 		company_id = #{company_id} and
+	</if>
+	<if test="searchOption3 != '' and searchOption3 != null">
+		(
+		lower(inquiry_realname_yn) = lower(#{searchOption3}) or
+  		lower(inquiry_transfer_deposit_yn) = lower(#{searchOption3}) or
+ 		lower(authcode_confirm_yn) = lower(#{searchOption3}) 
+ 		) and
 	</if>
 	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
 ) AS History

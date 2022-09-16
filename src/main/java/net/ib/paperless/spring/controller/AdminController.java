@@ -31,6 +31,7 @@ public class AdminController{
 		map.put("admin_name", user.getName());
 		map.put("admin_level", user.getLevel());
 		map.put("level_name", user.getLevel_name());
+		map.put("company_name", user.getCompany_name());
 		
 		map.put("submenu","prod_mng");
 		map.put("topmenu","admin_mng");
@@ -48,6 +49,7 @@ public class AdminController{
 		map.put("admin_name", user.getName());
 		map.put("admin_level", user.getLevel());
 		map.put("level_name", user.getLevel_name());
+		map.put("company_name", user.getCompany_name());
 		
 		map.put("submenu","company_mng");
 		map.put("topmenu","admin_mng");
@@ -65,6 +67,7 @@ public class AdminController{
 		map.put("admin_name", user.getName());
 		map.put("admin_level", user.getLevel());
 		map.put("level_name", user.getLevel_name());
+		map.put("company_name", user.getCompany_name());
 		
 		map.put("submenu","user_mng");
 		map.put("topmenu","admin_mng");
@@ -74,16 +77,16 @@ public class AdminController{
 	
 	@RequestMapping(value="/notice",method={RequestMethod.GET , RequestMethod.POST})
 	public String notice(Model model ,@PathVariable String loanId, Principal principal){
-		//System.out.println("principal = "+principal);
+		System.out.println("principal = "+principal);
 		
 		User user = authenticationService.loadUserOpenApi(principal.getName());
 		
 		Map<String,Object> map = new HashMap<String,Object>();
-		//map.put("loanId", loanId);
 		map.put("loanId", loanId);
 		map.put("admin_name", user.getName());
 		map.put("admin_level", user.getLevel());
 		map.put("level_name", user.getLevel_name());
+		map.put("company_name", user.getCompany_name());
 		
 		map.put("submenu","notice");
 		map.put("topmenu","admin_mng");
