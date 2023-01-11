@@ -534,23 +534,21 @@
 								<td>-</td>
 								<td>-</td>
 							</tr>
-						</tbody>																		
-					</table>
-					<table class="list">
-						<tbody>
-						<tr>
-							<td class=""></td>
-							<td class=""><span class="cursor_pointer company_all" style="color:#00b752;">전체</span><input id="company_all_input" type="hidden" value=""></td>
-							<td class="border_right"></td>
-							<td class="border_right">합계</td>
-							<td class="border_right inquiry_realname_sum">0</td>
-							<td class="border_right inquiry_realname_sum_y" style="color:blue;">0</td>
-							<td class="border_right inquiry_realname_sum_n" style="color:black;">0</td>
-							<td class="border_right inquiry_transfer_sum">0</td>
-							<td class="border_right inquiry_transfer_sum_y" style="color:blue;">0</td>
-							<td class="inquiry_transfer_sum_n" style="color:black;">0</td>								
-						</tr>
-						</tbody>						
+						</tbody>												
+						<tfoot>
+							<tr>
+								<td class=""></td>
+								<td class=""><span class="cursor_pointer company_all" style="color:#00b752;">전체</span><input id="company_all_input" type="hidden" value=""></td>
+								<td class="border_right"></td>
+								<td class="border_right">합계</td>
+								<td class="border_right inquiry_realname_sum">0</td>
+								<td class="border_right inquiry_realname_sum_y" style="color:blue;">0</td>
+								<td class="border_right inquiry_realname_sum_n" style="color:black;">0</td>
+								<td class="border_right inquiry_transfer_sum">0</td>
+								<td class="border_right inquiry_transfer_sum_y" style="color:blue;">0</td>
+								<td class="inquiry_transfer_sum_n" style="color:black;">0</td>								
+							</tr>
+						</tfoot>
 					</table>
 				</div>
 				
