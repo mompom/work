@@ -17,4 +17,9 @@ public class OpenApiMessageController {
 	public @ResponseBody String errorToken() {
 		return "{\"code\":\"400\", \"detail\":\"not exist token\"}";
 	}
+	
+	@RequestMapping("/error/no-allow-ip")
+	public @ResponseBody String errorPage() {
+		return "{\"code\":\"400\", \"detail\":\"not support IP\"}";
+	}
 }
