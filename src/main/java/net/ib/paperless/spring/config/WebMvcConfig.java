@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -13,7 +12,6 @@ import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesView;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 
-import net.ib.paperless.spring.support.AccessIpInterceptor;
 import net.ib.paperless.spring.support.OpenApiUserSessionInterceptor;
 import net.ib.paperless.spring.support.UserSessionInterceptor;
 
@@ -26,9 +24,6 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 	@Autowired
 	private OpenApiUserSessionInterceptor openApiUserSessionInterceptor;
 	
-	@Autowired
-	private AccessIpInterceptor accessIpInterceptor;
-	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry){
 		
@@ -37,9 +32,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		//.excludePathPatterns("/**/admin_mng/**")
 		.excludePathPatterns("/**/open_api/**") //작엄 내용 : 기존 인터셉터에 제외 로직.  작업자 : 김범래, 작업일 : 2017.06.12
 		.excludePathPatterns("/**/open_api/login") //작엄 내용 : 기존 인터셉터에 제외 로직.  작업자 : 김범래, 작업일 : 2017.06.12
-//		.excludePathPatterns("/open_api/error/token") //작엄 내용 : 에러 페이지(json)  작업자 : 김범래, 작업일 : 2017.06.20
-//		.excludePathPatterns("/open_api/error/loanid") //작엄 내용 : 에러 페이지(json)  작업자 : 김범래, 작업일 : 2017.06.20
-		.excludePathPatterns("/open_api/error/**") //작엄 내용 : 에러 페이지(json)  작업자 : 김범래, 작업일 : 2017.06.20
+		.excludePathPatterns("/open_api/error/token") //작엄 내용 : 에러 페이지(json)  작업자 : 김범래, 작업일 : 2017.06.20
+		.excludePathPatterns("/open_api/error/loanid") //작엄 내용 : 에러 페이지(json)  작업자 : 김범래, 작업일 : 2017.06.20
 		.excludePathPatterns("/**/stats/**")
 		.excludePathPatterns("/**/status/**")
 		.excludePathPatterns("/**/user_mng/**")
@@ -52,24 +46,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(openApiUserSessionInterceptor)
 		.addPathPatterns("/**/open_api/**") 
 		.addPathPatterns("/**/open_api/login")
-//		.excludePathPatterns("/open_api/error/token") //작엄 내용 : 에러 페이지(json)  작업자 : 김범래, 작업일 : 2017.06.20
-//		.excludePathPatterns("/open_api/error/loanid") //작엄 내용 : 에러 페이지(json)  작업자 : 김범래, 작업일 : 2017.06.20
-		.excludePathPatterns("/open_api/error/**") //작엄 내용 : 에러 페이지(json)  작업자 : 김범래, 작업일 : 2017.06.20
+		.excludePathPatterns("/open_api/error/token") //작엄 내용 : 에러 페이지(json)  작업자 : 김범래, 작업일 : 2017.06.20
+		.excludePathPatterns("/open_api/error/loanid") //작엄 내용 : 에러 페이지(json)  작업자 : 김범래, 작업일 : 2017.06.20
 		;
-		
-		registry.addInterceptor(accessIpInterceptor)
-		.addPathPatterns("/login")
-		.addPathPatterns("/")
-		.excludePathPatterns("/**/open_api/**") //작엄 내용 : 기존 인터셉터에 제외 로직.  작업자 : 김범래, 작업일 : 2017.06.12
-		.excludePathPatterns("/**/open_api/login") //작엄 내용 : 기존 인터셉터에 제외 로직.  작업자 : 김범래, 작업일 : 2017.06.12
-//		.excludePathPatterns("/open_api/error/token") //작엄 내용 : 에러 페이지(json)  작업자 : 김범래, 작업일 : 2017.06.20
-//		.excludePathPatterns("/open_api/error/loanid") //작엄 내용 : 에러 페이지(json)  작업자 : 김범래, 작업일 : 2017.06.20
-		.excludePathPatterns("/open_api/error/**") //작엄 내용 : 에러 페이지(json)  작업자 : 김범래, 작업일 : 2017.06.20
-		.excludePathPatterns("/**/stats/**")
-		.excludePathPatterns("/**/status/**")
-		.excludePathPatterns("/**/user_mng/**")
-		.excludePathPatterns("/**/api/checkLogin")
-		.excludePathPatterns("/login_process");
 		
 	}
 	

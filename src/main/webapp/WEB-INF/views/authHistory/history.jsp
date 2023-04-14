@@ -98,8 +98,7 @@
 		layerManage = new LayerManage;
 		serviceManage = new ServiceManage;
 		
-		var level = "<c:out value='${map.admin_level}'/>";
-		accountAuthHistory.view(level);
+		accountAuthHistory.view();
 		
 		$('#historyPublic').scroll(function(e){
 			$('#historyPublicTitle').scrollLeft($(this).scrollLeft());
@@ -195,7 +194,6 @@
 		
 		var searchOption1 = $("#search_option1").val();
 		var searchOption2 = $(".search_option2").val();
-		var searchOption3 = $(".search_option3").val();
 		var searchWord = $(".search_word").val();
 		
 		console.log(pageSize);
@@ -207,10 +205,9 @@
 			"company_id":company_id,
 			"searchOption1" : searchOption1,
 			"searchOption2" : searchOption2,
-			"searchOption3" : searchOption3,
 			"searchWord" : searchWord
 		};
-		console.log(params)
+		
 		$('body').loading();
 		ajaxGet("/${map.loanId}/api/historyPublicSelect", params, function(response){
 			
@@ -397,13 +394,12 @@
 	function search(){
 		
 		var searchWord = $(".search_word").val();
-		/*
+		
 		if(searchWord == "")
 		{
 			alert('검색어를 입력해 주세요.')
 			return;
 		}
-		*/
 		viewPage();
 	}
 	</script>
@@ -444,12 +440,7 @@
 								</th>
 								<td class="left">
 									<select id="defaultSearchCompany" class="select width_202">
-										<c:if test="${map.admin_level eq 3 }">
-											<option value="-">선택</option>
-										</c:if>
-										<c:if test="${map.admin_level ne 3 }">
-											<option value="">전체</option>
-										</c:if>
+										<option value="">전체</option>
 									</select>
 								</td>
 							</tr>
@@ -493,7 +484,7 @@
 		                <colgroup>
 		                	<col style="width: 34px;">
 		                	<col style="width: 200px;">
-		                	<col style="width: 200px;">
+		                	<col style="width: 100px;">
 		                	<col style="width: 100px;">
 		                	<col style="width: 100px;">
 		                	<col style="width: 100px;">
@@ -534,7 +525,7 @@
 								<td>-</td>
 								<td>-</td>
 							</tr>
-						</tbody>												
+						</tbody>
 						<tfoot>
 							<tr>
 								<td class=""></td>
@@ -560,27 +551,20 @@
 						<strong class="sub_title" id="historyPublicTitleText">계좌인증내역_전체</strong>
 						<br>
 						<strong class="countTxt"></strong>
-						<span style="width:100px;display:inline-block;text-align:right">보여질 페이지 수 : </span>
+						
 						<select name="pageSize" id="pageSize" class="select02" style="width:92px;">
 							<option value="20">20개</option>
 							<option value="50">50개</option>
 							<option value="100">100개</option>
 							<option value="1000000000">전체결과</option>
 						</select>
-						<span style="width:100px;display:inline-block;text-align:right">확인여부 : </span>
-						<select name="" id="" class="select01 search_option3" style="width:120px;">
-							<option value="all">전체</option> 
-							<option value="y">성공</option>
-							<option value="n">실패</option>
-						</select>
-						<select name="" id="" class="select01 search_option2" style="display:none;width:153px;">
-							<option value="">이름</option>
-<!-- 							<option value="">계좌</option> -->
-						</select>
-						<span style="width:100px;display:inline-block;text-align:right">고객명 : </span>
-						<input class="search_word" type="text" name="" placeholder="검색어를 입력해 주세요.">
 						
-						<button type="button" class="btn_st_normal" onclick="javascript:search()">검색</button>
+						<select name="" id="" class="select01 search_option2" style="width:153px;">
+							<option value="">이름</option>
+							<option value="">계좌</option>
+						</select>
+						<input class="search_word" type="text" name="" placeholder="검색어를 입력해 주세요.">
+						<button type="button" class="btn_st_normal" onclick="javascript:search()"><span>검색</span></button>
 						<!-- <a class="btn_st_normal" id="excelExport"><span>엑셀 파일 다운로드</span></a> -->
 						<button class="btn_st_normal" id="excelExport" download="전체계좌인증내역.xls">다운로드</button>
 					</div>

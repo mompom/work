@@ -31,8 +31,7 @@
 		layerManage = new LayerManage;
 		serviceManage = new ServiceManage;
 		
-		var level = "<c:out value='${map.admin_level}'/>";
-		accountAuthHistory.view(level);
+		accountAuthHistory.view();
 		
 	});
 	

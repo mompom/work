@@ -14,7 +14,6 @@ public class User {
 	private String team;
 	private String tel_number;
 	private String level_name;
-	private String company_name;
 	public int getSeq() {
 		return seq;
 	}
@@ -92,12 +91,6 @@ public class User {
 	}
 	public void setLevel_name(String level_name) {
 		this.level_name = level_name;
-	}
-	public String getCompany_name() {
-		return company_name;
-	}
-	public void setCompany_name(String company_name) {
-		this.company_name = company_name;
 	}
 	
 }

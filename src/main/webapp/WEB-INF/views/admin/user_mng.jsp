@@ -341,7 +341,6 @@ function add_user_layer_close()
 								<select name="" id="admin_level_list_select" class="insert_level">
 									<option value="1">시스템관리자</option>
 									<option value="2">정산관리자</option>
-									<option value="3">고객사</option>
 								</select>
 							</div>
 							<div class="insert_user_content">아이디

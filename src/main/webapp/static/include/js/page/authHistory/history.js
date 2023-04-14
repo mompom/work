@@ -16,8 +16,8 @@ AccountAuthHistory.prototype = (function(){
 		getNameSpace  : function(){
 			return namespace;
 		},
-		view : function(data){
-			root.topArea.init(data);
+		view : function(){
+			root.topArea.init();
 		}
 	}
 }());
@@ -25,7 +25,7 @@ AccountAuthHistory.prototype.topArea = (function(){
 	var root;
 	
 	return {
-		init : function(level){
+		init : function(){
 			root = this.root;
 			var pageNo = $("#pageNo").val();
 			var pageSize = 10;
@@ -35,23 +35,13 @@ AccountAuthHistory.prototype.topArea = (function(){
 				"pageNo": pageNo, 
 				"pageSize": pageSize,
 			};
+			
 			ajaxGet("/${map.loanId}/api/companyInfoSelectList", params, function(response){
 				if (response.result) {
-
-					var urlArr = location.pathname.split("/")
-					var companyId = urlArr[1];
 					$(response.list).each(function(k,v){
-						if (level != undefined && level == 3) {
-							if ( v.id == companyId) {
-								$("#defaultSearchCompany").append(
-									"<option id='"+v.id+"'>" + v.name + "</option>"
-								);
-							}
-						} else {
-							$("#defaultSearchCompany").append(
+						$("#defaultSearchCompany").append(
 								"<option id='"+v.id+"'>" + v.name + "</option>"
-							);	
-						}						
+						);
 					});
 					
 					var today = new Date();
@@ -62,6 +52,9 @@ AccountAuthHistory.prototype.topArea = (function(){
 					root.topArea.month('#month_select', month);
 					
 				}
+				
+				root.history.view();
+				root.charge.init();
 			}, params);
 			
 			//root.topArea.service();
@@ -256,7 +249,6 @@ AccountAuthHistory.prototype.history = (function(){
 			
 			var searchOption1 = $("#search_option1").val();
 			var searchOption2 = $(".search_option2").val();
-			var searchOption3 = $(".search_option3").val();
 			var searchWord = $(".search_word").val();
 			
 			var params = {
@@ -267,7 +259,6 @@ AccountAuthHistory.prototype.history = (function(){
 				"company_id":company_id,
 				"searchOption1" : searchOption1,
 				"searchOption2" : searchOption2,
-				"searchOption3" : searchOption3,
 				"searchWord" : searchWord
 			};
 			ajaxGet("/${map.loanId}/api/historyPublicSelect", params, func, params);
