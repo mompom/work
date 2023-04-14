@@ -3,14 +3,11 @@ package net.ib.paperless.spring.support;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import net.ib.paperless.spring.common.IpUtil;
-import net.ib.paperless.spring.controller.MembersApiController;
 
 /**
  * @author 양우정
@@ -20,14 +17,14 @@ import net.ib.paperless.spring.controller.MembersApiController;
 @Component
 public class AccessIpInterceptor extends HandlerInterceptorAdapter{
 	
-	private static final Logger logger = LoggerFactory.getLogger(AccessIpInterceptor.class);
-	
+	static final String HEADER_STRING = "Authorization";
+		
 	@Override 
 	public boolean preHandle( HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		System.out.println("============preHandle AccessIpInterceptor");
 		// HTTP 요청 처리 전 수행할 로직 작성 
 		String clientIp = IpUtil.getClientIpAddr(request);
-		logger.info(clientIp);
+		System.out.println(clientIp);
 		if ("222.108.100.216".equals(clientIp)// 티소프트 본사 네트워크 IP
 			|| "39.117.40.3".equals(clientIp)// 인포뱅크 공인 IP 
 			|| "0:0:0:0:0:0:0:1".equals(clientIp) // 로컬 IPv6 
