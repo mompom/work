@@ -57,6 +57,7 @@ public class WebController {
 	    
 	    //request.getSession().setAttribute("prevPage", "/goodpaper/admin_mng/notice");
 	    
+	    request.getSession().setAttribute("prevPage", "/admin/notice");
 	    String clientIp = IpUtil.getClientIpAddr(request);
 	    logger.info("##### clientIp "+clientIp);
 		if ("222.108.100.216".equals(clientIp)// 티소프트 본사 네트워크 IP
@@ -65,7 +66,6 @@ public class WebController {
 			|| "127.0.0.1".equals(clientIp) // 로컬 IPv4 
 			|| "175.197.92.204".equals(clientIp)) // 디딤365 
 		{
-			request.getSession().setAttribute("prevPage", "/admin/notice");
 			return "login";
 		} else {
 			return "error";
