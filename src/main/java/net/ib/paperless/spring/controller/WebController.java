@@ -2,6 +2,8 @@ package net.ib.paperless.spring.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import net.ib.paperless.spring.common.IpUtil;
 import net.ib.paperless.spring.domain.User;
 import net.ib.paperless.spring.service.AuthenticationService;
 
@@ -20,6 +23,8 @@ public class WebController {
     //DbService dbService;
 	@Autowired
     AuthenticationService authenticationService;
+	
+	private static final Logger logger = LoggerFactory.getLogger(WebController.class);
 	
 	@RequestMapping(value = "/", method={RequestMethod.GET , RequestMethod.POST})
 	public String index(Model model, HttpServletRequest request) {
@@ -51,8 +56,21 @@ public class WebController {
 	    //model.addAttribute("base", "http://localhost:9080/");
 	    
 	    //request.getSession().setAttribute("prevPage", "/goodpaper/admin_mng/notice");
-	    request.getSession().setAttribute("prevPage", "/admin/notice");
-		return "login";
+	    
+	    String clientIp = IpUtil.getClientIpAddr(request);
+	    logger.info("##### clientIp "+clientIp);
+		if ("222.108.100.216".equals(clientIp)// 티소프트 본사 네트워크 IP
+			|| "39.117.40.3".equals(clientIp)// 인포뱅크 공인 IP 
+			|| "0:0:0:0:0:0:0:1".equals(clientIp) // 로컬 IPv6 
+			|| "127.0.0.1".equals(clientIp) // 로컬 IPv4 
+			|| "175.197.92.204".equals(clientIp)) // 디딤365 
+		{
+			request.getSession().setAttribute("prevPage", "/admin/notice");
+			return "login";
+		} else {
+			return "error";
+		}		
+	    
 	}
 	
 	@RequestMapping("/detail")
