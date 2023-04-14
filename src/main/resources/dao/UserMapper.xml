@@ -6,8 +6,7 @@
     <select id="findByIdIgnoreCase" resultType="net.ib.paperless.spring.domain.User" parameterType="string">
 		SELECT 
 			tai.* ,
-			(SELECT level_name FROM tb_admin_level WHERE level = tai.level) AS level_name,
-			(SELECT name FROM tba_company_info WHERE id = tai.loan_id) AS company_name
+			(SELECT level_name FROM tb_admin_level WHERE level = tai.level) AS level_name
 		FROM 
 			tb_admin_info AS tai
 		WHERE
@@ -22,10 +21,9 @@
  	<!-- /* select dual */ -->
     <select id="userLevelSelectOne" resultType="hashmap" parameterType="string">
 		SELECT 
-			tai.*,
-			(SELECT name FROM tba_company_info WHERE id = tai.loan_id) AS company_name
+			*
 		FROM 
-			tb_admin_info tai
+			tb_admin_info
 		WHERE
         	id=#{id}
     </select>

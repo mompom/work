@@ -33,7 +33,6 @@ public class AuthHistory{
 		map.put("admin_name", user.getName());
 		map.put("admin_level", user.getLevel());
 		map.put("level_name", user.getLevel_name());
-		map.put("company_name", user.getCompany_name());
 		
 		map.put("submenu","calculate");
 		map.put("topmenu","calculate_mng");
@@ -52,7 +51,6 @@ public class AuthHistory{
 		map.put("admin_name", user.getName());
 		map.put("admin_level", user.getLevel());
 		map.put("level_name", user.getLevel_name());
-		map.put("company_name", user.getCompany_name());
 		
 		map.put("submenu","history");
 		map.put("topmenu","calculate_mng");

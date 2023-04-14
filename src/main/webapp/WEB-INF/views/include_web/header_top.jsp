@@ -6,13 +6,9 @@
 			<!-- <h1 class="top_logo">굿페이퍼</h1> -->
 			<h1><a href="#">굿페이퍼 <span>비대면 서비스 관리 어드민</span></a></h1>
 			<div class="top_util">
-			
 				<form action="${base}/logout" method="post">
 					<span class="user_name">${map.admin_name}</span>
-					<span class="user">(
-					<c:if test="${map.admin_level == 3}">
-						${map.company_name} /
-					</c:if> ${map.level_name})</span>
+					<span class="user">(${map.level_name})</span>
 					
 					<span class="space_cst">ㅣ</span>
 					<button type="button" class="btn_st_bd password_update"><span>Password</span></button> 
@@ -39,12 +35,6 @@
 					<li id="authHistory_mng" <c:if test="${map.topmenu == 'authHistory_mng'}">class="on"</c:if>><a href="/${map.loanId}/authHistory/calculate">정산관리</a></li>
 					<%-- <li id="result_mng" <c:if test="${map.topmenu == 'result_mng'}">class="on"</c:if>><a href="/${map.loanId}/admin/accountAuthHistoryManage_date">내역조회</a></li> --%>
 					<li id="members_mng" <c:if test="${map.topmenu == 'members_mng'}">class="on"</c:if>><a href="/${map.loanId}/members/meritz">회원사전용</a></li>
-				</c:if>
-				<c:if test="${map.admin_level == 3}">
-<%-- 					<li id="admin_mng" <c:if test="${map.topmenu == 'admin_mng'}">class="on"</c:if>><a href="/${map.loanId}/admin/notice">운영관리</a></li> --%>
-					<li id="authHistory_mng" <c:if test="${map.topmenu == 'authHistory_mng'}">class="on"</c:if>><a href="/${map.loanId}/authHistory/calculate">정산관리</a></li>
-					<%-- <li id="result_mng" <c:if test="${map.topmenu == 'result_mng'}">class="on"</c:if>><a href="/${map.loanId}/admin/accountAuthHistoryManage_date">내역조회</a></li> --%>
-<%-- 					<li id="members_mng" <c:if test="${map.topmenu == 'members_mng'}">class="on"</c:if>><a href="/${map.loanId}/members/meritz">회원사전용</a></li> --%>
 				</c:if>
 			</ul>
 		</div>
