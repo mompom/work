@@ -68,7 +68,7 @@ public class WebController {
 		{
 			return "login";
 		} else {
-			return "error";
+			return "error/error";
 		}		
 	    
 	}
