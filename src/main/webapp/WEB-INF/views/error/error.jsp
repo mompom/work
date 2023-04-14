@@ -9,6 +9,7 @@
 	
 </head>
 <body>
-<h1><a href="#"><span>접근불가</span></a></h1>
+<h1 style="text-align:center"><a href="#" >error occurred</a></h1>
+
 </body>
 </html>
