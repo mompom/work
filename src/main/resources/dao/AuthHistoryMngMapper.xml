@@ -371,7 +371,7 @@ SELECT * FROM(
 		WHERE A.service_code = B.service_code
 		AND A.company_id = #{company_id}
 		AND A.inquiry_realname_yn = 'y'
-		AND DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE('20235', '%Y%m'),'%Y%m')
+		AND DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
 		) E
 	WHERE D.service_type = E.service_type
 	ORDER BY E.inquiry_date DESC
