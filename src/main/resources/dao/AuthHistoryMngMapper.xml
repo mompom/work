@@ -218,7 +218,6 @@ WHERE
 
 <select id="historyCountSelectList" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
 SELECT * FROM(
-		   
 	SELECT 
 	  1 AS customer_service_seq,
 	  COUNT(*) AS inquiry_total_count,
@@ -228,7 +227,6 @@ SELECT * FROM(
 	  tba_history 
 	WHERE company_id = #{company_id}
 	  AND DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
-
 	UNION ALL
 	SELECT 
 	   2,
@@ -277,7 +275,6 @@ SELECT * FROM(
 	   FROM tba_history_public
 	   WHERE using_platform = 'nh'
 	   AND company_id = #{company_id}
-	   
 	   AND DATE_FORMAT(inquiry_transfer_deposit_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
 	UNION ALL
 	SELECT 
@@ -350,125 +347,36 @@ SELECT * FROM(
 </select>
 
 	<select id="historySelectList" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
-	SELECT * FROM(
-	   SELECT
-	      1 AS customer_service_seq,
-	      (SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS service_name,
-	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS customer_service_name,
-	      A.seq, A.company_id, inquiry_realname_yn AS inquiry_yn, inquiry_realname_date AS inquiry_date, 'basic' AS using_platform
-	      FROM tba_history A  
-	      WHERE company_id = #{company_id}  
-	   UNION ALL
-	   SELECT 
-	      2,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS service_name,
-	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 2 AND D.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS customer_service_name,
-	      A.seq, A.company_id, inquiry_transfer_deposit_yn, inquiry_transfer_deposit_date AS inquiry_date, 'basic'
-	      FROM tba_history A 
-	      WHERE company_id = #{company_id}
-	   UNION ALL
-	   SELECT 
-	      3,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS service_name,
-	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS customer_service_name,
-	      A.seq, A.company_id, inquiry_realname_yn, inquiry_realname_date AS inquiry_date, 'op'
-	      FROM tba_history_public A
-	      WHERE using_platform = 'op'
-	      AND A.company_id = #{company_id}
-	   UNION ALL
-	   SELECT 
-	      4,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS service_name,
-	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 2 AND D.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS customer_service_name,
-	      A.seq, A.company_id, inquiry_transfer_deposit_yn, inquiry_transfer_deposit_date AS inquiry_date, 'op'
-	      FROM tba_history_public A
-	      WHERE using_platform = 'op'
-	   AND A.company_id = #{company_id}
-	   UNION ALL
-	   SELECT 
-	      5,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS service_name,
-	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS customer_service_name,
-	      A.seq, A.company_id, inquiry_realname_yn, inquiry_realname_date AS inquiry_date, 'nh'
-	      FROM tba_history_public A
-	      WHERE using_platform = 'nh'
-	      AND A.company_id = #{company_id}
-	   UNION ALL
-	   SELECT 
-	      6,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id})) AS service_name,
-	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 2 AND D.service_type IN (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code AND A.company_id = #{company_id} )) AS customer_service_name,
-	      A.seq, A.company_id, inquiry_transfer_deposit_yn, inquiry_transfer_deposit_date AS inquiry_date, 'nh'
-	      FROM tba_history_public A
-	      WHERE using_platform = 'nh'
-	   	  AND A.company_id = #{company_id}
-	   UNION ALL
-	   SELECT 
-	      7, (SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = A.service_type  AND A.company_id = #{company_id}) AS service_name, 
-	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type = A.service_type  AND A.company_id = #{company_id}) AS customer_service_name,
-	      B.seq, company_id, upload_yn, upload_date AS inquiry_date, 'file'
-	      FROM tb_fileupload_domain_info A, tb_fileupload_progress_log B
-	      WHERE A.comp_code = B.comp_code
-	      AND company_id = #{company_id}
-	      GROUP BY req_number_date
-	) E
-	WHERE E.company_id = #{company_id}
-	      AND DATE_FORMAT(inquiry_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
-	ORDER BY inquiry_date DESC
+	SELECT 
+		E.service_code
+		, E.company_id
+		, E.service_type
+		, E.inquiry_date		
+	,(CASE 
+		WHEN E.using_platform = 'op' THEN 'OP'
+		WHEN E.using_platform = 'nh' THEN 'NH'
+		ELSE 'BS'
+	END) AS service_name /* 표시될 서비스 이름 */
+	, D.customer_service_name AS customer_service_name /* 표시될 고객서비스 이름 */
+	FROM 
+	tb_admin_customer_service_type_code D
+	, (
+		SELECT A.service_code /* 회원사마다 지정한 서비스 코드 */
+		, A.company_id /* 회원사 아이디 */
+		, B.service_type /* 서비스 타입 코드 */
+		, A.inquiry_realname_date AS inquiry_date /* 일시 */
+		, A.using_platform /* 표시될 서비스 이름 */
+		FROM tba_history_public A
+		, tba_domain_info B
+		WHERE A.service_code = B.service_code
+		AND A.company_id = #{company_id}
+		AND A.inquiry_realname_yn = 'y'
+		AND DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE('20235', '%Y%m'),'%Y%m')
+		) E
+	WHERE D.service_type = E.service_type
+	ORDER BY E.inquiry_date DESC
 	LIMIT #{pagePoint} , #{pageSize}
-	<!-- SELECT * FROM(
-	   SELECT
-	      1 AS customer_service_seq,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS service_name,
-	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS customer_service_name,
-	      A.seq, A.company_id, inquiry_realname_yn AS inquiry_yn, inquiry_realname_date AS inquiry_date, 'basic' AS using_platform
-	      FROM tba_history A    
-	   UNION ALL
-	   SELECT 
-	      2,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS service_name,
-	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 2 AND D.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS customer_service_name,
-	      A.seq, A.company_id, inquiry_transfer_deposit_yn, inquiry_transfer_deposit_date, 'basic'
-	      FROM tba_history A
-	   
-	   UNION ALL
-	   SELECT 
-	      3,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS service_name,
-	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS customer_service_name,
-	      A.seq, A.company_id, inquiry_realname_yn, inquiry_realname_date, 'op'
-	      FROM tba_history_public A
-	      WHERE using_platform = 'op'
-	   UNION ALL
-	   SELECT 
-	      4,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS service_name,
-	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 2 AND D.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS customer_service_name,
-	      A.seq, A.company_id, inquiry_transfer_deposit_yn, inquiry_transfer_deposit_date, 'op'
-	      FROM tba_history_public A
-	      WHERE using_platform = 'op'
-	   
-	   UNION ALL
-	   SELECT 
-	      5,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS service_name,
-	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS customer_service_name,
-	      A.seq, A.company_id, inquiry_realname_yn, inquiry_realname_date, 'nh'
-	      FROM tba_history_public A
-	      WHERE using_platform = 'nh'
-	   UNION ALL
-	   SELECT 
-	      6,(SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS service_name,
-	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 2 AND D.service_type = (SELECT B.service_type FROM tba_domain_info B WHERE A.service_code =  B.service_code)) AS customer_service_name,
-	      A.seq, A.company_id, inquiry_transfer_deposit_yn, inquiry_transfer_deposit_date, 'nh'
-	      FROM tba_history_public A
-	      WHERE using_platform = 'nh'
-	   
-	   UNION ALL
-	   SELECT 
-	      7, (SELECT C.service_comment FROM tb_service_type_code C WHERE C.service_type = A.service_type) AS service_name, 
-	      (SELECT D.customer_service_name FROM tb_admin_customer_service_type_code D WHERE D.customer_service_type = 1 AND D.service_type = A.service_type) AS customer_service_name,
-	      B.seq, company_id, upload_yn, upload_date, 'file'
-	      FROM tb_fileupload_domain_info A, tb_fileupload_progress_log B
-	      WHERE A.comp_code = B.comp_code
-	) E
-	WHERE company_id = #{company_id}
-	      AND DATE_FORMAT(inquiry_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
-	ORDER BY inquiry_date desc
-	limit #{pagePoint} , #{pageSize} -->
 	</select>
-	
-
 
 	<select id="accountAuthHistorySelectList" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
 		SELECT 

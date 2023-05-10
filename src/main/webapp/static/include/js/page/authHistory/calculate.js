@@ -186,7 +186,6 @@ AccountAuthHistory.prototype.charge = (function(){
 									return false;
 								}
 							});
-							
 							if(v.monthly_use<=inquiry_count){
 								//realName_monthly_use_sum = 0;
 								$("#lst_table_middle tbody tr."+v.service_type+"_"+v.customer_service_type).remove();
@@ -271,10 +270,10 @@ AccountAuthHistory.prototype.history = (function(){
 					/*$(response.list).each(function(k,v){*/
 					var listLen = response.list.length;
 					var innerHtml = "";
+
 					for(var i = 0; i<listLen; i++){
 						var v = response.list[i];
-						stateNo = totalCnt - ((pageNo - 1) * pageSize) - i;
-						
+						stateNo = ((pageNo - 1) * pageSize) + i + 1;
 						var yn_text = '성공'
 						if(v.inquiry_yn=='n'){
 							yn_text = '실패';
@@ -303,8 +302,6 @@ AccountAuthHistory.prototype.history = (function(){
 					
 					root.charge.init();
 					root.excel.init();
-					
-					
 				}
 				$('body').loading('stop');
 			}, params);
@@ -329,10 +326,9 @@ AccountAuthHistory.prototype.history = (function(){
 					$(response.list).each(function(k,v){
 						totalCnt += Number(v.inquiry_count);
 					});
+					root.history.getData();
 				}
 			}, params);
-			
-			this.getData();
 		}
 	}
 })();
