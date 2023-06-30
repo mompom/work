@@ -20,6 +20,18 @@ var pageSize = 20;
 var checkList = new Array();
 
 $(document).ready(function(){
+	
+	var needChgPassword = ${map.need_chg_password};
+	
+	if(1 == needChgPassword) {
+		$('#now_pw').val('');
+    $('#new_pw').val('');
+    $('#conf_pw').val('');
+    $('.new_password_layerpop').css('display','block');
+    $('#pass_cancel_btn').css('display', 'none');
+	}
+	
+	
 	$(".insert_title").focusout(function(){
         var element = $(this);        
         if (!element.text().trim().length) {

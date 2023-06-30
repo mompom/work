@@ -5,6 +5,7 @@
     <!-- /* select dual */ -->
     <select id="findByIdIgnoreCase" resultType="net.ib.paperless.spring.domain.User" parameterType="string">
 		SELECT 
+		  NOW() - INTERVAL 3 MONTH > tai.modify_date AS chg_password,
 			tai.* ,
 			(SELECT level_name FROM tb_admin_level WHERE level = tai.level) AS level_name
 		FROM 

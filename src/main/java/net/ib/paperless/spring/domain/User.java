@@ -14,6 +14,8 @@ public class User {
 	private String team;
 	private String tel_number;
 	private String level_name;
+	private int chg_password;
+	
 	public int getSeq() {
 		return seq;
 	}
@@ -91,6 +93,12 @@ public class User {
 	}
 	public void setLevel_name(String level_name) {
 		this.level_name = level_name;
+	}
+	public int getChg_password() {
+		return chg_password;
+	}
+	public void setChg_password(int chg_password) {
+		this.chg_password = chg_password;
 	}
 	
 }

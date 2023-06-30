@@ -101,6 +101,8 @@
 							<input type="password" class="pass_input" id="conf_pw" placeholder="새 비밀번호 확인" value="">
 						</div>
 						<br>
+						<p id="pass_ment">비밀번호는 영문, 숫자, 특수문자를 포함하여 8자리 이상으로 설정해 주세요.</p>
+						<br>
 						<div id="recapchaWidget" class="g-recaptcha"></div>
 					</div>
 				</form>

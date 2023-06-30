@@ -6,7 +6,8 @@
     	UPDATE 
         	tb_admin_info 
         SET 
-        	passwd = #{new_pw}
+        	passwd = #{new_pw},
+        	modify_date = now()
         WHERE
         	id = #{id}
     </update>
