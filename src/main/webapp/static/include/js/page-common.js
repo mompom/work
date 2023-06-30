@@ -90,7 +90,6 @@ $(document).ready(function(){
 	$(document).on('click', '#pass_confirm_btn', function(){
 		//$('.new_password_layerpop').css('display', 'none');
 		
-
 		var captcha_check = IsRecapchaValid(widId);
 		console.log('password update' + captcha_check);
 		
@@ -124,6 +123,12 @@ $(document).ready(function(){
 			pw_alert('#conf_pw');
 			return;
 		}
+		
+		if(!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,}$/.test(new_pw)) {
+      pw_alert('#new_pw');
+      return;
+    }
+		
 		/*if(captcha_check != true){
 			pw_alert();
 			return;
