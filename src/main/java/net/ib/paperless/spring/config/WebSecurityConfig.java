@@ -83,8 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             	.passwordParameter("password")
             	.permitAll()
             	.and()
-            .logout()
-            	.logoutUrl("/logout");
+            .logout();
     }
 	
     @Autowired

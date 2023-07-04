@@ -6,7 +6,7 @@
 			<!-- <h1 class="top_logo">굿페이퍼</h1> -->
 			<h1><a href="#">굿페이퍼 <span>비대면 서비스 관리 어드민</span></a></h1>
 			<div class="top_util">
-				<form action="${base}/logout" method="post">
+				<form action="${base}/logout" method="post" id="logout_form">
 					<span class="user_name">${map.admin_name}</span>
 					<span class="user">(${map.level_name})</span>
 					

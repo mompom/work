@@ -148,6 +148,7 @@ $(document).ready(function(){
 					$('#now_pw').val('');
 					$('#new_pw').val('');
 					$('#conf_pw').val('');
+					$('#logout_form').submit(); //로그아웃 처리
 				}else{
 					pw_alert('#now_pw');
 				}
