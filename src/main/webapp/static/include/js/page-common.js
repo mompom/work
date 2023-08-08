@@ -124,7 +124,7 @@ $(document).ready(function(){
 			return;
 		}
 		
-		if(!/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{8,}$/.test(new_pw)) {
+		if(!/(?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})/.test(new_pw)) {
       pw_alert('#new_pw');
       return;
     }
