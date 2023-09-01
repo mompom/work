@@ -18,28 +18,28 @@ import java.util.Collections;
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-  public JWTLoginFilter(String url, AuthenticationManager authManager) {
-    super(new AntPathRequestMatcher(url));
-    setAuthenticationManager(authManager);
-  }
+    public JWTLoginFilter(String url, AuthenticationManager authManager) {
+        super(new AntPathRequestMatcher(url));
+        setAuthenticationManager(authManager);
+    }
 
-  @Override
-  public Authentication attemptAuthentication(
-      HttpServletRequest req, HttpServletResponse res)
-      throws AuthenticationException, IOException, ServletException {
-      AccountCredentials creds = new ObjectMapper().readValue(req.getInputStream(), AccountCredentials.class);
-      return getAuthenticationManager().authenticate(
-    		  new UsernamePasswordAuthenticationToken(
-    				  creds.getUsername(),
-    				  creds.getPassword())
-    );
-  }
+    @Override
+    public Authentication attemptAuthentication(
+            HttpServletRequest req, HttpServletResponse res)
+            throws AuthenticationException, IOException, ServletException {
+        AccountCredentials creds = new ObjectMapper().readValue(req.getInputStream(), AccountCredentials.class);
+        return getAuthenticationManager().authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        creds.getUsername(),
+                        creds.getPassword())
+        );
+    }
 
-  protected void successfulAuthentication(
-      HttpServletRequest req,
-      HttpServletResponse res, FilterChain chain,
-      Authentication auth) throws IOException, ServletException {
-	  
-	  TokenAuthenticationService.addAuthentication(res, auth.getName(),req.getParameter("password"));
-  }
+    protected void successfulAuthentication(
+            HttpServletRequest req,
+            HttpServletResponse res, FilterChain chain,
+            Authentication auth) throws IOException, ServletException {
+
+        TokenAuthenticationService.addAuthentication(res, auth.getName(), req.getParameter("password"));
+    }
 }

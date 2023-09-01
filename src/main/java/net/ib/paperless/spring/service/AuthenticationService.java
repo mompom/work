@@ -2,6 +2,7 @@ package net.ib.paperless.spring.service;
 
 import java.util.HashMap;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
@@ -13,30 +14,22 @@ import org.springframework.stereotype.Service;
 import net.ib.paperless.spring.repository.UserRepository;
 
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService implements UserDetailsService {
-	@Autowired
-	UserRepository userRepository;
+
+	private final UserRepository userRepository;
 
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException{
 		UserDetails ud = null;
 		net.ib.paperless.spring.domain.User user = userRepository.findByIdIgnoreCase(id);
 		if (user == null) {
-			UsernameNotFoundException ue = new UsernameNotFoundException("Not found id");
-			throw ue;
+            throw new UsernameNotFoundException("Not found id");
 		}
 		ud = (UserDetails) new User(id, user.getPasswd(), AuthorityUtils.createAuthorityList("ROLE_USER"));
 
         return ud;
 	}
-	
-	public Integer userLevelSelectOne(String id) throws UsernameNotFoundException{
-	
-		HashMap<String, Object> user = userRepository.userLevelSelectOne(id);
-		
-        return (Integer) user.get("level");
-	}
-	
-	
+
 	/**
 	 * 론아이디를 가져와서 비교 하기 위하여 작성
 	 * @author BRKIM-IBD1(김범래)

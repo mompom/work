@@ -1,7 +1,7 @@
 <%@page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
-	String error = null;
+	String error = "";
     if (request.getParameter("error") != null) {
        error = request.getParameter("error");
     }
@@ -17,10 +17,12 @@
 	
 	<script type="text/javascript">
 	$(document).ready(function(){
+
 		var login_error = '<%=error%>';
-		if(login_error == 'loginFailed'){
-			$('#txt').text('아이디 또는 비밀번호를 확인해 주세요.').fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500);
+		if(login_error !== ''){
+			$('#txt').text(login_error).fadeOut(500).fadeIn(500).fadeOut(500).fadeIn(500);
 		}
+
 		$('#login_form').submit(function(event){
 			
 			var id = $('input[name=id]', '#login_form').val();
@@ -55,7 +57,7 @@
 	<!-- container -->
 	<div id="container">
 		<div id="login_box_wrap">
-			<form action="${base}/login_process" id="login_form" method="post">
+			<form action="/login_process" id="login_form" method="post">
 				<div class="login_box">
 					<h2>굿페이퍼 관리자 페이지</h2>
 					<br>
@@ -71,7 +73,7 @@
 						<button type="submit" id="login_btn" class="btn_st_login bt03"><span>로그인</span></button>
 					</div>
 				</div>
-			</form>
+			</form>-
 		</div>
 	</div>
     

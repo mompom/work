@@ -6,7 +6,7 @@
 			<!-- <h1 class="top_logo">굿페이퍼</h1> -->
 			<h1><a href="#">굿페이퍼 <span>비대면 서비스 관리 어드민</span></a></h1>
 			<div class="top_util">
-				<form action="${base}/logout" method="post" id="logout_form">
+				<form action="/logout" method="post" id="logout_form">
 					<span class="user_name">${map.admin_name}</span>
 					<span class="user">(${map.level_name})</span>
 					
@@ -27,14 +27,10 @@
 					<li id="admin_mng" <c:if test="${map.topmenu == 'admin_mng'}">class="on"</c:if>><a href="/${map.loanId}/admin/notice">운영관리</a></li>
 					<li id="authHistory_mng" <c:if test="${map.topmenu == 'authHistory_mng'}">class="on"</c:if>><a href="/${map.loanId}/authHistory/calculate">정산관리</a></li>
 					<li id="confirm_mng" <c:if test="${map.topmenu == 'confirm_mng'}">class="on"</c:if>><a href="/${map.loanId}/service/domainManage">서비스관리</a></li>
-					<%-- <li id="result_mng" <c:if test="${map.topmenu == 'result_mng'}">class="on"</c:if>><a href="/${map.loanId}/admin/accountAuthHistoryManage_date">내역조회</a></li> --%>
-					<li id="members_mng" <c:if test="${map.topmenu == 'members_mng'}">class="on"</c:if>><a href="/${map.loanId}/members/meritz">회원사전용</a></li>
 				</c:if>
 				<c:if test="${map.admin_level == 2}">
 					<li id="admin_mng" <c:if test="${map.topmenu == 'admin_mng'}">class="on"</c:if>><a href="/${map.loanId}/admin/notice">운영관리</a></li>
 					<li id="authHistory_mng" <c:if test="${map.topmenu == 'authHistory_mng'}">class="on"</c:if>><a href="/${map.loanId}/authHistory/calculate">정산관리</a></li>
-					<%-- <li id="result_mng" <c:if test="${map.topmenu == 'result_mng'}">class="on"</c:if>><a href="/${map.loanId}/admin/accountAuthHistoryManage_date">내역조회</a></li> --%>
-					<li id="members_mng" <c:if test="${map.topmenu == 'members_mng'}">class="on"</c:if>><a href="/${map.loanId}/members/meritz">회원사전용</a></li>
 				</c:if>
 			</ul>
 		</div>
@@ -69,11 +65,6 @@
 				<ul>
 					<li <c:if test="${map.submenu == 'accountAuthHistoryManage'}">class="on"</c:if>><a href="/${map.loanId}/admin/accountAuthHistoryManage_date">인증내역 관리(X)</a></li>
 					<li <c:if test="${map.submenu == 'accountAuthHistoryCheck'}">class="on"</c:if>><a href="/${map.loanId}/admin/accountAuthHistoryCheck">인증내역 조회(X)</a></li>		
-				</ul>
-			</div>
-			<div class="navigation_list" id="members_mng_nav">
-				<ul>
-					<li <c:if test="${map.submenu == 'meritz'}">class="on"</c:if>><a href="/${map.loanId}/members/meritz">메리츠</a></li>
 				</ul>
 			</div>
 		</div>

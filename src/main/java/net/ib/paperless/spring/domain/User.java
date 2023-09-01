@@ -15,6 +15,7 @@ public class User {
 	private String tel_number;
 	private String level_name;
 	private int chg_password;
+	private int login_fail_cnt;
 	
 	public int getSeq() {
 		return seq;
@@ -100,5 +101,9 @@ public class User {
 	public void setChg_password(int chg_password) {
 		this.chg_password = chg_password;
 	}
-	
+
+	public int getLogin_fail_cnt() {
+		return login_fail_cnt;
+	}
+
 }

@@ -2,30 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="userMapper">
  
-    <!-- /* select dual */ -->
     <select id="findByIdIgnoreCase" resultType="net.ib.paperless.spring.domain.User" parameterType="string">
-		SELECT 
-		  NOW() - INTERVAL 3 MONTH > tai.modify_date AS chg_password,
-			tai.* ,
-			(SELECT level_name FROM tb_admin_level WHERE level = tai.level) AS level_name
-		FROM 
-			tb_admin_info AS tai
-		WHERE
-        	id=#{id}
-        	AND use_yn = '1'
+		SELECT NOW() - INTERVAL 3 MONTH > tai.modify_date                      AS chg_password,
+			   tai.*,
+			   (SELECT level_name FROM tb_admin_level WHERE level = tai.level) AS level_name
+		FROM tb_admin_info AS tai
+		WHERE id = #{id}
+		  AND use_yn = '1'
     </select>
- 	
- 	<delete id="adminInfoDelete" parameterType="int">
-		DELETE FROM tb_admin_info WHERE seq=#{seq}
- 	</delete>
- 	
- 	<!-- /* select dual */ -->
-    <select id="userLevelSelectOne" resultType="hashmap" parameterType="string">
-		SELECT 
-			*
-		FROM 
-			tb_admin_info
-		WHERE
-        	id=#{id}
-    </select>
+
+	<insert id="userLoginHistoryInsert" parameterType="hashmap">
+		INSERT INTO tb_admin_login_history
+		( id
+		, login_yn
+		, ip_address
+		<if test="err_msg != '' and err_msg != null">
+			, err_msg
+		</if>
+		)
+		VALUES
+		( #{id}
+		, #{login_yn}
+		, #{ip_address}
+		<if test="err_msg != '' and err_msg != null">
+			, #{err_msg}
+		</if>
+		)
+	</insert>
+
+	<update id="incrementLoginFailCount" parameterType="hashmap">
+		UPDATE tb_admin_info
+		SET login_fail_cnt = login_fail_cnt + 1
+		  , modify_date    = NOW()
+		WHERE id = #{id}
+    </update>
+
+	<update id="resetLoginFailCount">
+		UPDATE tb_admin_info
+		SET login_fail_cnt = 0,
+			modify_date    = NOW()
+		WHERE login_fail_cnt >= 5
+	</update>
+
 </mapper>

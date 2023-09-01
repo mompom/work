@@ -1,16 +1,17 @@
 package net.ib.paperless.spring.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
+import net.ib.paperless.spring.domain.User;
+import net.ib.paperless.spring.security.JWTAuthenticationFilter;
+import net.ib.paperless.spring.security.JWTLoginFilter;
+import net.ib.paperless.spring.security.PasswordEncoding;
+import net.ib.paperless.spring.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,27 +26,23 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import net.ib.paperless.spring.domain.User;
-import net.ib.paperless.spring.security.JWTAuthenticationFilter;
-import net.ib.paperless.spring.security.JWTLoginFilter;
-import net.ib.paperless.spring.security.PasswordEncoding;
-import net.ib.paperless.spring.service.AuthenticationService;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
-	
-    @Autowired
-    AuthenticationService authenticationService;
-    
-    @Autowired
-    private HttpSession httpSession;
-    
+    private final AuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final AuthenticationService authenticationService;
+    private final HttpSession httpSession;
+
     @Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/static/**");
@@ -55,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
         	.csrf().disable()
-            .authorizeRequests()
+            .authorizeRequests().antMatchers("/login/**").permitAll()
             .antMatchers("/**/api/**").permitAll()
             .antMatchers("/**/open_api/login").permitAll()
             .antMatchers("/**/open_api/**").permitAll()
@@ -76,8 +73,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .formLogin()
             	.loginPage("/login")
             	.loginProcessingUrl("/login_process")
-            	//.defaultSuccessUrl("/sanwa/status/loan")
-            	.failureUrl("/login?error=loginFailed")
+//                .failureUrl("/login?error=loginFailed")
+                .failureHandler(customAuthenticationFailureHandler)
             	.successHandler(successHandler())
             	.usernameParameter("id")
             	.passwordParameter("password")
@@ -87,43 +84,39 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 	
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        /*auth
-            .inMemoryAuthentication()
-                .withUser("test").password("1").roles("USER");*/
+    public void configureGlobal(AuthenticationManagerBuilder auth) {
     	auth.authenticationProvider(new AuthenticationProvider() {
             @Override
             public Authentication authenticate(Authentication authentication) throws AuthenticationException {
                 String id = authentication.getName();
                 String password = (String) authentication.getCredentials();
                 
-                //System.out.println("username : " + id + " // password : " + password );
-                // 이곳에서 DB에 저장된 사용자 정보(username, password)를 읽어들인후
                 UserDetails ud = authenticationService.loadUserByUsername(id);
-            	// 이곳에서 html page에서 사용자가 입력한 값과 비교를 하여, 인증처리를 진행한다.
-                
-                
-                //암호화 추가
+
 				PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 				PasswordEncoding passwordEncoding = new PasswordEncoding(passwordEncoder);
-                	
-                /*if (ud.getPassword().equals(password)) {*/
-				if (passwordEncoding.matches(password, ud.getPassword())) {
-                    List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
-                    grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
-                    
-                    User user = authenticationService.loadUserOpenApi((String)authentication.getPrincipal());
-                    int userLevel = user.getLevel();
-                    
-                    Authentication auth = new UsernamePasswordAuthenticationToken(id, password, AuthorityUtils.createAuthorityList("ROLE_USER"));
-                    if(userLevel == 1) {
-                    	auth = new UsernamePasswordAuthenticationToken(id, password, AuthorityUtils.createAuthorityList("ADMIN"));
-                    }
-                    
-                    httpSession.setAttribute("user", id);
-                    return auth;
+
+                if (!passwordEncoding.matches(password, ud.getPassword())) throw new BadCredentialsException(id);
+
+                List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();
+                grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+                User user = authenticationService.loadUserOpenApi((String)authentication.getPrincipal());
+
+                int loginFailCnt = user.getLogin_fail_cnt();
+
+                if(loginFailCnt >= 5) throw new DisabledException(id);
+
+                int userLevel = user.getLevel();
+
+                Authentication auth = new UsernamePasswordAuthenticationToken(id, password, AuthorityUtils.createAuthorityList("ROLE_USER"));
+                if(userLevel == 1) {
+                    auth = new UsernamePasswordAuthenticationToken(id, password, AuthorityUtils.createAuthorityList("ADMIN"));
                 }
-                return null;
+
+                httpSession.setAttribute("user", id);
+                return auth;
+
             }
 
             @Override
@@ -132,9 +125,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             }
         });
     }
-    
+
     @Bean
     public AuthenticationSuccessHandler successHandler() {
         return new CustomLoginSuccessHandler("/detail");
     }
+    
 }
