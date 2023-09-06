@@ -34,10 +34,4 @@ public class MaskingUtil {
         return accountSSNNumber.substring(0, 2) + "*";
     }
 
-    public static void main(String[] args) {
-        System.out.println(maskAccountHolderName("박유진")); // 박유*
-        System.out.println(maskAccountHolderNumber("59350201238928")); // 59350*
-        System.out.println(maskAccountBankName("국민은행")); // 국민*
-        System.out.println(maskAccountSSNNumber("910710")); // 91*
-    }
 }
