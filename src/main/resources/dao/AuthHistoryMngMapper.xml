@@ -11,197 +11,164 @@ WHERE
 </select>
 
 <select id="historyPublicSelect" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
-SELECT
-	*
-FROM
-(
-SELECT 
-	seq,
-	(SELECT NAME FROM tba_company_info WHERE id = A.company_id) AS company_name,
-	company_id,
-	service_code,
-	account_holder_name,
-	account_holder_number,
-	account_bank_code,
-	account_bank_name,
-	account_ssn_number,
-	account_sex,
-	IFNULL(UPPER(jumin_realname_yn), '-') AS jumin_realname_yn,
-	IFNULL(UPPER(jumin_realname_date), '-') AS jumin_realname_date,
-	IFNULL(UPPER(inquiry_realname_yn), '-') AS inquiry_realname_yn,
-	IFNULL(UPPER(inquiry_realname_date), '-') AS inquiry_realname_date,
-	IFNULL(UPPER(inquiry_transfer_deposit_yn), '-') AS inquiry_transfer_deposit_yn,
-	IFNULL(UPPER(inquiry_transfer_deposit_date), '-') AS inquiry_transfer_deposit_date,
-	IFNULL(UPPER(authcode_confirm_yn), '-') AS authcode_confirm_yn,
-	IFNULL(UPPER(authcode_confirm_date), '-') AS authcode_confirm_date,
-	req_code,
-	replace_yn,
-	using_platform,
-	IF(using_platform = 'op',(
-		IFNULL(UPPER((SELECT rsp_message FROM tba_fail_info_public WHERE history_seq = A.seq)), '-')
-		
-		),(
-		IFNULL(UPPER((SELECT Rsms FROM tba_fail_info_nh WHERE history_seq = A.seq)), '-')
-		)
-	)  AS rsp_message,
-	IFNULL(UPPER((SELECT bank_rsp_message FROM tba_fail_info_public WHERE history_seq = A.seq)), '-') AS bank_rsp_message,
-	IFNULL(UPPER((SELECT bank_name FROM tba_fail_info_public WHERE history_seq = A.seq)), '-') AS bank_rsp_name
-FROM
-  tba_history_public A 
-WHERE
-	account_holder_name like concat('%', #{searchWord}, '%') and
-	<if test="company_id != '' and company_id != null">
-		company_id = #{company_id} and
+	SELECT seq,
+		   (SELECT NAME FROM tba_company_info WHERE id = A.company_id)                                       AS company_name,
+		   company_id,
+		   service_code,
+		   account_holder_name,
+		   account_holder_number,
+		   account_bank_code,
+		   account_bank_name,
+		   account_ssn_number,
+		   account_sex,
+		   IFNULL(UPPER(jumin_realname_yn), '-')                                                             AS jumin_realname_yn,
+		   IFNULL(UPPER(jumin_realname_date), '-')                                                           AS jumin_realname_date,
+		   IFNULL(UPPER(inquiry_realname_yn), '-')                                                           AS inquiry_realname_yn,
+		   IFNULL(UPPER(inquiry_realname_date), '-')                                                         AS inquiry_realname_date,
+		   IFNULL(UPPER(inquiry_transfer_deposit_yn), '-')                                                   AS inquiry_transfer_deposit_yn,
+		   IFNULL(UPPER(inquiry_transfer_deposit_date), '-')                                                 AS inquiry_transfer_deposit_date,
+		   IFNULL(UPPER(authcode_confirm_yn), '-')                                                           AS authcode_confirm_yn,
+		   IFNULL(UPPER(authcode_confirm_date), '-')                                                         AS authcode_confirm_date,
+		   req_code,
+		   replace_yn,
+		   using_platform,
+		   IF(using_platform = 'op', (
+			   IFNULL(UPPER((SELECT rsp_message FROM tba_fail_info_public WHERE history_seq = A.seq)), '-')
+			   ), (
+				  IFNULL(UPPER((SELECT Rsms FROM tba_fail_info_nh WHERE history_seq = A.seq)), '-')
+				  )
+			   )                                                                                             AS rsp_message,
+		   IFNULL(UPPER((SELECT bank_rsp_message FROM tba_fail_info_public WHERE history_seq = A.seq)),
+				  '-')                                                                                       AS bank_rsp_message,
+		   IFNULL(UPPER((SELECT bank_name FROM tba_fail_info_public WHERE history_seq = A.seq)),
+				  '-')                                                                                       AS bank_rsp_name
+	FROM tba_history_public A
+	WHERE
+	<choose>
+		<when test="searchType == 1">
+			account_holder_name like concat('%', #{searchWord}, '%')
+		</when>
+		<when test="searchType == 2">
+			encrypted_account_holder_number = #{searchWord}
+		</when>
+		<otherwise>
+			1=1
+		</otherwise>
+	</choose>
+	<if test="company_id != null and company_id != ''">
+		AND company_id = #{company_id}
 	</if>
-	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
-UNION ALL 
-SELECT 
-	seq,
-	(SELECT NAME FROM tba_company_info WHERE id = A.company_id) AS company_name,
-	company_id,
-	service_code,
-	account_holder_name,
-	account_holder_number,
-	account_bank_code,
-	account_bank_name,
-	account_ssn_number,
-	account_sex,
-	NULL,
-	NULL,
-	IFNULL(UPPER(inquiry_realname_yn), '-') AS inquiry_realname_yn,
-	IFNULL(UPPER(inquiry_realname_date), '-') AS inquiry_realname_date,
-	IFNULL(UPPER(inquiry_transfer_deposit_yn), '-') AS inquiry_transfer_deposit_yn,
-	IFNULL(UPPER(inquiry_transfer_deposit_date), '-') AS inquiry_transfer_deposit_date,
-	IFNULL(UPPER(authcode_confirm_yn), '-') AS authcode_confirm_yn,
-	IFNULL(UPPER(authcode_confirm_date), '-') AS authcode_confirm_date,
-	req_code,
-	replace_yn,
-	'bs',
-	IFNULL(UPPER((SELECT rsp_message FROM tba_fail_info WHERE history_seq = A.seq)), '-') AS rsp_message,
-	IFNULL(UPPER((SELECT bank_rsp_message FROM tba_fail_info WHERE history_seq = A.seq)), '-') AS bank_rsp_message,
-	IFNULL(UPPER((SELECT bank_name FROM tba_fail_info WHERE history_seq = A.seq)), '-') AS bank_rsp_name
-FROM
-	tba_history A
-WHERE
-	account_holder_name like concat('%', #{searchWord}, '%') and
-	<if test="company_id != '' and company_id != null">
-		company_id = #{company_id} and
-	</if>
-	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
-) AS History
-ORDER BY inquiry_realname_date DESC
-limit #{pagePoint} , #{pageSize}
+	AND DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'), '%Y%m')
+	ORDER BY inquiry_realname_date DESC
+		limit #{pagePoint}, #{pageSize}
 </select>
 
 <select id="historyPublicCountSelect" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
-SELECT 
-	(SELECT COUNT(*) FROM tba_history 
-	WHERE 
+	SELECT
+	(SELECT COUNT(*)
+	 FROM tba_history_public
+	WHERE
 	<if test="company_id != '' and company_id != null">
-	company_id = #{company_id} AND 
+		company_id = #{company_id}
+		  AND
 	</if>
-	account_holder_name like concat('%', #{searchWord}, '%') and
-	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')) + (SELECT COUNT(*) FROM tba_history_public 
-	WHERE 
+	<choose>
+		<when test="searchType == 1">
+			account_holder_name like concat('%', #{searchWord}, '%')
+		</when>
+		<when test="searchType == 2">
+			encrypted_account_holder_number = #{searchWord}
+		</when>
+		<otherwise>
+			1=1
+		</otherwise>
+	</choose>
+	  and DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'), '%Y%m'))AS totalCnt,
+	(SELECT COUNT(*)
+	 FROM tba_history_public
+	WHERE
 	<if test="company_id != '' and company_id != null">
-	company_id = #{company_id} AND 
+		company_id = #{company_id}
+		  AND
 	</if>
-	account_holder_name like concat('%', #{searchWord}, '%') and
-	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m'))AS totalCnt,
-	(SELECT COUNT(*) FROM tba_history 
-	WHERE 
+	<choose>
+		<when test="searchType == 1">
+			account_holder_name like concat('%', #{searchWord}, '%')
+		</when>
+		<when test="searchType == 2">
+			encrypted_account_holder_number = #{searchWord}
+		</when>
+		<otherwise>
+			1=1
+		</otherwise>
+	</choose>
+	  and DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'), '%Y%m')
+	  AND using_platform = 'op') AS opCnt,
+	(SELECT COUNT(*)
+	 FROM tba_history_public
+	WHERE
 	<if test="company_id != '' and company_id != null">
-	company_id = #{company_id} AND 
-	</if> 
-	account_holder_name like concat('%', #{searchWord}, '%') and
-	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')) AS bsCnt,
-	(SELECT COUNT(*) FROM tba_history_public 
-	WHERE 
-	<if test="company_id != '' and company_id != null">
-	company_id = #{company_id} AND 
+		company_id = #{company_id}
+		  AND
 	</if>
-	account_holder_name like concat('%', #{searchWord}, '%') and
-	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m') AND using_platform = 'op') AS opCnt,
-	(SELECT COUNT(*) FROM tba_history_public 
-	WHERE 
-	<if test="company_id != '' and company_id != null">
-	company_id = #{company_id} AND 
-	</if>
-	account_holder_name like concat('%', #{searchWord}, '%') and
-	DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m') AND using_platform = 'nh') AS nhCnt
-FROM
-	DUAL
+	<choose>
+		<when test="searchType == 1">
+			account_holder_name like concat('%', #{searchWord}, '%')
+		</when>
+		<when test="searchType == 2">
+			encrypted_account_holder_number = #{searchWord}
+		</when>
+		<otherwise>
+			1=1
+		</otherwise>
+	</choose>
+	  and DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'), '%Y%m')
+	  AND using_platform = 'nh') AS nhCnt
+	FROM DUAL
 </select>
 
 <select id="historyPublicTotalCountSelect" resultType="net.ib.paperless.spring.domain.AccountAuthHistoryInfo" parameterType="map">
-SELECT
-	A.company_id,
-	(SELECT NAME FROM tba_company_info WHERE id = A.company_id) AS company_name,
-	A.service_type,
-	(SELECT service_name FROM tb_service_type_code WHERE service_type = A.service_type) AS service_name,
-	using_platform,
-	inquiry_realname_count,
-	inquiry_realname_count_y,
-	inquiry_realname_count_n,
-	inquiry_transfer_count,
-	inquiry_transfer_count_y,
-	inquiry_transfer_count_n
-FROM 
+	SELECT A.company_id,
+		   (SELECT NAME FROM tba_company_info WHERE id = A.company_id)                         AS company_name,
+		   A.service_type,
+		   (SELECT service_name FROM tb_service_type_code WHERE service_type = A.service_type) AS service_name,
+		   using_platform,
+		   inquiry_realname_count,
+		   inquiry_realname_count_y,
+		   inquiry_realname_count_n,
+		   inquiry_transfer_count,
+		   inquiry_transfer_count_y,
+		   inquiry_transfer_count_n
+	FROM
 	(SELECT company_id, service_code, service_type
-	FROM tba_domain_info
+	 FROM tba_domain_info
 	<if test="company_id != '' and company_id != null">
-	WHERE
-		company_id = #{company_id}
-	</if> 
+		WHERE company_id = #{company_id}
+	</if>
 	GROUP BY company_id, service_code, service_type) A,
 	(
-	SELECT 
-		company_id,
-		service_code,
-		using_platform,
-		COUNT(inquiry_realname_yn) inquiry_realname_count,
-		IFNULL(SUM(inquiry_realname_yn = 'y'),0) AS inquiry_realname_count_y,
-		IFNULL(SUM(inquiry_realname_yn = 'n'),0) AS inquiry_realname_count_n,
-		COUNT(inquiry_transfer_deposit_yn) inquiry_transfer_count,
-		IFNULL(SUM(inquiry_transfer_deposit_yn = 'y'),0) AS inquiry_transfer_count_y,
-		IFNULL(SUM(inquiry_transfer_deposit_yn = 'n'),0) AS inquiry_transfer_count_n
-	FROM
-		tba_history_public
+	SELECT company_id,
+		   service_code,
+		   using_platform,
+		   COUNT(inquiry_realname_yn)                           inquiry_realname_count,
+		   IFNULL(SUM(inquiry_realname_yn = 'y'), 0)         AS inquiry_realname_count_y,
+		   IFNULL(SUM(inquiry_realname_yn = 'n'), 0)         AS inquiry_realname_count_n,
+		   COUNT(inquiry_transfer_deposit_yn)                   inquiry_transfer_count,
+		   IFNULL(SUM(inquiry_transfer_deposit_yn = 'y'), 0) AS inquiry_transfer_count_y,
+		   IFNULL(SUM(inquiry_transfer_deposit_yn = 'n'), 0) AS inquiry_transfer_count_n
+	FROM tba_history_public
 	WHERE
-		<if test="company_id != '' and company_id != null">
-			company_id = #{company_id} and
-		</if>
-		DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
-	GROUP BY 
-		company_id, using_platform
-
-	UNION ALL
-	
-	SELECT 
-		company_id,
-		service_code,
-		'bs' AS using_platform,
-		COUNT(inquiry_realname_yn) inquiry_realname_count,
-		IFNULL(SUM(inquiry_realname_yn = 'y'),0) AS inquiry_realname_count_y,
-		IFNULL(SUM(inquiry_realname_yn = 'n'),0) AS inquiry_realname_count_n,
-		COUNT(inquiry_transfer_deposit_yn) inquiry_transfer_count,
-		IFNULL(SUM(inquiry_transfer_deposit_yn = 'y'),0) AS inquiry_transfer_count_y,
-		IFNULL(SUM(inquiry_transfer_deposit_yn = 'n'),0) AS inquiry_transfer_count_n
-	FROM
-		tba_history
-	WHERE
-		<if test="company_id != '' and company_id != null">
-			company_id = #{company_id} and
-		</if>
-		DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'),'%Y%m')
-	GROUP BY 
-		company_id
+	<if test="company_id != '' and company_id != null">
+		company_id = #{company_id}
+		  and
+	</if>
+		DATE_FORMAT(inquiry_realname_date, '%Y%m') = DATE_FORMAT(STR_TO_DATE(#{sdate}, '%Y%m'), '%Y%m')
+	GROUP BY company_id, using_platform
 	) B
-	
-	WHERE 
-		A.company_id = B.company_id
-		AND A.service_code = B.service_code
-		
+
+	WHERE A.company_id = B.company_id
+	  AND A.service_code = B.service_code
+
 </select>
 
 <select id="fileUploadSelect" resultType="net.ib.paperless.spring.domain.FileUploadInfo" parameterType="map">

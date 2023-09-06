@@ -3,6 +3,7 @@ package net.ib.paperless.spring.service;
 import java.util.List;
 import java.util.Map;
 
+import net.ib.paperless.spring.common.AesEncryptionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -275,21 +276,34 @@ public class AuthHistoryMngService {
 		
 		if(params.get("pageNo") == null) pageNo = 1;
 		else pageNo = Integer.parseInt(params.get("pageNo").toString());
-		
+
 		pagePoint = (pageNo - 1) * pageSize;
 		
 		params.put("pageSize", pageSize);
 		params.put("pageNo", pageNo);
 		params.put("pagePoint", pagePoint);
-		
+
+		if("2".equals(params.get("searchType"))) {
+			String searchWord = params.get("searchWord").toString();
+			params.put("searchWord", AesEncryptionUtil.encrypt(searchWord));
+		}
+
+
 		return authHistoryMngRepository.historyPublicSelect(params);
 	}
 	
 	public List<AccountAuthHistoryInfo> historyPublicTotalCountSelect(Map params){
+
 		return authHistoryMngRepository.historyPublicTotalCountSelect(params);
 	}
 	
 	public AccountAuthHistoryInfo historyPublicCountSelect(Map params){
+
+		if("2".equals(params.get("searchType"))) {
+			String searchWord = params.get("searchWord").toString();
+			params.put("searchWord", AesEncryptionUtil.encrypt(searchWord));
+		}
+
 		return authHistoryMngRepository.historyPublicCountSelect(params);
 	}
 	

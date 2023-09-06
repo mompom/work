@@ -3,6 +3,8 @@ package net.ib.paperless.spring.service;
 import java.util.List;
 import java.util.Map;
 
+import net.ib.paperless.spring.common.AesEncryptionUtil;
+import net.ib.paperless.spring.common.MaskingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,14 @@ public class BlockUserService {
 		params.put("pageSize", pageSize);
 		params.put("pageNo", pageNo);
 		params.put("pagePoint", pagePoint);
+
+		String searchOption2 = (String) params.get("searchOption2");
+		if(searchOption2 != null){
+			if("holder_number".equals(searchOption2)) {
+				params.put("searchWord", AesEncryptionUtil.encrypt((String) params.get("searchWord")));
+			}
+		}
+
 		return blockUserRepository.blockUserSelect(params);
 	}
 	
@@ -51,6 +61,9 @@ public class BlockUserService {
 		String user_key = UUIDs.createNameUUID(user_key_combine.getBytes()).toString();
 		
 		params.put("user_key", user_key);
+		params.put("account_holder_number", MaskingUtil.maskAccountHolderNumber(account_holder_number));
+		params.put("encrypt_account_holder_number", AesEncryptionUtil.encrypt(account_holder_number));
+
 		return blockUserRepository.blockUserInsert(params);
 	}
 	

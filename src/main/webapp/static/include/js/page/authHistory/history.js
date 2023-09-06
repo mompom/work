@@ -246,25 +246,23 @@ AccountAuthHistory.prototype.history = (function(){
 			
 			var year = $('#year_select').val();
 			var month = $('#month_select').val();
-			
-			var searchOption1 = $("#search_option1").val();
-			var searchOption2 = $(".search_option2").val();
-			var searchWord = $(".search_word").val();
-			
+
+			var searchType = $("#search_type").val();
+			var searchWord = $("#search_word").val();
+
 			var params = {
 				"pageNo": pageNo, 
 				"pageSize": pageSize,
 				"sdate":year+""+month,
 				"edate":year+""+month,
 				"company_id":company_id,
-				"searchOption1" : searchOption1,
-				"searchOption2" : searchOption2,
+				"searchType" : searchType,
 				"searchWord" : searchWord
 			};
 			ajaxGet("/${map.loanId}/api/historyPublicSelect", params, func, params);
 		},
 		dataView : function(response){
-			var pageBlock = 10;
+			var pageBlock = 10;``
 			var pageSize = $("#pageSize option:selected").val();
 			var pageNo = $("#pageNo").val();
 			var stateNo = 0;
@@ -350,10 +348,9 @@ AccountAuthHistory.prototype.history = (function(){
 			
 			var year = $('#year_select').val();
 			var month = $('#month_select').val();
-			
-			var searchOption1 = $("#search_option1").val();
-			var searchOption2 = $(".search_option2").val();
-			var searchWord = $(".search_word").val();
+
+			var searchType = $("#search_type").val();
+			var searchWord = $("#search_word").val();
 			
 			var params = {
 				"pageNo": pageNo, 
@@ -361,8 +358,7 @@ AccountAuthHistory.prototype.history = (function(){
 				"sdate":year+""+month,
 				"edate":year+""+month,
 				"company_id":company_id,
-				"searchOption1" : searchOption1,
-				"searchOption2" : searchOption2,
+				"searchType" : searchType,
 				"searchWord" : searchWord
 			};
 			

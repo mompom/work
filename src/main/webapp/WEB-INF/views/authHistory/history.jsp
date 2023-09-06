@@ -191,10 +191,9 @@
 		
 		var year = $('#year_select').val();
 		var month = $('#month_select').val();
-		
-		var searchOption1 = $("#search_option1").val();
-		var searchOption2 = $(".search_option2").val();
-		var searchWord = $(".search_word").val();
+
+		var searchType = $("#search_type").val();
+		var searchWord = $("#search_word").val();
 		
 		console.log(pageSize);
 		var params = {
@@ -203,8 +202,7 @@
 			"sdate":year+""+month,
 			"edate":year+""+month,
 			"company_id":company_id,
-			"searchOption1" : searchOption1,
-			"searchOption2" : searchOption2,
+			"searchType" : searchType,
 			"searchWord" : searchWord
 		};
 		
@@ -393,9 +391,9 @@
 	
 	function search(){
 		
-		var searchWord = $(".search_word").val();
-		
-		if(searchWord == "")
+		var searchWord = $("#search_word").val();
+
+		if(searchWord === "")
 		{
 			alert('검색어를 입력해 주세요.')
 			return;
@@ -559,11 +557,11 @@
 							<option value="1000000000">전체결과</option>
 						</select>
 						
-						<select name="" id="" class="select01 search_option2" style="width:153px;">
-							<option value="">이름</option>
-							<option value="">계좌</option>
+						<select name="" id="search_type" class="select01 search_option2" style="width:153px;">
+							<option value="1">이름</option>
+							<option value="2">계좌</option>
 						</select>
-						<input class="search_word" type="text" name="" placeholder="검색어를 입력해 주세요.">
+						<input id="search_word" type="text" name="" placeholder="검색어를 입력해 주세요.">
 						<button type="button" class="btn_st_normal" onclick="javascript:search()"><span>검색</span></button>
 						<!-- <a class="btn_st_normal" id="excelExport"><span>엑셀 파일 다운로드</span></a> -->
 						<button class="btn_st_normal" id="excelExport" download="전체계좌인증내역.xls">다운로드</button>
