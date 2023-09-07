@@ -62,7 +62,7 @@ public class BlockUserService {
 		
 		params.put("user_key", user_key);
 		params.put("account_holder_number", MaskingUtil.maskAccountHolderNumber(account_holder_number));
-		params.put("encrypt_account_holder_number", AesEncryptionUtil.encrypt(account_holder_number));
+		params.put("encrypted_account_holder_number", AesEncryptionUtil.encrypt(account_holder_number));
 
 		return blockUserRepository.blockUserInsert(params);
 	}

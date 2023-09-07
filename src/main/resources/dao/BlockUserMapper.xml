@@ -10,7 +10,7 @@
         WHERE 1=1
 		<choose>
 			<when test="searchOption2 == 'holder_number'">
-				AND encrypt_account_holder_number = #{searchWord}
+				AND encrypted_account_holder_number = #{searchWord}
 			</when>
 			<when test="searchOption2 == 'holder_name'">
 				AND account_holder_name LIKE CONCAT('%',#{searchWord},'%')
@@ -37,8 +37,8 @@
     </select>
     
     <insert id="blockUserInsert" parameterType="hashmap">
-    	INSERT INTO tb_blacklist(user_key, account_holder_name, account_holder_number, account_holder_code, account_bank_name, reg_date, note, encrypt_account_holder_number)
-    	VALUES(#{user_key}, #{account_holder_name}, #{account_holder_number}, #{account_holder_code}, #{account_bank_name}, now() ,#{note}, #{encrypt_account_holder_number})
+    	INSERT INTO tb_blacklist(user_key, account_holder_name, account_holder_number, account_holder_code, account_bank_name, reg_date, note, encrypted_account_holder_number)
+    	VALUES(#{user_key}, #{account_holder_name}, #{account_holder_number}, #{account_holder_code}, #{account_bank_name}, now() ,#{note}, #{encrypted_account_holder_number})
     </insert>
     
     <update id="blockUserUpdate" parameterType="hashmap" useGeneratedKeys="true" keyProperty="seq">
