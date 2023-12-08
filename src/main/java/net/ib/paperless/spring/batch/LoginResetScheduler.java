@@ -20,7 +20,7 @@ public class LoginResetScheduler {
     @Scheduled(cron = "0 */10 * * * *")
     @ConditionalOnProperty(name = "was.name", havingValue = "was01")
     public void resetLoginFailCount() {
-        logger.info("##### BATCH : resetLoginFailCount");
+        logger.info("##### BATCH : reset login fail count #####");
         userRepository.resetLoginFailCount();
     }
 }
