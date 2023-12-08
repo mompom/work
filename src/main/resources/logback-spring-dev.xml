@@ -12,9 +12,9 @@
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">-
-        <file>/backup/tsoftnas/logs/adm/adm.log</file>
+        <file>/backup/tsoftnas/logs/goodpaper-admin/goodpaper-admin.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/backup/tsoftnas/logs/adm/adm-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/backup/tsoftnas/logs/goodpaper-admin/goodpaper-admin-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>
         <encoder>
